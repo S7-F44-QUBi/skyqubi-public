@@ -15,9 +15,9 @@ Before tonight, Recipe #4 described a two-tier release: private lifecycle → pu
 
 | Repo | URL | Role (Jamie's words) | Who writes | Who reads | Visibility |
 |---|---|---|---|---|---|
-| **private** | `S7-SkyCAIR-123Tech-Net-Evolve2Linux/SkyQUBi-private` | *"our development"* | Jamie, Chair, future household stewards | household only | **PRIVATE** |
-| **public** | `S7-SkyCAIR-123Tech-Net-Evolve2Linux/SkyQUBi-public` | *"their development"* | community contributors (PRs), household when accepting community work | world | **PUBLIC** repo inside enterprise org — held public because the household-facing site at `123tech.skyqubi.com` embeds `github.com/.../SkyQUBi-public` links (code tree, discussions, engine) that anonymous visitors must be able to follow. Full protection stack still applies (org ruleset + branch protection + required_signatures + SkyQUBi security config). |
-| **immutable** | `S7-SkyCAIR-123Tech-Net-Evolve2Linux/skyqubi-immutable` | *"GOLD will sit here"* | rebuild-public.sh only, after Tonya sign-off ceremony | world (for verification) OR household only (for pre-July-7 protection) | **PRIVATE** (flipped 2026-04-15, pre-ceremony placeholder) |
+| **private** | `SkyQUBi/SkyQUBi-private` | *"our development"* | Jamie, Chair, future household stewards | household only | **PRIVATE** |
+| **public** | `SkyQUBi/SkyQUBi-public` | *"their development"* | community contributors (PRs), household when accepting community work | world | **PUBLIC** repo inside enterprise org — held public because the household-facing site at `123tech.skyqubi.com` embeds `github.com/.../SkyQUBi-public` links (code tree, discussions, engine) that anonymous visitors must be able to follow. Full protection stack still applies (org ruleset + branch protection + required_signatures + SkyQUBi security config). |
+| **immutable** | `SkyQUBi/skyqubi-immutable` | *"GOLD will sit here"* | rebuild-public.sh only, after Tonya sign-off ceremony | world (for verification) OR household only (for pre-July-7 protection) | **PRIVATE** (flipped 2026-04-15, pre-ceremony placeholder) |
 
 The shift in meaning for the **public** repo is important. Before tonight, "public" meant *"the household's authorized public face."* After tonight, "public" means *"the community's workshop — where their development happens."* It becomes a contribution surface, not a trophy case. The trophy case is `immutable`.
 
