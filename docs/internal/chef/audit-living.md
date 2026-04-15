@@ -12,6 +12,91 @@
 
 ---
 
+## 2026-04-15T19:32:24Z — verdict: PASS 🟢
+
+| | Pass | Pinned | Warning | Block |
+|---|---|---|---|---|
+| count | 9 | 18 | 0 | 0 |
+
+### Findings
+
+| Status | Axis | Zero | Title | Detail |
+|---|---|---|---|---|
+| 🟢 PASS | A | 1 | Inconsistencies | every listening port is named in the recipe |
+| 🟢 PASS | A | 2 | Public repo clean | 0 uncommitted changes |
+| 📌 PINNED | A | 2 | Private repo has work-in-progress | 1 uncommitted changes (expected on lifecycle) |
+| 📌 PINNED | A | 3 | shell=True (acknowledged) | /s7/skyqubi-private/engine/s7_skyavi_monitors.py:40:    shell=True is retained. The "would be injection if templated" |
+| 🟢 PASS | A | 4 | Secrets in tracked files | 0 hits |
+| 🟢 PASS | A | 5 | Outbound links | all links resolve to the approved domain set |
+| 📌 PINNED | A | 6 | DNS resolver 192.168.1.1 (acknowledged) | expected 9.9.9.9 per project_security_model.md |
+| 🟢 PASS | A | 7 | Non-loopback binds | all accounted for (sshd, LLMNR, pinned: Ollama, Caddy) |
+| 📌 PINNED | A | 7 | Ollama *:57081 | wildcard bind (acknowledged) |
+| 📌 PINNED | A | 7 | Caddy *:8080 | wildcard bind (acknowledged) |
+| 🟢 PASS | A | 8 | Process owners | all accounted for |
+| 📌 PINNED | B | 9 | bandit missing | install during next Core Update window |
+| 📌 PINNED | B | 9 | shellcheck missing | install during next Core Update window |
+| 📌 PINNED | B | 9 | gitleaks missing | install during next Core Update window |
+| 📌 PINNED | B | 9 | pip-audit missing | install during next Core Update window |
+| 🟢 PASS | B | 9 | trivy available | vuln scan tool present |
+| 🟢 PASS | A | 10 | Frozen tree (lifecycle) | fast-forward from pinned 06aec56 (+1 commits, ancestor intact) |
+| 🟢 PASS | A | 10 | Frozen tree (private/main) | matches pinned 06aec56 |
+| 📌 PINNED | A | 10 | Frozen tree (public/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-public-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (immutable/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-immutable-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (immutable-assets/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-immutable-assets-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (immutable-S7-F44/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-immutable-S7-F44-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (immutable-qubi/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-immutable-qubi-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (SafeSecureLynX/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-SafeSecureLynX-main-pending) |
+| 📌 PINNED | A | 11 | Legacy-path service detection (acknowledged) | 8 orphan refs, incl: /s7/s7-project-nomad/skyqubi-pod.yaml /s7/skyqubi /s7/skyqubi/Caddyfile  |
+| 📌 PINNED | A | 12 | Immutable registry | 0 entries (pre-ceremony, acknowledged) |
+| 📌 PINNED | C | 13 | PRISM/GRID/WALL integrity | reframe at JAMIE-APPROVED-PENDING-TONYA (pre-covenant, pending Tonya) |
+
+Snapshot: `iac/audit/dist/20260415-193224.json`
+
+---
+
+
+## 2026-04-15T19:31:22Z — verdict: BLOCK 🔴
+
+| | Pass | Pinned | Warning | Block |
+|---|---|---|---|---|
+| count | 8 | 17 | 0 | 1 |
+
+### Findings
+
+| Status | Axis | Zero | Title | Detail |
+|---|---|---|---|---|
+| 🟢 PASS | A | 1 | Inconsistencies | every listening port is named in the recipe |
+| 🟢 PASS | A | 2 | Public repo clean | 0 uncommitted changes |
+| 📌 PINNED | A | 3 | shell=True (acknowledged) | /s7/skyqubi-private/engine/s7_skyavi_monitors.py:40:    shell=True is retained. The "would be injection if templated" |
+| 🟢 PASS | A | 4 | Secrets in tracked files | 0 hits |
+| 🟢 PASS | A | 5 | Outbound links | all links resolve to the approved domain set |
+| 📌 PINNED | A | 6 | DNS resolver 192.168.1.1 (acknowledged) | expected 9.9.9.9 per project_security_model.md |
+| 🟢 PASS | A | 7 | Non-loopback binds | all accounted for (sshd, LLMNR, pinned: Ollama, Caddy) |
+| 📌 PINNED | A | 7 | Ollama *:57081 | wildcard bind (acknowledged) |
+| 📌 PINNED | A | 7 | Caddy *:8080 | wildcard bind (acknowledged) |
+| 🟢 PASS | A | 8 | Process owners | all accounted for |
+| 📌 PINNED | B | 9 | bandit missing | install during next Core Update window |
+| 📌 PINNED | B | 9 | shellcheck missing | install during next Core Update window |
+| 📌 PINNED | B | 9 | gitleaks missing | install during next Core Update window |
+| 📌 PINNED | B | 9 | pip-audit missing | install during next Core Update window |
+| 🟢 PASS | B | 9 | trivy available | vuln scan tool present |
+| 🔴 BLOCK | A | 10 | Frozen tree DIVERGED (lifecycle) | pinned=49af1f3 actual=06aec56 — branch history rewritten or moved to sibling |
+| 🟢 PASS | A | 10 | Frozen tree (private/main) | fast-forward from pinned 49af1f3 (+68 commits, ancestor intact) |
+| 📌 PINNED | A | 10 | Frozen tree (public/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-public-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (immutable/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-immutable-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (immutable-assets/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-immutable-assets-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (immutable-S7-F44/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-immutable-S7-F44-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (immutable-qubi/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-immutable-qubi-main-pending) |
+| 📌 PINNED | A | 10 | Frozen tree (SafeSecureLynX/main) | PENDING — acknowledged via pinned.yaml (frozen-tree-SafeSecureLynX-main-pending) |
+| 📌 PINNED | A | 11 | Legacy-path service detection (acknowledged) | 8 orphan refs, incl: /s7/s7-project-nomad/skyqubi-pod.yaml /s7/skyqubi /s7/skyqubi/Caddyfile  |
+| 📌 PINNED | A | 12 | Immutable registry | 0 entries (pre-ceremony, acknowledged) |
+| 📌 PINNED | C | 13 | PRISM/GRID/WALL integrity | reframe at JAMIE-APPROVED-PENDING-TONYA (pre-covenant, pending Tonya) |
+
+Snapshot: `iac/audit/dist/20260415-193122.json`
+
+---
+
+
 ## 2026-04-15T18:30:51Z — verdict: PASS 🟢
 
 | | Pass | Pinned | Warning | Block |

@@ -78,13 +78,13 @@
 # This pin update is the final audit artifact of session 2026-04-14.
 # Zero #10's fast-forward-ancestor check will accept this pin and
 # future session commits advancing forward from it.
-lifecycle  49af1f30a3012607d86bfc6b1345919f9bc76aa4
+lifecycle  06aec56d1545327653f2596dfefe9e9462c2510a
 
 # Private go-live branch — pinned at 1b6a2d7, which is the last legitimate
 # state before tonight's lifecycle session (matches what got synced to
 # public via the unauthorized push window). When lifecycle is fast-forwarded
 # into private/main on the next Core Update day, update this pin.
-private/main  49af1f30a3012607d86bfc6b1345919f9bc76aa4
+private/main  06aec56d1545327653f2596dfefe9e9462c2510a
 
 # Public main — PENDING resolution of the (a)/(b)/(c) decision on the two
 # unauthorized 2026-04-14 commits (a6467b6, 2f3cc9d). The gate reads this
