@@ -1,0 +1,18 @@
+[Unit]
+Description=S7 Kolibri (offline education platform)
+Documentation=https://learningequality.org/kolibri/
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+ContainerName=s7_kolibri
+Image=docker.io/treehouses/kolibri:0.12.8
+PublishPort=127.0.0.1:8300:8080
+Volume=/s7/s7-timecapsule-assets/nomad-storage/kolibri:/root/.kolibri:Z
+
+[Service]
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

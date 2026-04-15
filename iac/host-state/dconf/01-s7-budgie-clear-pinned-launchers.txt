@@ -1,0 +1,11 @@
+[com/solus-project/budgie-panel/instance/icon-tasklist/{aa000001-0000-0000-0000-000000000001}]
+icon-size=28
+only-pinned=true
+pinned-launchers=@as []
+show-all-windows-on-click=false
+
+[com/solus-project/budgie-panel/instance/icon-tasklist/{aa000002-0000-0000-0000-000000000002}]
+icon-size=28
+only-pinned=true
+pinned-launchers=@as []
+show-all-windows-on-click=false

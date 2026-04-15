@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Services
+GenericName=SkyQUBi Service Control
+Comment=Start, stop, restart, and monitor all S7 SkyQUBi services
+Exec=kitty -e bash -c "/s7/skyqubi/s7-manager.sh menu; echo ''; read -rp 'Press Enter to close...' _"
+Icon=s7-logo-icon
+Terminal=false
+Categories=X-S7-SkyQUBi;
+Keywords=SkyQUBi;Pod;Podman;Services;S7;Manager;Start;Stop;
+StartupNotify=false

@@ -1,0 +1,27 @@
+[Unit]
+Description=S7 SkyQUBi — daily update check (notify-only, never auto-apply)
+Documentation=https://github.com/skycair-code/SkyQUBi-public
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Runs `git fetch` in the private repo and writes a journal entry if
+# origin/main is ahead. Does NOT apply updates — matches the covenant
+# rule that updates require human consent ('s7-manager.sh update').
+WorkingDirectory=/s7/skyqubi-private
+ExecStart=/bin/bash -c 'set -e; \
+  cd /s7/skyqubi-private && \
+  git fetch origin main 2>&1 | systemd-cat -t s7-update-check -p info; \
+  behind=$(git rev-list --count HEAD..origin/main 2>/dev/null || echo 0); \
+  if [ "$behind" -gt 0 ]; then \
+    git log --oneline HEAD..origin/main | systemd-cat -t s7-update-check -p notice; \
+    echo "S7 has $behind update(s) available — run: s7-manager.sh update" | systemd-cat -t s7-update-check -p notice; \
+  else \
+    echo "S7 up to date" | systemd-cat -t s7-update-check -p info; \
+  fi'
+# No ExecStart success is enforced — a failed fetch should not hard-fail
+SuccessExitStatus=0 1
+
+[Install]
+WantedBy=default.target

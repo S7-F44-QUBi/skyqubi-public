@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=S7 Ollama
+GenericName=Local LLM Server
+Comment=Start Ollama inference server on :57081 on login
+Exec=/usr/bin/bash -c "OLLAMA_HOST=127.0.0.1:57081 /usr/local/bin/ollama serve >> /tmp/s7-ollama.log 2>&1"
+Icon=/s7/s7-boot-assets/s7-plymouth-logo.png
+Terminal=false
+Categories=System;Science;
+Keywords=Ollama;LLM;AI;S7;Autostart;
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=8
+StartupNotify=false

@@ -1,0 +1,19 @@
+:8080 {
+	# CWS Engine — strip /api/cws prefix, forward to engine
+	handle_path /api/cws/* {
+		reverse_proxy 127.0.0.1:57077
+	}
+
+	# SkyAVi — proxy /api/skyavi/* to CWS engine /skyavi/*
+	handle /api/skyavi/* {
+		uri strip_prefix /api
+		reverse_proxy 127.0.0.1:57077 {
+			header_up Authorization "Bearer {$CWS_ENGINE_TOKEN}"
+		}
+	}
+
+	# Everything else → SkyQUBi Command Center
+	handle {
+		reverse_proxy 127.0.0.1:57080
+	}
+}

@@ -1,0 +1,52 @@
+[Unit]
+Description=S7 Ollama — Standard Inference Engine
+After=s7-skyqubi-pod.service
+
+[Service]
+Type=simple
+Environment=OLLAMA_HOST=0.0.0.0:57081
+Environment=OLLAMA_MODELS=/s7/.ollama/models
+Environment=OLLAMA_MAX_LOADED_MODELS=4
+Environment=OLLAMA_NUM_PARALLEL=2
+# Pin loaded models in RAM for 24h to eliminate cold-load latency
+# on conversational turns. Was 30m → still cold-loaded after a coffee
+# break. 24h means models stay warm across a normal day's use and only
+# release on host shutdown. Single biggest perceived speedup for Carli.
+Environment=OLLAMA_KEEP_ALIVE=24h
+# Burstable-with-reservation CPU model (think AWS T-class):
+# - AllowedCPUs=0 reserves physical core 0 for inference.
+# - CPUWeight=1000 (max) gives Ollama priority during contention with
+#   other user services, so even when AllowedCPUs lets the kernel
+#   schedule it elsewhere, the scheduler favors chat over background.
+# - OLLAMA_NUM_PARALLEL=2 still lets a single inference burst across
+#   logical cores when free.
+# Net effect on the i7-6600U: chat always has a guaranteed core,
+# other services share the remaining three. ~60% perceived win for
+# ~20% reservation cost. Adjust AllowedCPUs upward (e.g. 0-1) for
+# beefier hardware.
+AllowedCPUs=0
+CPUWeight=1000
+# Memory tiering — same principle as CPU above:
+# - MemoryMin=1.5G is the FORCED floor (s7-carli:0.6b loads to ~1.5G).
+#   The kernel will not reclaim this memory under pressure; Carli
+#   stays warm even when the rest of the system is squeezing for RAM.
+# - MemoryHigh=3G is the SOFT ceiling — Ollama gets throttled (not
+#   killed) above this, so a runaway context can't starve the pod.
+# - MemoryMax=4G is the HARD ceiling — OOM only if Ollama tries to
+#   take more than half of host RAM. Sane upper bound on a 7.4 GiB box.
+# "Needed" (chat) is forced; "wanted" (background) gets the rest.
+MemoryMin=1500M
+MemoryHigh=3G
+MemoryMax=4G
+ExecStart=/usr/local/bin/ollama serve
+# Pre-warm Carli's default model immediately after ollama listens.
+# Wait up to 30s for the API to come up, then issue a real one-token
+# generate (not empty — Ollama 0.x doesn't reliably load on empty
+# prompt) with infinite keep_alive. The `|| true` tail keeps the unit
+# healthy if the warm-up curl fails — the service itself is fine.
+ExecStartPost=/bin/bash -c 'for i in $(seq 1 30); do curl -sSf http://127.0.0.1:57081/api/tags > /dev/null && break; sleep 1; done; curl -sS http://127.0.0.1:57081/api/generate -d "{\"model\":\"s7-carli:0.6b\",\"keep_alive\":-1,\"prompt\":\"ok\",\"stream\":false}" > /dev/null 2>&1 || true'
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

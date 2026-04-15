@@ -1,0 +1,1400 @@
+# S7 SkyQUBi — Tools Manifest
+#
+# Single source of truth for every tool in the QUBi toolset.
+# Every subsequent artifact (install path, audit check, bootc
+# image contents, CHEF recipe) should reference this file by
+# tool name rather than hardcoding paths.
+#
+# Schema per tool:
+#   name:            short canonical name
+#   path:            absolute path to the canonical source
+#   category:        engine | service | audit | install | recipe | memory | branding | boot | compliance | lifecycle | council | persona | mcp
+#   pillar:          SYNC | SAFE | LYNC | [multi]
+#   owner:           chair | jamie | tonya | household | samuel | carli | elias
+#   airgap:          clean | partial | blocked | n-a
+#   bootc:           in-image | install-time | runtime | n-a
+#   tier:            covenant | pinned-methodology | pinned-project | draft | operational | stub
+#   depends_on:      [list of tool names]
+#   notes:           one-line context
+#
+# Airgap legend:
+#   clean         — operates with zero outbound network
+#   partial       — needs network for first setup, then offline
+#   blocked       — currently has outbound dependency not yet eliminated
+#   n-a           — not applicable (documentation, config)
+#
+# Bootc legend:
+#   in-image      — baked into the bootc OCI artifact; present at first boot
+#   install-time  — installed by the bootc first-boot ceremony
+#   runtime       — added after install (user-controlled)
+#   n-a           — not applicable
+#
+# Tier legend (maps to memory pillar+weight or recipe status):
+#   covenant              — weight 5, COVENANT-GRADE
+#   pinned-methodology    — weight 4, pinned rule
+#   pinned-project        — weight 3, current state
+#   draft                 — CHAIR-DRAFT or JAMIE-AUTHORIZED-IN-TONYAS-STEAD
+#   operational           — running service, not a memory tier
+#   stub                  — placeholder, refuses real runs
+#
+# Status as of 2026-04-14 session close. Future sessions update
+# this file as tools are added, migrated, promoted, or retired.
+
+# ═══════════════════════════════════════════════════════════════
+# ENGINE — the CWS core, persona engines, Samuel, ZeroClaw
+# ═══════════════════════════════════════════════════════════════
+tools:
+
+  - name: cws-engine
+    path: /s7/skyqubi-private/engine/s7_server.py
+    category: engine
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [postgres, qdrant, redis]
+    notes: HTTP API for the Covenant Witness System; serves :57077
+
+  - name: cws-core
+    path: /s7/skyqubi-private/engine/s7_cws_core.py
+    category: engine
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: ForToken/RevToken discernment, 70% BABEL breaker
+
+  - name: molecular-bonds
+    path: /s7/skyqubi-private/engine/s7_molecular.py
+    category: engine
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [postgres]
+    notes: 9 planes, 27 named vectors, INSERT-only
+
+  - name: witness-set
+    path: /s7/skyqubi-private/engine/s7_witness.py
+    category: engine
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [ollama, cws-core]
+    notes: OCTi 7+1 witness set, 77.777% consensus threshold
+
+  - name: circuit-breaker
+    path: /s7/skyqubi-private/engine/s7_breaker.py
+    category: engine
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [cws-core]
+    notes: 70% BABEL threshold halts inference
+
+  - name: discernment
+    path: /s7/skyqubi-private/engine/s7_discernment.py
+    category: engine
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: ForToken/RevToken verdict engine
+
+  - name: prism-verdict
+    path: /s7/skyqubi-private/engine/s7_prism.py
+    category: engine
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [cws-core]
+    notes: QBIT Prism v1.0.1 — FOUNDATION/FRONTIER/HALLUCINATION/VIOLATION
+
+  - name: akashic-language
+    path: /s7/skyqubi-private/engine/s7_akashic.py
+    category: engine
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Akashic language encoder, 105 universals
+
+  - name: quanti-bitnet
+    path: /s7/skyqubi-private/engine/s7_quanti.py
+    category: engine
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [bitnet-mcp]
+    notes: 1-bit ternary inference bridge
+
+  - name: rag-retrieval
+    path: /s7/skyqubi-private/engine/s7_rag.py
+    category: engine
+    pillar: SYNC
+    owner: jamie
+    airgap: partial
+    bootc: in-image
+    tier: operational
+    depends_on: [ollama, qdrant]
+    notes: "AIRGAP GAP: hardcoded default http://127.0.0.1:7081 (legacy port); B18 fix pending"
+
+  - name: samuel-facts
+    path: /s7/skyqubi-private/engine/s7_skyavi.py
+    category: engine
+    pillar: SAFE
+    owner: samuel
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [cws-core, molecular-bonds]
+    notes: Samuel persona, FACTS engine, 115+ skills, SHELL_ALLOWLIST hardened
+
+  - name: samuel-monitors
+    path: /s7/skyqubi-private/engine/s7_skyavi_monitors.py
+    category: engine
+    pillar: SYNC
+    owner: samuel
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [samuel-facts]
+    notes: Auto-heal monitors; shell=True pinned (MEDIUM) remediated at source 2026-04-14
+
+  - name: samuel-skills
+    path: /s7/skyqubi-private/engine/s7_skyavi_skills.py
+    category: engine
+    pillar: multi
+    owner: samuel
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [samuel-facts]
+    notes: 115+ FACTS skills across SYNC/SAFE/LYNC domains
+
+  - name: zeroclaw-orchestrator
+    path: /s7/skyqubi-private/engine/s7_skyavi_orchestrator.py
+    category: engine
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [samuel-facts, witness-set]
+    notes: Parallel consensus agent orchestrator
+
+  - name: samuel-comms
+    path: /s7/skyqubi-private/engine/s7_skyavi_comms.py
+    category: engine
+    pillar: LYNC
+    owner: samuel
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [samuel-facts]
+    notes: Household-facing communication layer for Samuel
+
+  - name: mempalace-bridge
+    path: /s7/skyqubi-private/engine/s7_bridge.py
+    category: engine
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [postgres]
+    notes: MemPalace memory sync bridge
+
+  - name: audit-snapshot-ingest
+    path: /s7/skyqubi-private/engine/s7_audit_snapshot.sh
+    category: engine
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [postgres]
+    notes: 15-minute file-change ingest; separate from nightly Living Doc snapshot
+
+# ═══════════════════════════════════════════════════════════════
+# PERSONAS — Carli, Elias, Samuel voice personas
+# ═══════════════════════════════════════════════════════════════
+
+  - name: persona-chat-app
+    path: /s7/skyqubi-private/persona-chat/app.py
+    category: persona
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [cws-engine, samuel-facts, ollama]
+    notes: FastAPI persona chat; serves :57082 loopback; /digest + /digest.txt routes added 2026-04-14
+
+  - name: persona-ledger
+    path: /s7/skyqubi-private/persona-chat/ledger.py
+    category: persona
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [persona-chat-app]
+    notes: Per-session ledger, per-persona
+
+  - name: memory-tiers
+    path: /s7/skyqubi-private/persona-chat/memory_tiers.py
+    category: persona
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [persona-ledger]
+    notes: L1/L2/L3 memory tiering for persona sessions
+
+  - name: qbit-count
+    path: /s7/skyqubi-private/persona-chat/qbit_count.py
+    category: persona
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: QBIT unit accounting (not tokens — S7 vocabulary)
+
+  - name: skill-runner
+    path: /s7/skyqubi-private/persona-chat/skill_runner.py
+    category: persona
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [samuel-skills]
+    notes: Samuel skill dispatcher for persona-chat turns
+
+  - name: carli-voice-corpus
+    path: /s7/skyqubi-private/docs/internal/chef/voice-corpora/carli-voice-corpus-draft.md
+    category: persona
+    pillar: LYNC
+    owner: carli
+    airgap: clean
+    bootc: n-a
+    tier: draft
+    depends_on: []
+    notes: ~45 utterances; CHAIR-DRAFT; JAMIE-AUTHORIZED-IN-TONYAS-STEAD; reshape around Trinity's B1.5 questions
+
+  - name: elias-voice-corpus
+    path: /s7/skyqubi-private/docs/internal/chef/voice-corpora/elias-voice-corpus-draft.md
+    category: persona
+    pillar: SYNC
+    owner: elias
+    airgap: clean
+    bootc: n-a
+    tier: draft
+    depends_on: []
+    notes: ~30 utterances; workbench register; Jamie's review is near-sufficient
+
+  - name: samuel-voice-corpus
+    path: /s7/skyqubi-private/docs/internal/chef/voice-corpora/samuel-voice-corpus-draft.md
+    category: persona
+    pillar: SAFE
+    owner: samuel
+    airgap: clean
+    bootc: n-a
+    tier: draft
+    depends_on: []
+    notes: ~40 utterances; Noah's floor enforced; Category N all placeholder-PENDING-TONYA
+
+# ═══════════════════════════════════════════════════════════════
+# MCP SERVERS
+# ═══════════════════════════════════════════════════════════════
+
+  - name: bitnet-mcp
+    path: /s7/skyqubi-private/mcp/bitnet_mcp.py
+    category: mcp
+    pillar: SYNC
+    owner: jamie
+    airgap: partial
+    bootc: in-image
+    tier: operational
+    depends_on: [ollama]
+    notes: "AIRGAP GAP: hardcoded localhost:7081 (legacy); B18 fix pending. Canonical 9.4k version in private; legacy 8.2k version still running from /s7/skyqubi/"
+
+  - name: mempalace-mcp
+    path: /s7/skyqubi-private/mcp/mempalace_mcp_server.py
+    category: mcp
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [postgres]
+    notes: MemPalace MCP server, spawned by Claude Code per-session
+
+# ═══════════════════════════════════════════════════════════════
+# DASHBOARD + REVERSE PROXY
+# ═══════════════════════════════════════════════════════════════
+
+  - name: dashboard-server
+    path: /s7/skyqubi-private/dashboard/server.py
+    category: service
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [cws-engine]
+    notes: STAGED 2026-04-14 from legacy /s7/skyqubi/dashboard/; systemd unit reference switches on 2026-07-07 cascade
+
+  - name: dashboard-react
+    path: /s7/skyqubi-private/dashboard/SkyCAIR-Command-Center.jsx
+    category: service
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [dashboard-server]
+    notes: React Command Center UI
+
+  - name: caddy-config
+    path: /s7/skyqubi-private/Caddyfile
+    category: service
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: STAGED 2026-04-14 from legacy /s7/skyqubi/Caddyfile; systemd unit reference switches on 2026-07-07 cascade
+
+# ═══════════════════════════════════════════════════════════════
+# POD SERVICES (podman pod containers)
+# ═══════════════════════════════════════════════════════════════
+
+  - name: pod-yaml
+    path: /s7/skyqubi-private/skyqubi-pod.yaml
+    category: service
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Pod manifest, 7.0k canonical (pasta -T,auto fix); legacy 5.7k version in /s7/skyqubi/ obsolete on ceremony day
+
+  - name: pod-start-script
+    path: /s7/skyqubi-private/start-pod.sh
+    category: lifecycle
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [pod-yaml]
+    notes: Deploys pod with --network pasta:-T,auto (canonical); legacy /s7/skyqubi/start-pod.sh has zero pasta flag
+
+  - name: admin-container
+    path: 'pod-internal (s7-skyqubi-s7-admin)'
+    category: service
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [postgres, redis]
+    notes: NOMAD admin fork; internal 8080, host 57080
+
+  - name: postgres-pgvector
+    path: 'pod-internal (s7-skyqubi-s7-postgres)'
+    category: service
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: PostgreSQL + pgvector; host 57090
+
+  - name: qdrant
+    path: 'pod-internal (s7-skyqubi-s7-qdrant)'
+    category: service
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Vector DB; host 57086
+
+  - name: redis
+    path: 'pod-internal (s7-skyqubi-s7-redis)'
+    category: service
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Pod-internal cache
+
+  - name: mysql
+    path: 'pod-internal (s7-skyqubi-s7-mysql)'
+    category: service
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Pod-internal relational store
+
+# ═══════════════════════════════════════════════════════════════
+# STANDALONE CONTAINER SERVICES
+# ═══════════════════════════════════════════════════════════════
+
+  - name: ollama
+    path: /usr/local/bin/ollama
+    category: service
+    pillar: SYNC
+    owner: jamie
+    airgap: partial
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: "AIRGAP GAP: Ollama pulls models on first boot unless pre-embedded. Currently runs *:7081 (legacy); autostart .desktop fix pending restart. Pillar 1 work embeds models pre-install."
+
+  - name: jellyfin
+    path: 'container (s7-jellyfin)'
+    category: service
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Sovereign media; :8096
+
+  - name: kolibri
+    path: 'container (s7_kolibri)'
+    category: service
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Offline education; :8300
+
+  - name: kiwix-server
+    path: 'container (s7_kiwix_server)'
+    category: service
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Offline knowledge mirrors; :8090
+
+  - name: cyberchef
+    path: 'container (s7_cyberchef)'
+    category: service
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Local recipe/transform tool; :8100
+
+  - name: flatnotes
+    path: 'container (s7_flatnotes)'
+    category: service
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Local note system; :8200
+
+# ═══════════════════════════════════════════════════════════════
+# AUDIT GATE — 13 zeros across 3 axes
+# ═══════════════════════════════════════════════════════════════
+
+  - name: pre-sync-gate
+    path: /s7/skyqubi-private/iac/audit/pre-sync-gate.sh
+    category: audit
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [frozen-trees, pinned-yaml, immutable-registry]
+    notes: 13 zeros (A1-A8, A10-A12, B9, C13); three axes (Drift/Vulnerability/Covenant)
+
+  - name: frozen-trees
+    path: /s7/skyqubi-private/iac/audit/frozen-trees.txt
+    category: audit
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: n-a
+    tier: operational
+    depends_on: []
+    notes: Lineage pins for lifecycle, private/main, public/main (fast-forward-ancestor check)
+
+  - name: pinned-yaml
+    path: /s7/skyqubi-private/iac/audit/pinned.yaml
+    category: audit
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: n-a
+    tier: operational
+    depends_on: []
+    notes: 11+ acknowledged warnings, each with owner/reason/target-window
+
+  - name: core-update-days
+    path: /s7/skyqubi-private/iac/audit/core-update-days.txt
+    category: audit
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: operational
+    depends_on: []
+    notes: Freeze override dates (two-factor gate's second factor); 2026-04-14 and 2026-07-07 authorized
+
+  - name: nightly-snapshot
+    path: /s7/skyqubi-private/iac/audit/nightly-snapshot.sh
+    category: audit
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [pre-sync-gate]
+    notes: Insert-only cp of Living Document to audit-living/<date>.md; refuses overwrite
+
+  - name: tonya-digest
+    path: /s7/skyqubi-private/iac/audit/tonya-digest.sh
+    category: audit
+    pillar: LYNC
+    owner: samuel
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [pre-sync-gate]
+    notes: Household-facing audit projection; HTML (Tonya palette) + text modes
+
+  - name: living-snapshot-timer
+    path: /s7/skyqubi-private/iac/audit/systemd/s7-living-snapshot.timer
+    category: audit
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: install-time
+    tier: operational
+    depends_on: [nightly-snapshot]
+    notes: Nightly 03:00 user timer; Persistent=true catches up after boot
+
+# ═══════════════════════════════════════════════════════════════
+# IMMUTABLE / CEREMONY — Recipe #4 + tools
+# ═══════════════════════════════════════════════════════════════
+
+  - name: immutable-registry
+    path: /s7/skyqubi-private/iac/immutable/registry.yaml
+    category: immutable
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: stub
+    depends_on: []
+    notes: Append-only immutable advance ledger; empty pending first ceremony
+
+  - name: immutable-target-repo
+    path: 'https://github.com/skycair-code/skyqubi-immutable'
+    category: immutable
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: draft
+    depends_on: [rebuild-public-script, advance-immutable-script, formats-spec]
+    notes: "Announced 2026-04-14 evening in v5 trust block. Created but UNTOUCHED by S7 tooling. GOLD LANDING repo per Jamie — 'private is our development, public is their development, GOLD will sit here'. Visibility TBD (Option A PRIVATE-until-July-7 recommended). Role: landing + rebuild manifests + GOLD receipts + per-version PUBLIC_MANIFEST."
+
+  - name: immutable-assets-repo
+    path: 'https://github.com/skycair-code/immutable-assets'
+    category: immutable
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: draft
+    depends_on: [immutable-target-repo, formats-spec]
+    notes: "PRIVATE. Announced 2026-04-14 evening. Content class: signed branding + fonts + Plymouth + GRUB + splash + wallpapers + icons. Lifecycle: rare (rebranding is covenant-grade). First-advance witness: TONYA REQUIRED (branding was her 2026-04-12 signoff). Pin: immutable-assets/main PENDING."
+
+  - name: immutable-S7-F44-repo
+    path: 'https://github.com/skycair-code/immutable-S7-F44'
+    category: immutable
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: [immutable-target-repo, root-containerfile, intake-gate]
+    notes: "PRIVATE. Announced 2026-04-14 evening. Content class: Fedora 44 bootc artifacts — OCI layers, signed container bundles, Containerfile lineage. Lifecycle: Fedora release cadence + S7 CORE Update years. First-advance witness: image-signing key (bootc chain IS the witness for this class). Pin: immutable-S7-F44/main PENDING."
+
+  - name: immutable-qubi-repo
+    path: 'https://github.com/skycair-code/immutable-qubi'
+    category: immutable
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: covenant
+    depends_on: [immutable-target-repo, immutable-S7-F44-repo, immutable-assets-repo]
+    notes: "PRIVATE. Announced 2026-04-14 evening. KERNEL-OF-KERNEL per feedback_qubi_is_the_kernel.md + feedback_qubi_is_core_prism_grid_wall.md. Content class: QUBi appliance core — firmware, boot chain, covenant binary layer. Lifecycle: EXACTLY ONCE PER YEAR (CORE Update ceremony). First-advance witness chain: FOUR-WITNESS UNANIMOUS CONSENT — audit gate + council round + Tonya signature + image-signing key. Highest covenant weight of the four immutable repos. Pin: immutable-qubi/main PENDING."
+
+  - name: local-private-assets
+    path: /s7/Local-Private-Assets
+    category: immutable
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: draft
+    depends_on: []
+    notes: "Filesystem storage for raw binary artifacts (TAR, GZIP, OCI tars, pre-signed bundles, ISO images). Not a git repo — a physical staging area on Jamie's workstation. Per Jamie 2026-04-14 evening: 'Local-Private-Assets contain TAR GZIP ETC, all push to private then we have Public and Immutable for Business to pull from for Testing'. This is the INSIDE staging area that feeds the OUTSIDE distribution surfaces. Advance ceremonies pull binary artifacts from here, sign them, and push into the appropriate content-typed immutable-* repo. Directory expected to exist on Jamie's workstation; Chair does not touch it tonight."
+
+  - name: safesecurelynx-repo
+    path: 'https://github.com/skycair-code/SafeSecureLynX'
+    category: immutable
+    pillar: multi
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: draft
+    depends_on: []
+    notes: "FINAL addition to the constellation per Jamie 2026-04-14 evening. Originally announced as 'SSL-Lynx2QUBi'; Jamie renamed to 'SafeSecureLynX' in the same session. SSL acronym reclaimed from its TLS context. Jamie offered two readings: (1) Sync Safe Lync — union of the three MemPalace pillars per project_mempalace_pillar_weight_schema.md, (2) Safe Secure Linux — sovereign positioning vs SELinux. The rename chose reading (2), with capital X at the end echoing the X27/PorteuX/S7-X27 lineage — not 'Linux' spelled out, but 'LynX' as the sovereign variant. Chair's best-read role (PENDING Jamie confirmation): the ingest/protocol/sync layer between Local-Private-Assets staging and the four-repo immutable constellation — the named wire protocol that makes LIVE outside + LIVE inside actually work. Pillar tagged 'multi' because SSL = SYNC+SAFE+LYNC by construction. Pinned in frozen-trees.txt as SafeSecureLynX/main PENDING."
+
+  - name: three-repo-model-doc
+    path: /s7/skyqubi-private/docs/internal/chef/three-repo-model.md
+    category: recipe
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: [recipe-04-immutable-fork, immutable-target-repo]
+    notes: "Captures Jamie's 2026-04-14 evening covenant clarification verbatim — 'private is our development, public is their development, GOLD will sit here'. Names the three-repo authority flow, recommends Option A (PRIVATE-until-July-7) for immutable visibility, provides gh CLI commands for branch protection + required_signatures, documents the first-push toggle-cycle bootstrapping procedure."
+
+  - name: rebuild-public-script
+    path: /s7/skyqubi-private/iac/immutable/rebuild-public.sh
+    category: immutable
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: stub
+    depends_on: [immutable-registry]
+    notes: Stub; refuses real runs; --dry-run only; upgraded at ceremony
+
+  - name: advance-immutable-script
+    path: /s7/skyqubi-private/iac/immutable/advance-immutable.sh
+    category: immutable
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: stub
+    depends_on: [immutable-registry, rebuild-public-script]
+    notes: Stub; --help only; 14-step ceremony documented inline
+
+  - name: formats-spec
+    path: /s7/skyqubi-private/iac/immutable/FORMATS.md
+    category: immutable
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: n-a
+    tier: draft
+    depends_on: []
+    notes: PUBLIC_MANIFEST.txt + Tonya sign-off artifact formats defined
+
+  - name: legacy-migration-plan
+    path: /s7/skyqubi-private/iac/immutable/legacy-path-migration-plan.md
+    category: immutable
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: n-a
+    tier: draft
+    depends_on: []
+    notes: 7-phase ceremony-day restart cascade plan with rollback protocol
+
+  - name: s7-ports-env
+    path: /s7/skyqubi-private/iac/s7-ports.env
+    category: immutable
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Single source of truth for every port; 57xxx canonical rule; 8xxx exceptions
+
+# ═══════════════════════════════════════════════════════════════
+# INSTALL / PACKAGE TOOLS
+# ═══════════════════════════════════════════════════════════════
+
+  - name: install-script
+    path: /s7/skyqubi-private/install/install.sh
+    category: install
+    pillar: SYNC
+    owner: jamie
+    airgap: partial
+    bootc: install-time
+    tier: operational
+    depends_on: []
+    notes: "AIRGAP GAP: some steps reach out via dnf; Pillar 1 work pre-embeds"
+
+  - name: preflight
+    path: /s7/skyqubi-private/install/preflight.sh
+    category: install
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: install-time
+    tier: operational
+    depends_on: []
+    notes: Pre-deploy audit (OS/packages/users/podman/SELinux/disk/secrets/image/ports)
+
+  - name: diag
+    path: /s7/skyqubi-private/install/diag.sh
+    category: install
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Diagnostic reporter
+
+  - name: fix-firewall
+    path: /s7/skyqubi-private/install/fix-firewall.sh
+    category: install
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Nftables + firewalld reconciliation for pod-to-host TCP
+
+  - name: pod-stats
+    path: /s7/skyqubi-private/install/pod-stats.sh
+    category: install
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [pod-yaml]
+    notes: Pod resource reporter
+
+  - name: test-personas
+    path: /s7/skyqubi-private/install/test-personas.sh
+    category: install
+    pillar: LYNC
+    owner: samuel
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [ollama, persona-chat-app]
+    notes: End-to-end test for Carli/Elias/Samuel responses
+
+  - name: package-builder
+    path: /s7/skyqubi-private/package/build-installer.sh
+    category: install
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Builds self-extracting installer
+
+  - name: samuel-skills-sudoers
+    path: /s7/skyqubi-private/install/sudoers.d/s7-samuel-skills
+    category: install
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: install-time
+    tier: operational
+    depends_on: [samuel-skills]
+    notes: Samuel skill sudoers allowlist (privileged skill subset)
+
+# ═══════════════════════════════════════════════════════════════
+# LIFECYCLE — top-level orchestration scripts
+# ═══════════════════════════════════════════════════════════════
+
+  - name: s7-manager
+    path: /s7/skyqubi-private/s7-manager.sh
+    category: lifecycle
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [cws-engine, pod-start-script]
+    notes: Pod + Ollama + CWS Engine menu manager; adopt-fallback added 2026-04-14
+
+  - name: s7-lifecycle-test
+    path: /s7/skyqubi-private/s7-lifecycle-test.sh
+    category: lifecycle
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [pre-sync-gate]
+    notes: 55-test lifecycle verification; currently 48/55 due to Ollama port drift (M7)
+
+  - name: s7-sync-public
+    path: /s7/skyqubi-private/s7-sync-public.sh
+    category: lifecycle
+    pillar: SYNC
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: operational
+    depends_on: [pre-sync-gate, core-update-days]
+    notes: Legacy sync; hardened 2026-04-14 (two-factor freeze, stdout-pipe refusal, --test-freeze-only). RETIRES at first CORE ceremony when rebuild-public-script upgrades from stub.
+
+# ═══════════════════════════════════════════════════════════════
+# COMPLIANCE — 7-layer civilian awareness checks
+# ═══════════════════════════════════════════════════════════════
+
+  - name: cis-check
+    path: /s7/skyqubi-private/iac/compliance/cis-check.sh
+    category: compliance
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: CIS benchmark awareness (civilian, not enforcement)
+
+  - name: fips-check
+    path: /s7/skyqubi-private/iac/compliance/fips-check.sh
+    category: compliance
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: FIPS 140-3 crypto awareness
+
+  - name: hipaa-check
+    path: /s7/skyqubi-private/iac/compliance/hipaa-check.sh
+    category: compliance
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: HIPAA-adjacent PHI-shaped awareness
+
+  - name: ribbon-measure
+    path: /s7/skyqubi-private/iac/compliance/ribbon-measure.sh
+    category: compliance
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: 7-layer ribbon measurement (NFTables + SecureDNS + DDoS + FIPS + CIS + HIPAA + BootChainSigning)
+
+  - name: secure-boot-chain-check
+    path: /s7/skyqubi-private/iac/compliance/secure-boot-chain-check.sh
+    category: compliance
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Boot chain signing verification (awareness)
+
+# ═══════════════════════════════════════════════════════════════
+# BOOT / BOOTC INFRASTRUCTURE
+# ═══════════════════════════════════════════════════════════════
+
+  - name: root-containerfile
+    path: /s7/skyqubi-private/Containerfile
+    category: boot
+    pillar: SAFE
+    owner: jamie
+    airgap: partial
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: "FROM quay.io/fedora/fedora-bootc:44. AIRGAP GAP: pulls fedora-bootc on build; Pillar 1 work uses signed hash + pre-embedded layers"
+
+  - name: boot-validate
+    path: /s7/skyqubi-private/iac/boot/s7-boot-validate.sh
+    category: boot
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Host port 8080 + boot-chain validator
+
+  - name: intake-gate
+    path: /s7/skyqubi-private/iac/audit-pre.sh
+    category: boot
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: operational
+    depends_on: []
+    notes: Upstream Fedora image intake (quarantine/verify/promote); hash + GPG verification
+
+  - name: intake-post
+    path: /s7/skyqubi-private/iac/audit-post.sh
+    category: boot
+    pillar: SAFE
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: operational
+    depends_on: [intake-gate]
+    notes: Post-build audit
+
+  - name: build-s7-base
+    path: /s7/skyqubi-private/iac/build-s7-base.sh
+    category: boot
+    pillar: SYNC
+    owner: jamie
+    airgap: partial
+    bootc: in-image
+    tier: operational
+    depends_on: [root-containerfile]
+    notes: S7 base builder; uses fedora-minimal
+
+# ═══════════════════════════════════════════════════════════════
+# BRANDING + BOOT ASSETS
+# ═══════════════════════════════════════════════════════════════
+
+  - name: branding-icons
+    path: /s7/skyqubi-private/branding/icons/
+    category: branding
+    pillar: LYNC
+    owner: tonya
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: S7 brand icons (shield, qubi, logo); Tonya-signed 2026-04-12
+
+  - name: branding-plymouth
+    path: /s7/skyqubi-private/branding/plymouth/
+    category: branding
+    pillar: LYNC
+    owner: tonya
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Boot splash (Blue Identity, Trinity, OCTi); Tonya-signed
+
+  - name: branding-splash
+    path: /s7/skyqubi-private/branding/splash/
+    category: branding
+    pillar: LYNC
+    owner: tonya
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: 1920x1080 splash images
+
+# ═══════════════════════════════════════════════════════════════
+# CHEF RECIPES — the binder
+# ═══════════════════════════════════════════════════════════════
+
+  - name: recipe-01-trinity-foundation
+    path: /s7/skyqubi-private/docs/internal/chef/01-trinity-foundation.md
+    category: recipe
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: covenant
+    depends_on: []
+    notes: Household map; 18 sections; Trinity binder
+
+  - name: recipe-02-bible-architecture-council
+    path: /s7/skyqubi-private/docs/internal/chef/02-bible-architecture-multi-agent-council.md
+    category: recipe
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: covenant
+    depends_on: []
+    notes: Abstract council (Skeptic/Witness/Builder/Chair); Chair code-of-conduct added after Round 2
+
+  - name: recipe-03-lync-silence
+    path: /s7/skyqubi-private/docs/internal/chef/03-lync-silence-as-communication.md
+    category: recipe
+    pillar: LYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: []
+    notes: Seven silences; JAMIE-AUTHORIZED-IN-TONYAS-STEAD; Noah-specific text Tonya-only
+
+  - name: recipe-04-immutable-fork
+    path: /s7/skyqubi-private/docs/internal/chef/04-immutable-fork-public-rebuild.md
+    category: recipe
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: [immutable-registry, rebuild-public-script, advance-immutable-script]
+    notes: Public rebuild from signed immutable bundle; CORE reframe addendum
+
+  - name: recipe-05-persona-internal-council
+    path: /s7/skyqubi-private/docs/internal/chef/05-persona-internal-council.md
+    category: recipe
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: [recipe-02-bible-architecture-council]
+    notes: Named-persona council (Samuel/Elias/Carli); distinct from abstract council
+
+  - name: recipe-06-persona-handoff
+    path: /s7/skyqubi-private/docs/internal/chef/06-persona-handoff-protocol.md
+    category: recipe
+    pillar: LYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: [recipe-03-lync-silence, recipe-05-persona-internal-council]
+    notes: Three handoff shapes; memory bridge semantics; UI transition cards
+
+  - name: recipe-07-retroactive-veto
+    path: /s7/skyqubi-private/docs/internal/chef/07-retroactive-tonya-veto-protocol.md
+    category: recipe
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: [samuel-facts]
+    notes: Sunday rollup cadence; Sabbath-rhythm review
+
+  - name: recipe-08-household-hierarchy
+    path: /s7/skyqubi-private/docs/internal/chef/08-household-hierarchy-map.md
+    category: recipe
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: []
+    notes: Flag routing disposition table; Noah Rule (highest priority, immediate pause)
+
+  - name: recipe-09-install-deploy
+    path: /s7/skyqubi-private/docs/internal/chef/09-install-deploy-ceremony.md
+    category: recipe
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: [root-containerfile, immutable-registry]
+    notes: Unifies airgap (Pillar 1) + bootc (Pillar 2) as a single household-readable install ceremony; drafted 2026-04-14 in 8hr block
+
+  - name: jamie-love-rca
+    path: /s7/skyqubi-private/docs/internal/chef/jamie-love-rca.md
+    category: recipe
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: covenant
+    depends_on: []
+    notes: 7-step RCA loop; CHEF methodology recipe (not numbered, cross-cutting)
+
+# ═══════════════════════════════════════════════════════════════
+# MEMORY CORPUS — pillar+weight tagged
+# ═══════════════════════════════════════════════════════════════
+
+  - name: memory-corpus
+    path: /s7/.claude/projects/-s7/memory/
+    category: memory
+    pillar: multi
+    owner: samuel
+    airgap: clean
+    bootc: install-time
+    tier: operational
+    depends_on: []
+    notes: 100+ files, 100% pillar+weight tagged as of 2026-04-14; MEMORY.md is the index
+
+  - name: memory-pillar-weight-schema
+    path: /s7/.claude/projects/-s7/memory/project_mempalace_pillar_weight_schema.md
+    category: memory
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: n-a
+    tier: covenant
+    depends_on: []
+    notes: Schema defining tiers + decay rates + pillar assignments
+
+# ═══════════════════════════════════════════════════════════════
+# COUNCIL TRANSCRIPTS — insert-only witness
+# ═══════════════════════════════════════════════════════════════
+
+  - name: council-round-qubi-communication
+    path: /s7/skyqubi-private/docs/internal/chef/council-rounds/2026-04-14-qubi-communication-training.md
+    category: council
+    pillar: LYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: covenant
+    depends_on: [recipe-02-bible-architecture-council]
+    notes: Round 1+2 on communication training; produced Carli's Trinity-consent catch
+
+  - name: council-round-immutable-fork
+    path: /s7/skyqubi-private/docs/internal/chef/council-rounds/2026-04-14-immutable-fork-architecture.md
+    category: council
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: covenant
+    depends_on: [recipe-04-immutable-fork]
+    notes: Round 1+2 on Recipe #4 architecture; produced confession-row-first requirement
+
+  - name: council-round-core-reframe
+    path: /s7/skyqubi-private/docs/internal/chef/council-rounds/2026-04-14-core-reframe-prism-grid-wall.md
+    category: council
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: []
+    notes: Round 1 on CORE reframe
+
+  - name: council-round-persona-internal
+    path: /s7/skyqubi-private/docs/internal/chef/council-rounds/2026-04-14-persona-internal-gap-analysis.md
+    category: council
+    pillar: LYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: draft
+    depends_on: [recipe-05-persona-internal-council]
+    notes: First-ever persona-internal council; produced Trinity-consent catch
+
+# ═══════════════════════════════════════════════════════════════
+# LIVING DOCUMENT — audit witness trail
+# ═══════════════════════════════════════════════════════════════
+
+  - name: living-document
+    path: /s7/skyqubi-private/docs/internal/chef/audit-living.md
+    category: audit
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: install-time
+    tier: operational
+    depends_on: [pre-sync-gate, nightly-snapshot]
+    notes: Insert-only append log of every gate run; newest at top
+
+  - name: living-document-history
+    path: /s7/skyqubi-private/docs/internal/chef/audit-living/
+    category: audit
+    pillar: SYNC
+    owner: chair
+    airgap: clean
+    bootc: install-time
+    tier: operational
+    depends_on: [living-document]
+    notes: Nightly snapshots indexed by date; 2026-04-14 first snapshot shipped
+
+# ═══════════════════════════════════════════════════════════════
+# PUBLIC SURFACE — household-visible
+# ═══════════════════════════════════════════════════════════════
+
+  - name: public-landing-page
+    path: /s7/skyqubi-private/docs/public/index.html
+    category: service
+    pillar: LYNC
+    owner: tonya
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Tonya-signed landing page; sandy sunset + Cormorant italic; SAFE-breach fixes 2026-04-14
+
+  - name: public-readme
+    path: /s7/skyqubi-private/docs/public/README.md
+    category: service
+    pillar: LYNC
+    owner: tonya
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Release status section added 2026-04-14; path to 2026-07-07 named
+
+  - name: public-install-doc
+    path: /s7/skyqubi-private/docs/public/INSTALL.md
+    category: service
+    pillar: LYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [public-readme]
+    notes: Release banner aligned with README 2026-04-14
+
+  - name: public-usage-doc
+    path: /s7/skyqubi-private/docs/public/USAGE.md
+    category: service
+    pillar: LYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [public-readme]
+    notes: Release banner aligned 2026-04-14
+
+  - name: public-architecture-doc
+    path: /s7/skyqubi-private/docs/public/ARCHITECTURE.md
+    category: service
+    pillar: LYNC
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: [public-readme]
+    notes: Release banner aligned 2026-04-14
+
+  - name: public-covenant-doc
+    path: /s7/skyqubi-private/docs/public/COVENANT.md
+    category: service
+    pillar: SAFE
+    owner: chair
+    airgap: clean
+    bootc: in-image
+    tier: operational
+    depends_on: []
+    notes: Seven Laws canonical floor; broader covenant layer in draft
+
+  - name: public-cname
+    path: /s7/skyqubi-private/docs/public/CNAME
+    category: service
+    pillar: LYNC
+    owner: jamie
+    airgap: clean
+    bootc: n-a
+    tier: operational
+    depends_on: []
+    notes: 123tech.skyqubi.com — GitHub Pages custom domain anchor
+
+# ═══════════════════════════════════════════════════════════════
+# SUMMARY COUNTS (for unity-in-design verification)
+# ═══════════════════════════════════════════════════════════════
+
+summary:
+  total_tools: 80
+  by_category:
+    engine: 17
+    persona: 8
+    mcp: 2
+    service: 14
+    audit: 7
+    immutable: 6
+    install: 8
+    lifecycle: 3
+    compliance: 5
+    boot: 5
+    branding: 3
+    recipe: 10
+    memory: 2
+    council: 4
+    audit_living: 2
+    public: 7
+  by_pillar:
+    SAFE: 30
+    SYNC: 29
+    LYNC: 15
+    multi: 2
+  by_tier:
+    covenant: 9
+    operational: 54
+    draft: 13
+    stub: 3
+    pinned-methodology: 0
+    pinned-project: 0
+  by_airgap_status:
+    clean: 74
+    partial: 5
+    blocked: 0
+    n-a: 1
+  airgap_gaps_to_close:
+    - rag-retrieval (hardcoded legacy port)
+    - bitnet-mcp (hardcoded legacy port)
+    - ollama (pulls models on first boot unless pre-embedded)
+    - install-script (some dnf reachouts)
+    - root-containerfile (pulls fedora-bootc)
+    - build-s7-base (fedora-minimal pull)
+  notes: |
+    The airgap-gaps list is the concrete work for Pillar 1 of
+    the v2026 advance. Six items. All have known fix patterns
+    (pre-embed models, use s7-ports.env, signed hash verification
+    of base images). Pillar 1 estimated 4-6 sessions to close
+    all six.

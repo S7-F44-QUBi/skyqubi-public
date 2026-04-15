@@ -1,0 +1,14 @@
+[Unit]
+Description=S7 BitNet MCP — Ternary Inference Wrapper
+After=s7-skyqubi-pod.service
+
+[Service]
+Type=simple
+Environment=BITNET_MODELS=/s7/s7-timecapsule-assets/models/bitnet
+WorkingDirectory=/s7/skyqubi/mcp
+ExecStart=/usr/bin/python3 /s7/skyqubi/mcp/bitnet_mcp.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

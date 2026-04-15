@@ -1,0 +1,133 @@
+# syntax=docker/dockerfile:1.6
+# iac/admin/Containerfile.draft
+#
+# ┌─────────────────────────────────────────────────────────────┐
+# │  DRAFT — DO NOT BUILD WITHOUT REVIEW                        │
+# │                                                              │
+# │  This is a hand-ported rebase of the upstream nomad         │
+# │  Dockerfile (node:22-slim / Debian) onto the sovereign       │
+# │  S7 Fedora Base (fedora-minimal:44 via iac/).                │
+# │                                                              │
+# │  It has NOT been built. It has NOT been tested. Do NOT       │
+# │  replace the production s7-skyqubi-admin-v2.6.tar with       │
+# │  the output of this file without a full build + audit +      │
+# │  functional test + Tonya signoff.                            │
+# │                                                              │
+# │  Purpose: unblock subsystem #4 (admin container rebase)     │
+# │           by providing a concrete starting point. Future     │
+# │           session picks this up, builds it, fixes what       │
+# │           breaks, and only then promotes it.                 │
+# │                                                              │
+# │  Upstream source (what this is ported FROM):                │
+# │    /s7/Documents/repo-backup-2026-04-10/s7-project-nomad/   │
+# │    Dockerfile                                                │
+# │    github.com/skycair-code/s7-project-nomad (original)       │
+# │                                                              │
+# │  Target base (what this is ported TO):                      │
+# │    localhost/s7-fedora-base:latest                           │
+# │    (built by iac/build-s7-base.sh)                           │
+# │                                                              │
+# │  Known gaps in the port — see iac/admin/README.md:          │
+# │    - Node 22 installation from Fedora/NodeSource unverified │
+# │    - libvips-dev → vips-devel package name mapping           │
+# │    - build-essential → gcc + make + C toolchain stack       │
+# │    - graphicsmagick → GraphicsMagick Fedora package name    │
+# │    - entrypoint.sh path needs adjustment for Fedora layout  │
+# │    - PGDG vs Fedora pgvector compatibility                   │
+# └─────────────────────────────────────────────────────────────┘
+
+# ── Base stage — Node + Python + native deps on S7 Fedora Base ───
+FROM localhost/s7-fedora-base:latest AS base
+USER 0:0
+
+# Install Node 22, graphicsmagick, libvips, build toolchain, + python extras
+# NOTE: Node 22 in Fedora 44 is nodejs24-npm by default. The exact
+# 22.22.2 version from the upstream may require NodeSource rpm or a
+# manual source build. Using nodejs (distro default) is the fastest
+# path; version pinning is a follow-up.
+RUN microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y \
+        bash \
+        curl \
+        nodejs \
+        nodejs-npm \
+        GraphicsMagick \
+        vips-devel \
+        gcc \
+        gcc-c++ \
+        make \
+        git \
+        python3-devel \
+        postgresql-devel \
+    && microdnf clean all \
+    && rm -rf /var/cache/yum /var/cache/dnf /var/log/dnf* /tmp/* /var/tmp/*
+
+# Python runtime deps (same set as upstream)
+RUN pip3 install --no-cache-dir --break-system-packages \
+        psycopg2-binary \
+        httpx \
+        fastapi \
+        uvicorn \
+        pyyaml
+
+# ── All-deps stage (includes dev deps for `node ace build`) ──────
+FROM base AS deps
+WORKDIR /app
+COPY admin/package.json admin/package-lock.json ./
+RUN npm ci
+
+# ── Production-only deps ────────────────────────────────────────
+FROM base AS production-deps
+WORKDIR /app
+COPY admin/package.json admin/package-lock.json ./
+RUN npm ci --omit=dev
+
+# ── Build stage — compile the Adonis app ────────────────────────
+FROM base AS build
+WORKDIR /app
+COPY --from=deps /app/node_modules /app/node_modules
+COPY admin/ ./
+RUN node ace build
+
+# ── Final image ─────────────────────────────────────────────────
+FROM base
+ARG VERSION=dev
+ARG BUILD_DATE
+ARG VCS_REF
+
+LABEL org.opencontainers.image.title="S7 SkyQUBi Command Center" \
+      org.opencontainers.image.description="S7 SkyQUBi Command Center — N.O.M.A.D fork rebased onto S7 Fedora Base" \
+      org.opencontainers.image.version="${VERSION}" \
+      org.opencontainers.image.created="${BUILD_DATE}" \
+      org.opencontainers.image.revision="${VCS_REF}" \
+      org.opencontainers.image.vendor="2XR LLC" \
+      org.opencontainers.image.documentation="https://github.com/skycair-code/s7-project-nomad" \
+      org.opencontainers.image.source="private — rebased from s7-project-nomad onto s7-fedora-base" \
+      org.opencontainers.image.licenses="Apache-2.0 AND CWS-BSL-1.1" \
+      org.s7.rebased-from="localhost/s7-fedora-base:latest" \
+      org.s7.port-status="DRAFT — not tested"
+
+ENV NODE_ENV=production
+ENV PYTHONPATH=/app
+WORKDIR /app
+
+COPY --from=production-deps /app/node_modules /app/node_modules
+COPY --from=build /app/build /app
+COPY package.json /app/version.json
+COPY admin/docs /app/docs
+COPY README.md /app/README.md
+
+# CWS Engine
+COPY admin/engine/ /app/engine/
+
+# Entrypoint
+COPY install/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Drop to s7 user inherited from the base image's default (uid 1000)
+# NOTE: upstream runs as root; dropping to s7:1000 may require
+# chown fixes on /app — test before committing to the drop
+USER 1000:1000
+
+EXPOSE 57080
+EXPOSE 8080
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

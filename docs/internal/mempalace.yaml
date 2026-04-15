@@ -1,0 +1,14 @@
+wing: internal
+rooms:
+- name: architecture
+  description: Files from architecture/
+- name: reference
+  description: Files from reference/
+- name: superpowers
+  description: Files from superpowers/
+- name: runbooks
+  description: Files from runbooks/
+- name: planning
+  description: Files from specs/
+- name: general
+  description: Files that don't fit other rooms

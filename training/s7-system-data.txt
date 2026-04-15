@@ -1,0 +1,312 @@
+### bash_history
+sudo dnf upgrade
+dnf update
+sudo dnf update
+sudo dnf install https://rpmfusion.org https://rpmfusion.org
+sudo dnf groupinstall "Budgie Desktop"
+sudo dnf install @budgie-desktop
+sudo dnf install sassc
+git clone https://github.com/vincelivice/McMojave-cursor.git
+sudo dnf curl git wget 
+sudo dnf install git
+sudo dnf install curl wget
+sudo dnf install neofetch
+git clone https://github.com/vincelivice/McMojave-cursor.git
+skycair-code
+git clone https://github.com/vincelivice/McMojave-cursor.git
+git clone http://github.com/vincelivice/McMojave-cursor.git
+curl -I https://github.com
+GIT_TERMINAL_PROMPT=0 git clone --depth=1 https://github.com/vincelivice/McMojave-cursors.git
+git confi --list --show-orgin | grep credential
+git config --list --show-orgin | grep credential
+sudo dnf update -y
+su root
+sudo dnf group instll "Budgie Desktop"
+sudo dnf group install "Budgie Desktop"
+sudo dnf group install "Budgie Desktop" -y
+sudo dnf install budgie-desktop
+sudo dnf install lightdm lightdm-gtk -y
+sudo dnf install budgie-desktop
+sudo dnf install lightdm lightdm-gtk -y
+sudo systemctl enable --now lightdm
+sudo systemctl enable sddm --force
+sudo systemctl disable gdm lightdm 2>/null
+sudo systemctl disable gdm lightdm 2>/dev/null
+reboot
+systemctl status sddm
+ls /usr/wayland-sessions/
+sudo ls /usr/wayland-sessions/
+cat /etc/sddm.conf
+nano /etc/sddm.conf
+sudo dnf install nano
+nano /etc/sddm.conf
+sudo nano /etc/sddm.conf
+reboot
+Xstart
+sudo systemctl status sddm
+start wayland
+ls
+ls -la
+sudo dnf upgrade -y
+sudo dnf update
+sudo nano /etc/sddm.conf
+restart sddm
+sudo systemctl restart sddm
+sudo nano /etc/sddm.conf
+sudo systemctl restart sddm
+sudo dnf install sudo dnf install -y dnf-plugins-core
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo https://repo.vivaldi.com/stable/vivaldi-fedora.repo
+sudo dnf install -y vivaldi-stable
+sudo dnf update
+sudo dnf install -y vivaldi-stable
+sudo dnf config-manager --add-repo https://repo.vivaldi.com/stable/vivaldi-fedora.repo
+sudo tee /etc/yum.repos.d/vivaldi.repo <<'EOF'
+[vivaldi]
+name=Vivaldi
+baseurl=https://repo.vivaldi.com/stable/rpm/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=***MASKED***
+EOF
+
+sudo dnf install -y vivaldi-stable
+sudo dnf install -y https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors.x86_64.rpm
+sudo tee /etc/yum.repos.d/warp.repo <<'EOF'
+[warp]
+name=Warp Terminal
+baseurl=https://releases.warp.dev/linux/rpm/stable
+enabled=1
+gpgcheck=1
+gppgkey=***MASKED***
+EOF
+
+sudo rpm --import https://releases.warp.dev/linux/keys/warp.asc
+sudo dnf isntall -y warp-terminal
+sudo dnf install -y warp-terminal
+sudo dnf update
+sudo yum update
+sudo dnf upgrade -y
+reboot
+sudo dnf install -y dnf-plugins-core
+sudo systemctl status sddm
+warp
+reboot
+sudo systemctl status sddm
+grep session /etc/sdd.conf
+grep session /etc/sddm.conf
+sudo nano session /etc/sddm.conf
+reboot
+sudo nano session /etc/sddm.conf
+sudo systemctl restart sddm
+sudo nano session /etc/sddm.conf
+reboot
+sudo systemctl restart sddm
+curl -fsSL https://claude.ai/install.sh | bash
+claude --help
+claude
+sudo reboot
+claude
+reboot
+sudo bash /s7/s7-install-boot-splash.sh
+claude
+reboot
+sudo bash /s7/s7-install-boot-splash.sh
+claude
+reboot
+sudo /s7/s7-trinity-mounts.sh install
+sudo dnf install alacritty
+sudo /s7/s7-skycair-assets/s7-prep-host.sh
+sudo unzip -o /tmp/nomad_1.9.7_linux_amd64.zip -d /usr/local/bin/ && sudo chmod 755 /usr/local/bin/nomad && nomad version
+sudo /s7/s7-skycair-assets/s7-prep-host.sh
+sudo bash /s7/s7-skycair-assets/install_skyqubi.sh
+sudo setsebool -P container_manage_cgroup on && sudo setsebool -P container_use_devices on
+sudo setenforce 0
+sudo dnf install -y python3-pip python3-flask python3-psycopg2 ollama
+sudo dnf install -y python3-pip python3-flask python3-psycopg2 && curl -fsSL https://ollama.com/install.sh | sh
+[5/7] python3-itsdangerous-0:2.2.0-7.fc44.noarch                                                   100% |   0.0   B/s |   0.0   B |  00m00s
+>>> Already downloaded
+[6/7] python3-werkzeug-0:3.1.6-1.fc44.noarch  
+
+### build_history
+390f602 feat: SkyAVi shield tile on Command Center — IconShieldCheck, display_order 0
+b235e50 deploy: v2.4 container — ZeroClaw + SkyAVi + pyyaml + CWS Engine autostart
+0453667 feat: wire s7_store + s7_witness through molecular bonds (dual-write)
+219ab01 feat: SkyAVi MemPalace awareness — all skills share, self-audit, notifications
+530f9ae feat: SkyAVi 98 skills — CCNA+ networking, PostgreSQL/pgvector, K3s, IaC, security testing
+7804413 feat: SkyAVi comms intelligence — space weather, Meshtastic, GPS, propagation (Phase 7e)
+ce86646 feat: SkyAVi monitors + compliance — service health, ports, outbound, disk, CIS, FIPS (Phase 7d)
+4d79763 feat: training data skills + password sanitizer (Phase 7c)
+e0d557c feat: SkyAVi FACTS skills — 31 skills across system/security/technician/stack (Phase 7c)
+2887372 feat: SkyAVi FastAPI endpoints + 8 default FACTS skills (Phase 7b)
+10be1f1 feat: SkyAVi core — Samuel chat persona, skill registry, sandboxed shell (Phase 7b)
+42ba30b fix: ZeroClaw consensus — parallel witnesses + S7 MemPalace recall/store
+41de3ba plan: SkyAVi Piece 1 — core + chat + skill dispatch, 3 tasks
+2398a6f spec: SkyAVi (Samuel) — FACTS security engine, 4-piece build
+b2ff1e3 feat: finalize OCTi model set — qwen3:0.6b + deepseek-coder:1.3b
+9ca60e3 feat: ZeroClaw FastAPI endpoints for QUBi integration (Phase 7, Piece 4)
+bd40965 feat: ZeroClaw scheduler with health check + signal bonds (Phase 7, Piece 3)
+d13b0de feat: ZeroClaw multi-witness consensus with 77.7% threshold (Phase 7, Piece 2)
+12d68e4 feat: ZeroClaw single-agent runner with discernment + molecular bonds (Phase 7, Piece 1b)
+2d3a6fe feat: ZeroClaw agent config loader + 4 agent YAMLs (Phase 7, Piece 1a)
+e1c0643 plan: ZeroClaw implementation — 6 tasks, incremental TDD
+d37764a spec: ZeroClaw agent orchestration — 3-piece incremental build
+f00de8b sec: strip remaining hardcoded password from plan docs
+edf29bd sec: override lodash-es to 4.18.1, resolve all npm vulnerabilities
+281a1ce sec: strip hardcoded credentials, remove .pyc from tracking
+84f39b6 spec: Command Center system management layer — 7 tiles (SkyCUBE/SkyFIRE/SkyCERT/SkyINSTALL/SkySTATUS/SkyNET/SkyBACKUP)
+7795787 test: Phase 6 molecular bond table — all tests pass
+31f92ec feat: seed_bonds() — migrate Akashic Language Index into molecular bonds
+b6d8830 feat: s7_molecular.py — Bond dataclass, 27 vectors, PostgreSQL + SQLite backends
+504335b feat: sky_molecular schema — bonds table + 27 named vectors + INSERT-only triggers
+fda6e4a plan: Molecular Bond Table implementation — 5 tasks, Phase 6 test
+d74f9a6 spec: Molecular Bond Table design — unified sky_molecular.bonds
+671b6eb patent: add Akashic Language (Component 6) + Claims 46-50
+baa7692 rename: Akines → Akashic Language throughout codebase
+cb50c8d feat: Phase 5 Akines Language — 29/29 tests PASS
+aa543c2 feat: Phase 4 Lite 3+1 witness consensus test — PASS 3/3 queries CONVERGE
+07d813a fix: use absolute paths and alacritty for desktop/autostart entries
+ed811d3 feat: add autostart entries and S7 Service Manager
+69c5b56 security: harden CWS Engine, pod, and system API endpoints
+ee344a2 v2.0.0: QBIT Prism, RAG engine, patents, CWS-BSL-1.1, security fixes
+bc7c994 Fix Ollama host process check to use host.containers.internal
+3f62134 Add implementation plans for CWS engine and S7 SkyQUBi rebrand
+881a02f Rebrand to S7 SkyQUBi + pod state reconcile for deployment sync
+a4aeeb2 spec: SkyVIEW Control Center unified architecture
+bad186b docs: rebrand README for SkyBRICK-QUBI, add Apache-2.0 NOTICE
+68ce30d fix(cws): run engine as host service, fix witness FK constraints
+6cf9bf3 fix(cws): use engine.* imports for container context
+d09c25d feat(cws): complete CWS Engine — server, bridge, witness, quanti, deploy
+d9c7fb9 feat(cws): add CWS Engine core modules — router, discernment, store, breaker
+9a09ef4 docs(release): finalize v1.31.0 release notes [skip ci]
+23cfb4b chore(release): 1.31.0 [skip ci]
+cf5b84e docs: update release notes
+22a1a85 feat(maps): add imperial/metric toggle for scale bar (#641)
+b4f57f8 chore(release): 1.31.0-rc.3 [skip ci]
+54549e2 feat(maps): add scale b
+
+### build_diffs
+390f602 feat: SkyAVi shield tile on Command Center — IconShieldCheck, display_order 0
+ admin/constants/service_names.ts         |  1 +
+ admin/database/seeders/service_seeder.ts | 18 ++++++++++++++++++
+ 2 files changed, 19 insertions(+)
+b235e50 deploy: v2.4 container — ZeroClaw + SkyAVi + pyyaml + CWS Engine autostart
+ Dockerfile            | 2 +-
+ install/entrypoint.sh | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+0453667 feat: wire s7_store + s7_witness through molecular bonds (dual-write)
+ admin/engine/s7_store.py   | 31 +++++++++++++++++++++++++++++++
+ admin/engine/s7_witness.py | 19 +++++++++++++++++++
+ 2 files changed, 50 insertions(+)
+219ab01 feat: SkyAVi MemPalace awareness — all skills share, self-audit, notifications
+ admin/engine/s7_server.py |   8 ++++
+ admin/engine/s7_skyavi.py | 107 ++++++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 111 insertions(+), 4 deletions(-)
+530f9ae feat: SkyAVi 98 skills — CCNA+ networking, PostgreSQL/pgvector, K3s, IaC, security testing
+ admin/engine/s7_skyavi.py        |  11 +
+ admin/engine/s7_skyavi_skills.py | 429 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 440 insertions(+)
+7804413 feat: SkyAVi comms intelligence — space weather, Meshtastic, GPS, propagation (Phase 7e)
+ admin/engine/phase7e_comms_test.py | 235 ++++++++++++++++++++++++
+ admin/engine/s7_skyavi_comms.py    | 354 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 589 insertions(+)
+ce86646 feat: SkyAVi monitors + compliance — service health, ports, outbound, disk, CIS, FIPS (Phase 7d)
+ admin/engine/phase7d_monitors_test.py | 301 +++++++++++++++++++++++++++++
+ admin/engine/s7_skyavi_monitors.py    | 351 ++++++++++++++++++++++++++++++++++
+ admin/engine/s7_zeroclaw.py           |   7 +-
+ 3 files changed, 658 insertions(+), 1 deletion(-)
+4d79763 feat: training data skills + password sanitizer (Phase 7c)
+ admin/engine/s7_skyavi.py        | 18 +++++++++++++-
+ admin/engine/s7_skyavi_skills.py | 54 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 71 insertions(+), 1 deletion(-)
+e0d557c feat: SkyAVi FACTS skills — 31 skills across system/security/technician/stack (Phase 7c)
+ admin/engine/phase7c_skills_test.py | 275 ++++++++++++++++++++++++++++++++++++
+ admin/engine/s7_server.py           |  37 +----
+ admin/engine/s7_skyavi.py           |   6 +-
+ admin/engine/s7_skyavi_skills.py    | 192 +++++++++++++++++++++++++
+ 4 files changed, 474 insertions(+), 36 deletions(-)
+2887372 feat: SkyAVi FastAPI endpoints + 8 default FACTS skills (Phase 7b)
+ admin/engine/s7_server.py | 68 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
+10be1f1 feat: SkyAVi core — Samuel chat persona, skill registry, sandboxed shell (Phase 7b)
+ admin/engine/phase7b_skyavi_test.py | 240 ++++++++++++++++++++++++++++++++++++
+ admin/engine/s7_skyavi.py           | 185 +++++++++++++++++++++++++++
+ 2 files changed, 425 insertions(+)
+42ba30b fix: ZeroClaw consensus — parallel witnesses + S7 MemPalace recall/store
+ admin/engine/phase7_zeroclaw_test.py | 20 +++++++++----
+ admin/engine/s7_http.py              | 11 ++++++++
+ admin/engine/s7_zeroclaw.py          | 54 +++++++++++++++++++++++++++---------
+ 3 files changed, 66 insertions(+), 19 deletions(-)
+41de3ba plan: SkyAVi Piece 1 — core + chat + skill dispatch, 3 tasks
+ .../plans/2026-04-10-skyavi-piece1-core.md         | 662 +++++++++++++++++++++
+ 1 file changed, 662 insertions(+)
+2398a6f spec: SkyAVi (Samuel) — FACTS security engine, 4-piece build
+ .../specs/2026-04-10-skyavi-samuel-design.md       | 212 +++++++++++++++++++++
+ 1 file changed, 212 insertions(+)
+b2ff1e3 feat: finalize OCTi model set — qwen3:0.6b + deepseek-coder:1.3b
+ .../{smollm-360m.yaml => deepseek-coder.yaml}      |  6 ++---
+ admin/engine/agents/guardian.yaml                  |  2 +-
+ admin/engine/agents/qwen-05b.yaml                  |  7 ------
+ admin/engine/agents/qwen3-06b.yaml                 |  7 ++++++
+ admin/engine/agents/smollm-135m.yaml               |  7 ------
+ admin/engine/phase7_zeroclaw_test.py               | 28 +++++++++++-----------
+ 6 files 
+
+### system_audit
+=== OS ===
+Linux S7-QUBi-Ti7 6.19.11-300.fc44.x86_64 #1 SMP PREEMPT_DYNAMIC Thu Apr  2 18:41:25 UTC 2026 x86_64 GNU/Linux
+\n=== Memory ===
+               total        used        free      shared  buff/cache   available
+Mem:           7.4Gi       2.7Gi       3.0Gi       290Mi       2.3Gi       4.6Gi
+Swap:          7.4Gi       984Mi       6.4Gi
+\n=== Disk ===
+Filesystem                       Size  Used Avail Use% Mounted on
+/dev/mapper/fedora_porteux-root  446G   49G  397G  11% /
+/dev/mapper/fedora_porteux-root  446G   49G  397G  11% /
+\n=== CPU ===
+4
+\n=== Containers ===
+e9d60289ff67-infra Up 2 hours
+s7-skyqubi-s7-admin Up 1 second
+s7-skyqubi-s7-mysql Up 2 hours
+s7-skyqubi-s7-postgres Up 2 hours
+s7-skyqubi-s7-redis Up 2 hours
+s7-skyqubi-s7-qdrant Up 2 hours
+\n=== Services ===
+  UNIT                                         LOAD   ACTIVE SUB     DESCRIPTION
+  at-spi-dbus-bus.service                      loaded active running Accessibility services bus
+  dbus-:1.2-org.freedesktop.secrets@0.service  loaded active running dbus-:1.2-org.freedesktop.secrets@0.service
+  dbus-:1.2-org.gnome.Identity@0.service       loaded active running dbus-:1.2-org.gnome.Identity@0.service
+  dbus-:1.2-org.gnome.OnlineAccounts@0.service loaded active running dbus-:1.2-org.gnome.OnlineAccounts@0.service
+  dbus-:1.31-org.a11y.atspi.Registry@0.service loaded active running dbus-:1.31-org.a11y.atspi.Registry@0.service
+  dbus-broker.service                          loaded active running D-Bus User Message Bus
+  dconf.service                                loaded active running User preferences database
+  evolution-addressbook-factory.service        loaded active running Evolution address book service
+  evolution-calendar-factory.service           loaded active running Evolution calendar service
+  evolution-source-registry.service            loaded active running Evolution source registry
+  flatpak-portal.service                       loaded active running flatpak portal
+  flatpak-session-helper.service               loaded active running flatpak session helper
+  gvfs-daemon.service                          loaded active running Virtual filesystem service
+  gvfs-goa-volume-monitor.service              loaded active running Virtual filesystem service - GNOME Online Accounts monitor
+  gvfs-metadata.service                        loaded active running Virtual filesystem metadata service
+  gvfs-mtp-volume-monitor.service              loaded active running Virtual filesystem service - Media Transfer Protocol monitor
+  gvfs-udisks2-volume-monitor.service          loaded active running Virtual filesystem service - disk device monitor
+  obex.service                                 loaded active running Bluetooth OBEX service
+  pipewire-pulse.service                       loaded active running PipeWire PulseAudio
+  pipewire.service                             loaded active running PipeWire Multimedia Service
+  s7-caddy.service                             loaded active running S7 Caddy Reverse Proxy
+  s7-cws-engine.service                        loaded active running S7 CWS Engine v2.3
+  wireplumber.service                          loaded active running Multimedia Service Session Manager
+  xdg-desktop-portal-gtk.service               loaded active running Portal service (GTK/GNOME implementation)
+  xdg-desktop-portal-wlr.service               loaded active running Portal service (wlroots implementation)
+  xdg-document-portal.service                  loaded active running flatpak document portal service
+  xdg-permission-store.service                 loaded active running sandboxed app permission store
+
+Legend: LOAD   → Reflects whether the unit definition was properly loaded.
+        ACTIVE → The high-level unit activation state, i.e. generalization of SUB.
+        SUB    → The low-level unit activation state, values depend on unit type.
+
+27 loaded units listed.
+\n=== Ports ===
+State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess                                 
+LISTEN 0      2048         0.0.0.0:7077      0.0.0.0:*    users:(("python3",pid=1914,fd=1

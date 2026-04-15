@@ -1,0 +1,13 @@
+[Unit]
+Description=S7 Caddy Reverse Proxy
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/s7/.env.secrets
+ExecStart=/usr/bin/caddy run --config /s7/skyqubi/Caddyfile --environ
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=default.target

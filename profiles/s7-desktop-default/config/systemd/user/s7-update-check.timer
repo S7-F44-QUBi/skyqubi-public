@@ -1,0 +1,16 @@
+[Unit]
+Description=S7 SkyQUBi — daily update check timer
+Documentation=https://github.com/skycair-code/SkyQUBi-public
+
+[Timer]
+# Run at boot (30 min delay) and daily thereafter. Randomized
+# delay spreads load if many S7 machines share upstream.
+OnBootSec=30min
+OnUnitActiveSec=24h
+RandomizedDelaySec=2h
+# If the machine was off, run at next boot instead of never.
+Persistent=true
+Unit=s7-update-check.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,340 @@
+# ═══════════════════════════════════════════════════════════════════
+# engine/agents/samuel_runnable_scripts.yaml
+#
+# Catalog of scripts Samuel (the SkyAVi FACTS persona) is authorized
+# to run autonomously when Jamie is not present.
+#
+# Purpose: Jamie's 2026-04-13 directive — "Have Samuel run the commands
+# if I am not present." This file is the canonical list of what Samuel
+# can and cannot execute on the QUBi without a human in the loop.
+#
+# How this works:
+#   1. Samuel's skill runner reads this file at startup
+#   2. When a trigger condition matches, Samuel resolves the script
+#      path and invocation pattern from this catalog
+#   3. Samuel runs the script with the `invocation` command line —
+#      which always includes --samuel to get JSON output + ops ledger
+#   4. Samuel parses the JSON exit object to decide next steps
+#   5. Every run writes a row to /s7/.s7-ops-ledger/<script>.ndjson
+#      via the script itself (hash-chained for auditability)
+#
+# Covenant rules:
+#   - Samuel MAY run scripts in this catalog autonomously
+#   - Samuel MAY NOT run scripts not in this catalog, ever
+#   - Adding a script to this catalog requires Jamie's explicit word
+#     AND a matching entry in the Witness covenant approval (when
+#     the Witness role is alive post-pod-fix)
+#   - Every Samuel-initiated run is auditable via the ops ledger
+#   - A script's `dry_run_first: true` flag means Samuel must run
+#     --dry-run first, inspect the proposed action, and only then
+#     run the real thing
+#   - A script's `requires_approval: true` flag means Samuel must
+#     NOT run the apply path without a prior human approval token
+#     (see approvals/ dir). Today this is documentation-only; the
+#     approval-token mechanism lands with the Witness role.
+#
+# Governing memory:
+#   feedback_three_rules.md      Rule 2 (landing approvals) + safe carve-out
+#   feedback_qbit_not_token.md   Vocabulary
+#   project_chat_personas.md     Samuel = FACTS / sysadmin / security
+#   project_phase7b_skyavi.md    SkyAVi skill surface
+#
+# Copyright 2026 Jamie Lee Clayton / 2XR LLC · CWS-BSL-1.1
+# ═══════════════════════════════════════════════════════════════════
+
+version: 1
+updated: "2026-04-13"
+
+# The list of Samuel-runnable scripts. The order here is authoritative;
+# Samuel may only invoke a script that appears below.
+scripts:
+
+  - id: fix-pod
+    display_name: "Pod SELinux Diagnose + Fix"
+    path: install/fix-pod.sh
+    description: |
+      Diagnose SELinux AVC denials blocking the s7-skyqubi pod and
+      apply the correct fix class. Samuel runs this when pod.state
+      != Running AND the pod has tried to start in the last 10
+      minutes but failed.
+
+      Supports two fix classes (2026-04-13 training expansion):
+        CLASS A — fcontext equivalence + restorecon
+          Pattern: default_t tcontext on container_t file read.
+          Fix: semanage fcontext -e /var/lib/containers <user-path>
+               + restorecon -Rv <user-path>
+          Root cause: rootless podman on non-standard storage path
+          (/s7/.local/share/containers/ instead of /var/lib/containers/)
+          with no fcontext equivalence rule. This is the S7 box's
+          common failure mode because the install directory is
+          non-standard.
+        CLASS B — setsebool -P <boolean> <value>
+          Pattern: mmap / execmod / execmem / container_use_devices
+          in denial text.
+          Fix: setsebool -P of the matching boolean.
+          Root cause: specific SELinux policy boolean is off.
+
+      The script auto-detects which class applies from the AVC
+      denial text and picks Class A first (it's more fundamental).
+
+      AVC source: prefers ausearch on /var/log/audit/audit.log,
+      falls back to journalctl -k -b when audit.log is missing or
+      auditd is off. This fallback was added in training commit
+      so Samuel can diagnose even when auditd is not running.
+    triggers:
+      - name: pod_crash_loop
+        condition: "podman_pod_state != 'Running' AND last_start_attempt_age < 600s"
+      - name: post_reboot_startup
+        condition: "system_uptime < 300s AND pod_state != 'Running'"
+    invocation:
+      # Always include --samuel: non-interactive + JSON + ops ledger row.
+      # Direct script paths (no 'bash' prefix) so the NOPASSWD sudoers
+      # drop-in matches; sudo command matching is exact.
+      diagnose: "sudo /s7/skyqubi-private/install/fix-pod.sh --dry-run --samuel"
+      apply:    "sudo /s7/skyqubi-private/install/fix-pod.sh --samuel"
+    stdout_format: json
+    stderr_format: text
+    exit_codes:
+      0: "pod_healthy — fix applied, pod running, CWS engine responding"
+      1: "dry_run_complete OR declined OR no_audit_log_accessible"
+      2: "no_avc_denials — pod failure is NOT SELinux, investigate elsewhere"
+      3: "setsebool_failed OR start_pod_failed — rollback required"
+      4: "must_run_as_root (re-invoke with sudo)"
+      5: "user_s7_does_not_exist"
+    dry_run_first: true
+    requires_approval: false  # safety ceiling is the interactive confirmation that --samuel bypasses; future approval token when Witness role is live
+    max_runs_per_hour: 3       # Samuel must not retry indefinitely
+    max_runs_per_day: 10
+    ops_ledger: /s7/.s7-ops-ledger/fix-pod.ndjson
+
+  - id: preflight
+    display_name: "Deploy Preflight Check"
+    path: install/preflight.sh
+    description: |
+      Read-only pre-deployment diagnostic. Checks OS, hardware,
+      packages, rootless podman, SELinux, ports, network, repo
+      presence. Returns READY / READY-with-warnings / NOT-READY.
+      Samuel runs this before suggesting a deploy or troubleshooting
+      an install failure.
+    triggers:
+      - name: pre_install_check
+        condition: "install_requested AND not inside_repo"
+      - name: health_sweep
+        condition: "scheduled_health_check"
+    invocation:
+      diagnose: "bash install/preflight.sh --json"  # no sudo required
+      apply: null                                     # no apply phase — read-only
+    stdout_format: json
+    stderr_format: text
+    exit_codes:
+      0: "ready — zero errors, zero warnings"
+      1: "not_ready — one or more hard blockers"
+      2: "ready_with_warnings — install may proceed, some features degraded"
+    dry_run_first: false  # script is inherently read-only
+    requires_approval: false
+    max_runs_per_hour: 60  # cheap, can run every minute
+    max_runs_per_day: unlimited
+    ops_ledger: null  # read-only script writes no ops-ledger row
+
+  - id: lifecycle-test
+    display_name: "Lifecycle Test Suite"
+    path: s7-lifecycle-test.sh
+    description: |
+      40-test suite covering pre-audit, containers, databases, CWS
+      engine, Command Center, AI chat, security, repos, docs, boot.
+      Samuel runs this to check overall health and to verify his
+      own fix-pod run actually resolved the blocking state.
+    triggers:
+      - name: post_fix_verification
+        condition: "fix_pod_succeeded AND time_since_fix < 120s"
+      - name: nightly_health
+        condition: "scheduled_nightly"
+    invocation:
+      diagnose: "bash s7-lifecycle-test.sh"  # non-destructive assertions
+      apply: null
+    stdout_format: text  # not yet JSON
+    stderr_format: text
+    exit_codes:
+      0: "all tests pass"
+      1: "one or more tests failed (see log)"
+    dry_run_first: false
+    requires_approval: false
+    max_runs_per_hour: 12
+    max_runs_per_day: 48
+    ops_ledger: null  # logged via /tmp/s7-lifecycle-test.log + test-level output
+
+  - id: fix-firewall
+    display_name: "Firewalld Diagnose + Fix (rootless gateway)"
+    path: install/fix-firewall.sh
+    description: |
+      Diagnose and (with apply mode) repair the firewalld trust rule
+      for the rootless link-local gateway 169.254.1.0/24. Captures
+      the 2026-04-13 lesson: rootless pasta-mode containers reach
+      the host via 169.254.1.0/24, but firewalld's default zone
+      doesn't trust that source, so containers can't reach host
+      services like ollama on 57081.
+
+      After every host reboot, runtime-only firewall rules are gone.
+      This skill re-applies the permanent fix:
+        firewall-cmd --permanent --zone=trusted --add-source=169.254.1.0/24
+        firewall-cmd --reload
+
+      Apply mode requires root. Diagnose mode is read-only and
+      reports exactly what would change.
+    triggers:
+      - name: post_reboot_firewall_check
+        condition: "container_cannot_reach_host AND firewalld_active"
+    invocation:
+      # Diagnose runs as s7 user (read-only check). Apply uses the
+      # direct script path so the NOPASSWD sudoers drop-in matches.
+      diagnose: "/s7/skyqubi-private/install/fix-firewall.sh --dry-run --samuel"
+      apply:    "sudo /s7/skyqubi-private/install/fix-firewall.sh --samuel"
+    stdout_format: json
+    stderr_format: text
+    exit_codes:
+      0: "pod_can_reach_host — trust rule present, container reaches host"
+      1: "dry_run_complete — diagnosed but not applied"
+      2: "no_action_needed — trust rule already in place"
+      3: "firewall_cmd_failed — apply step failed (rolled back)"
+      4: "must_run_as_root — apply path needs sudo"
+      5: "firewalld_not_active — different problem class"
+    dry_run_first: true
+    requires_approval: false
+    max_runs_per_hour: 3
+    max_runs_per_day: 10
+    ops_ledger: /s7/.s7-ops-ledger/fix-firewall.ndjson
+
+  - id: test-personas
+    display_name: "Test Carli + Elias responsiveness"
+    path: install/test-personas.sh
+    description: |
+      Sends a 'hi' to Carli and Elias via the running persona-chat
+      service and reports each one's status (responsive / empty /
+      timeout / unreachable). Tests the OTHER personas, not Samuel —
+      Samuel runs this skill so testing him from inside himself
+      would be circular.
+
+      As of 2026-04-13 the persona-chat HTTP service is substrate
+      code, not yet running. This skill will return state=
+      service_unreachable until persona-chat is wired up to a live
+      port. That's the honest signal — when the service comes online,
+      the same skill starts returning real results.
+    triggers:
+      - name: user_persona_health_query
+        condition: "user asks 'is carli alive' or 'test the personas'"
+    invocation:
+      diagnose: "/s7/skyqubi-private/install/test-personas.sh --samuel"
+      apply: null  # read-only check, no apply phase
+    stdout_format: json
+    stderr_format: text
+    exit_codes:
+      0: "all_responding — both Carli and Elias replied non-empty"
+      1: "partial — one responded, one didn't"
+      2: "all_down — neither responded"
+      3: "service_unreachable — couldn't even reach persona-chat"
+    dry_run_first: false
+    requires_approval: false
+    max_runs_per_hour: 12
+    max_runs_per_day: 48
+    ops_ledger: /s7/.s7-ops-ledger/test-personas.ndjson
+
+  - id: pod-stats
+    display_name: "Pod Resource Stats"
+    path: install/pod-stats.sh
+    description: |
+      Read-only resource snapshot of the s7-skyqubi pod. Wraps
+      `podman pod stats --no-stream` and reports container count,
+      total CPU%, total RAM, and the top container by RAM. Answers
+      the user question 'how hard is the QUBi working right now?'
+      No subprocess escalation, no state changes.
+    triggers:
+      - name: user_load_query
+        condition: "user asks 'how hard is it working' or 'pod stats'"
+    invocation:
+      diagnose: "bash install/pod-stats.sh --json"
+      apply: null
+    stdout_format: json
+    stderr_format: text
+    exit_codes:
+      0: "ok — stats collected"
+      1: "pod_not_running — no containers reporting"
+      2: "podman_missing"
+    dry_run_first: false
+    requires_approval: false
+    max_runs_per_hour: 30
+    max_runs_per_day: unlimited
+    ops_ledger: null
+
+  - id: diag
+    display_name: "Composite Health Diagnostic"
+    path: install/diag.sh
+    description: |
+      Composite read-only health check. Runs preflight + fix-pod
+      --dry-run + lifecycle test in sequence and aggregates the three
+      JSON outputs into a single health verdict (healthy / degraded /
+      failed / error). This is the "Samuel, how's the QUBi doing?"
+      capability — one skill, complete picture, no side effects.
+
+      diag never applies fixes on its own. It calls fix-pod with
+      --dry-run so SELinux issues are reported but never patched
+      from this entry point. To actually fix something, the user
+      must invoke the fix-pod skill explicitly.
+    triggers:
+      - name: user_health_query
+        condition: "user asks 'how is the qubi' or 'check everything'"
+      - name: nightly_overview
+        condition: "scheduled_nightly_overview"
+    invocation:
+      diagnose: "bash install/diag.sh --samuel"
+      apply: null  # composite read-only, never has an apply phase
+    stdout_format: json
+    stderr_format: text
+    exit_codes:
+      0: "healthy — all three sub-components green"
+      1: "degraded — warnings present, no hard blockers"
+      2: "failed — one or more hard blockers"
+      3: "error — a sub-script could not produce parseable output"
+      4: "must_run_as_root for the fix-pod sub-step"
+    dry_run_first: false  # inherently read-only
+    requires_approval: false
+    max_runs_per_hour: 6
+    max_runs_per_day: 24
+    ops_ledger: /s7/.s7-ops-ledger/diag.ndjson
+
+# Scripts Samuel explicitly MAY NOT run (denylist).
+# This is defense-in-depth. Samuel's skill runner rejects the script
+# before invocation if the path matches anything here.
+denylist:
+  - path_pattern: "**/ollama rm*"
+    reason: "destructive model removal requires human approval (2026-04-13 Rule 2 violation lesson)"
+  - path_pattern: "**/rm -rf*"
+    reason: "any rm -rf path is Rule 3 violation territory"
+  - path_pattern: "**/git push*"
+    reason: "pushing to remote is a landing action, always needs human"
+  - path_pattern: "**/systemctl * --force*"
+    reason: "forced service operations can mask underlying problems"
+  - path_pattern: "**/podman pod rm -f*"
+    reason: "only fix-pod.sh is allowed to force-remove the pod, and only after setsebool"
+  - path_pattern: "**/ollama create*"
+    reason: "new Modelfiles need Samuel's own Bible-Code review (Rule 2 recursion)"
+  - path_pattern: "**/ollama pull*"
+    reason: "pulling a new model changes the warm-set budget and needs human"
+
+# Emergency stop. If this file exists, Samuel's skill runner refuses
+# to run ANY script in this catalog, regardless of triggers. Human
+# must delete the file (presumably after investigating what made
+# Samuel go into safe mode) before Samuel resumes.
+emergency_stop_file: /s7/.s7-samuel-emergency-stop
+
+# Where Samuel's per-run decisions get logged. One NDJSON row per
+# script invocation, hash-chained the same way the persona-chat
+# ledger is.
+audit_trail_dir: /s7/.s7-ops-ledger
+
+# Versioning note:
+# Any change to this catalog (adding/removing a script, changing
+# triggers, changing rate limits) is a covenant-relevant change
+# and should be reviewed by Samuel against the Bible Code when the
+# Witness role is alive. Today (2026-04-13) the Witness role is
+# pod-blocked, so this catalog lands under Jamie's explicit
+# authority per the safe-QUBi carve-out in feedback_three_rules.md.

@@ -1,0 +1,21 @@
+name: s7-desktop-default
+description: S7 SkyQUBi desktop profile — Tonya-approved sandy-sunset palette
+captured_at: 2026-04-12T21:03:21Z
+captured_host: S7-QUBi-Ti7
+captured_user: s7
+captured_by: profiles/export-profile.sh
+sha256:
+  dconf-budgie-panel:   e42c07667ee4ce30b5b545ff186768a4a61de300f0776c5d1a06dc9ed26767f0
+  dconf-gnome-bg:       994e05de0a9df7819428bbf3a937afa68bc33137323cde20f73db2319a34a826
+  dconf-gnome-ui:       984e0d811575689c5f30e994a455b3572eb075f84c69b0cd9bac21b43bfd8ac0
+  kitty-conf:           b24f1d10b40f7afb38521995a5821f5803b15976cc999787d9e264c207f6aa2b
+contents:
+  - dconf-*.ini
+  - config/kitty/kitty.conf
+  - local/share/applications/s7-*.desktop
+  - local/share/desktop-directories/s7-skyqubi.directory
+  - config/menus/applications-merged/s7-skyqubi.menu
+  - config/autostart/s7-*.desktop
+  - config/systemd/user/s7-*.{service,timer}
+  - wallpaper.txt
+apply_with: profiles/import-profile.sh --name s7-desktop-default

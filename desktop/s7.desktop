@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=S7
+GenericName=S7 QUBi
+Comment=S7 SkyQUBi — one door. Opens Vivaldi at the local S7 home.
+Exec=/usr/bin/vivaldi http://127.0.0.1:8080
+Icon=/s7/skyqubi-private/branding/icons/s7-shield-icon-256.png
+Terminal=false
+Categories=X-S7-SkyQUBi;Network;
+Keywords=S7;SkyQUBi;QUBi;home;
+StartupNotify=true

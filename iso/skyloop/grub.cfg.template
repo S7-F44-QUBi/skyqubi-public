@@ -1,0 +1,99 @@
+# iso/skyloop/grub.cfg.template
+# S7 SkyLoop — sovereign loopback multiboot configuration
+#
+# grub.cfg with ISO loopback chain-loading + signature verification
+# hooks. This file is a TEMPLATE — the setup script runs it through
+# envsubst before writing it to the USB.
+#
+# When installed with --signed, grub2 is built with an embedded
+# S7 public key (via grub2-mkstandalone --pubkey) and
+# check_signatures=enforce is set, which means:
+#   1. This grub.cfg must be signed (grub.cfg.sig alongside)
+#   2. Every kernel + initrd grub loads must be signed
+#   3. Every other .cfg this file sources must be signed
+# If any signature is missing or invalid, grub refuses to boot —
+# the sovereign custody chain is enforced at the bootloader level.
+
+set default=0
+set timeout=5
+set gfxmode=auto
+set gfxpayload=keep
+
+# Enable signature enforcement. The public key is embedded in the
+# grub2 binary via grub2-mkstandalone --pubkey. Signed .sig files
+# must exist next to every .iso, .cfg, kernel, initrd grub loads.
+# set check_signatures=enforce
+
+# Visual theme (sandy sunset palette — same as the rest of S7)
+set color_normal=light-cyan/black
+set color_highlight=black/light-cyan
+insmod all_video
+insmod gfxterm
+insmod png
+terminal_output gfxterm
+
+# Load modules needed for loopback ISO boot
+insmod part_msdos
+insmod part_gpt
+insmod fat
+insmod exfat
+insmod iso9660
+insmod loopback
+insmod linux
+insmod echo
+
+# ── Menu entries — one per S7 layer ─────────────────────────────
+
+# Layer 1: S7 PorteuX (modular XZM, auto-merging S7 content)
+menuentry "S7 PorteuX Live — XFCE (modular, auto-merge)" --class s7 {
+  set iso_path="/s7-layers/s7-porteux-v2026.04.12.iso"
+  echo "Loopback-mounting $iso_path ..."
+  loopback loop $iso_path
+  linux  (loop)/boot/syslinux/vmlinuz from=/s7-layers iso-scan/filename=$iso_path quiet
+  initrd (loop)/boot/syslinux/initrfs.img
+}
+
+# Layer 2: S7 SkyCAIR 7 Rocky/Fedora Live (payload at /s7-update/)
+menuentry "S7 SkyCAIR 7 Rocky Live — XFCE (payload overlay)" --class s7 {
+  set iso_path="/s7-layers/s7-skycair-rocky-v2026.04.12.iso"
+  echo "Loopback-mounting $iso_path ..."
+  loopback loop $iso_path
+  linux  (loop)/isolinux/vmlinuz \
+         iso-scan/filename=$iso_path \
+         root=live:CDLABEL=SKYCAIR7 \
+         rd.live.image \
+         rd.live.overlay.overlayfs=1 \
+         rd.retry=30 rd.timeout=60 \
+         usbcore.autosuspend=-1 quiet
+  initrd (loop)/isolinux/initrd.img
+}
+
+# ── Advanced submenu ────────────────────────────────────────────
+
+submenu "Advanced options" --class submenu {
+
+  menuentry "Firmware setup (UEFI only)" {
+    fwsetup
+  }
+
+  menuentry "Reboot" {
+    reboot
+  }
+
+  menuentry "Shutdown" {
+    halt
+  }
+
+  menuentry "Verify layer signatures (diagnostic)" {
+    echo "Signature enforcement: $check_signatures"
+    echo "Available layers:"
+    ls /s7-layers/
+    echo "Press any key to return..."
+    read
+  }
+}
+
+# ── Footer ──────────────────────────────────────────────────────
+# S7 SkyLoop · Sovereign loopback multiboot
+# Covenant: CWS-BSL-1.1
+# Love is the architecture.

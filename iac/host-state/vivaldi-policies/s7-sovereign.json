@@ -1,0 +1,38 @@
+{
+  "_comment": "S7 SkyQUBi sovereign Vivaldi policy. Same intent as the chromium one — lock the browser to the local SPA, kill any 'Store' / Apps shortcut, disable default search, no telemetry, no sign-in, no extension store.",
+
+  "HomepageLocation": "http://127.0.0.1:8080",
+  "HomepageIsNewTabPage": false,
+  "ShowHomeButton": true,
+
+  "RestoreOnStartup": 4,
+  "RestoreOnStartupURLs": ["http://127.0.0.1:8080"],
+
+  "NewTabPageLocation": "http://127.0.0.1:8080",
+
+  "DefaultSearchProviderEnabled": false,
+
+  "BookmarkBarEnabled": false,
+  "EditBookmarksEnabled": false,
+  "ShowAppsShortcutInBookmarkBar": false,
+
+  "BrowserAddPersonEnabled": false,
+  "BrowserGuestModeEnabled": false,
+  "BrowserSignin": 0,
+  "SyncDisabled": true,
+  "MetricsReportingEnabled": false,
+  "SafeBrowsingEnabled": false,
+  "SearchSuggestEnabled": false,
+  "PromotionalTabsEnabled": false,
+  "PromotionsEnabled": false,
+  "WelcomePageOnOSUpgradeEnabled": false,
+  "BlockExternalExtensions": true,
+  "ExtensionInstallBlocklist": ["*"],
+
+  "URLBlocklist": [
+    "chrome://apps/*",
+    "chrome://web-store/*",
+    "https://chromewebstore.google.com/*",
+    "https://chrome.google.com/webstore/*"
+  ]
+}

@@ -1,0 +1,88 @@
+# S7 GOLD Genesis Content Manifest
+#
+# Defines the content class of each immutable-constellation repo.
+# Read by iac/immutable/reset-to-genesis.sh to build orphan genesis
+# bundles — one per repo — that the first real push will land.
+#
+# "No old history like a new GOLD that started Today" — per Jamie,
+# 2026-04-14 evening. Each repo's first commit is dated today,
+# contains ONLY the listed paths from skyqubi-private, and carries
+# the message "S7 GOLD begins today (v6-genesis)".
+#
+# Format per entry:
+#   <repo-name>:
+#     content:
+#       - <relative-path>   # path under /s7/skyqubi-private
+#       - <relative-path>
+#     role: <one-line description>
+#     visibility: PUBLIC | PRIVATE
+#     notes: <optional context>
+#
+# The 5 immutable-constellation repos:
+
+skyqubi-immutable:
+  content:
+    - docs/public/
+    - LICENSE
+    - CNAME-NOTE.md    # will be generated; explains target domain
+  role: "Landing surface + per-version manifests + GOLD receipts"
+  visibility: "TBD (Option A PRIVATE-until-July-7 recommended)"
+  notes: "The household's public-facing signed state. First commit only carries the Tonya-approved landing page + license + CNAME note. PUBLIC_MANIFEST.txt and GOLD_RECEIPT.txt will be added per-release by rebuild-public.sh, not at genesis."
+
+immutable-assets:
+  content:
+    - branding/icons/
+    - branding/plymouth/
+    - branding/splash/
+    - branding/wallpapers/
+    - branding/grub/
+  role: "Signed visual identity — branding assets, Plymouth, splash, wallpapers"
+  visibility: PRIVATE
+  notes: "Tonya-approved 2026-04-12. First advance ceremony requires Tonya witness because the assets themselves carry her signoff. Genesis commit is a re-publication of already-signed assets into the dedicated repo."
+
+immutable-S7-F44:
+  content:
+    - Containerfile
+    - iac/Containerfile.base
+    - iac/build-bootc.sh
+    - iac/build-s7-base.sh
+    - iac/trusted-upstream-hashes.txt
+    - iac/audit-pre.sh
+    - iac/audit-post.sh
+    - iac/manifest.yaml
+    - install/first-boot.sh
+  role: "Fedora 44 bootc image lineage — Containerfile + build scripts + hash-pinned base layer metadata + bootc build wrapper with TMPDIR fix"
+  visibility: PRIVATE
+  notes: "First-advance witness chain: image-signing key (the bootc chain IS the witness for this class). Tonya witness not strictly required for bootc artifacts."
+
+immutable-qubi:
+  content:
+    - docs/public/COVENANT.md
+    - iac/immutable/CORE_UPDATES.md
+    - iac/immutable/FORMATS.md
+    - iac/immutable/README.md
+  role: "QUBi appliance core manifest — kernel-of-kernel, yearly cadence"
+  visibility: PRIVATE
+  notes: "Highest covenant weight — four-witness unanimous consent required at first advance (audit gate + council + Tonya + signing key). Advances exactly once per year per feedback_qubi_is_core_prism_grid_wall.md. Genesis commit is the V6-genesis marker."
+
+SafeSecureLynX:
+  content:
+    - iac/immutable/rebuild-public.sh
+    - iac/immutable/reset-to-genesis.sh
+    - iac/immutable/genesis-content.yaml
+    - iac/immutable/jamie-run-me.sh
+    - docs/internal/chef/three-repo-model.md
+  role: "Wire protocol layer — the named transport between Local-Private-Assets, private, immutable, and business"
+  visibility: PRIVATE
+  notes: "MINIMAL EXTENSIBLE SEED per Jamie 'A then revisit topic'. Content is the current ceremony tooling itself — the scripts and doc that carry artifacts between the repos. On revisit, content expands with protocol specs, reference clients, handshake definitions. SSL = Safe Secure LynX (chosen reading), also honors 'Sync Safe Lync' (pillar union)."
+
+# Meta
+meta:
+  generated_at: "2026-04-14"
+  core_update: "v6-genesis"
+  authority: "Chair-draft under Jamie's 24hr Exercise of Trust block"
+  pending_witness:
+    - Tonya on skyqubi-immutable visibility flip (Option A vs B)
+    - Tonya on immutable-assets advance (branding was her signoff)
+    - Tonya on immutable-qubi advance (four-witness unanimous)
+    - Jamie on SafeSecureLynX content expansion (revisit scheduled)

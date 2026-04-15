@@ -1,0 +1,13 @@
+[Unit]
+Description=S7 SkyQUBi Dashboard — CWS Command Center
+After=s7-skyqubi-pod.service
+
+[Service]
+Type=simple
+WorkingDirectory=/s7/skyqubi/dashboard
+ExecStart=/usr/bin/python3 /s7/skyqubi/dashboard/server.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

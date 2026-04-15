@@ -1,0 +1,17 @@
+[Unit]
+Description=S7 CyberChef (Data Tools — local data transformation)
+Documentation=https://github.com/gchq/CyberChef
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+ContainerName=s7_cyberchef
+Image=ghcr.io/gchq/cyberchef:10.22.1
+PublishPort=127.0.0.1:8100:80
+
+[Service]
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

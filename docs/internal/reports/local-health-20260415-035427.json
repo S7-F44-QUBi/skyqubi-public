@@ -1,0 +1,65 @@
+{
+  "schema": "s7-local-health/v1",
+  "generated_at": "2026-04-15T03:54:27Z",
+  "core_update": "v6-genesis",
+  "overall_status": "yellow",
+  "lifecycle": {
+    "pass": 54,
+    "fail": 1,
+    "total": 55
+  },
+  "audit_gate": {
+    "pass": 9,
+    "pinned": 18,
+    "warn": 0,
+    "block": 0
+  },
+  "pod": {
+    "running": true,
+    "status": "Running",
+    "containers": [
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      }
+    ]
+  },
+  "performance": {
+    "cws_latency": "00.011",
+    "ollama_port_running": "*:57081",
+    "samuel_skills": 1
+  },
+  "frozen_trees": {
+    "pending": 13
+  },
+  "findings": [
+    {
+      "id": "lifecycle-minor",
+      "severity": "yellow",
+      "title": "Lifecycle test: 1 minor failures",
+      "root_cause": "verify per-test findings in lifecycle log",
+      "impact": "household-visible",
+      "next_step": "cat /tmp/s7-lifecycle-test.log"
+    }
+  ]
+}

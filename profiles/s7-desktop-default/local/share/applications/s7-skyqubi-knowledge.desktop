@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=QUBi - Oz of Knowledge
+GenericName=Offline Knowledge Base
+Comment=S7 SkyQUBi — Offline Knowledge & RAG Library
+Exec=bash -c "xdg-open 'http://127.0.0.1:57080/chat?knowledge_base=true'"
+Icon=s7-qubi-icon
+Terminal=false
+Categories=X-S7-SkyQUBi;
+Keywords=SkyQUBi;Knowledge;RAG;Kiwix;Offline;QUBi;S7;
+StartupNotify=true

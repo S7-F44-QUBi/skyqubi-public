@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Chat
+GenericName=AI Chat
+Comment=S7 SkyQUBi — Local AI Chat with Ollama
+Exec=xdg-open http://127.0.0.1:57080/chat
+Icon=s7-qubi-icon
+Terminal=false
+Categories=X-S7-SkyQUBi;
+Keywords=SkyQUBi;AI;Chat;Ollama;CWS;QUBi;S7;
+StartupNotify=true

@@ -1,0 +1,22 @@
+# S7 Authorized Core Update Days
+#
+# Each line is a date (YYYY-MM-DD) on which s7-sync-public.sh is
+# permitted to push to public main during the public freeze window.
+#
+# Adding a date here is itself a tier-crossing decision. The audit
+# gate treats this file as part of the recipe — modifying it without
+# a steward sign-off is drift.
+#
+# Format: YYYY-MM-DD followed by an optional comment after a #.
+# Lines beginning with # and blank lines are ignored.
+#
+# The freeze window ends 2026-07-07 07:00 CT. Dates before that need
+# explicit authorization. Dates on or after that date are not
+# required (the freeze gate stands down on its own).
+
+# (no authorized dates yet — add one only when a Core Update day is
+#  formally approved by Jamie + a steward)
+
+2026-04-14  # Jamie authorized: tonight's session shipped the confession row, CHEF Recipe #4 + council transcript, audit zero #10/11/12, memory tiering schema, the Seven Silences LYNC pellet, and the sync-step retirement doc. Decision: clean-reset public as "new immutable starting point" per D2. Today is the bridge between the old sync architecture and the new immutable-fork architecture.
+
+2026-07-07  # FIRST CORE CEREMONY — GO-LIVE Release 7 — Jamie + Tonya + image-signing key authorized. The yearly covenant ceremony that advances QUBi's CORE once per year. Preconditions must be met before this date: B1 (Recipe #3 signed), B2 (CORE reframe promoted), B3 (unauthorized commits decision), B4 (exception co-signers named), B5-B7 (per-persona voice calibration each signed), B8 (GH Pages orphan force-push verified on throwaway), B9 (rebuild-public.sh real), B10 (advance-immutable.sh real), B13 (ceremony credential), B14 (PUBLIC_MANIFEST format), B15 (Tonya sign-off artifact format), B16 (legacy-path migration), M7 (lifecycle 55/55 green). See docs/internal/chef/2026-07-07-release-gap-analysis.md for the full roadmap. Authorized 2026-04-14 evening under Jamie's Exercise of Trust while Tonya was unavailable — recorded here so the date is committed to the in-tree record before her return.

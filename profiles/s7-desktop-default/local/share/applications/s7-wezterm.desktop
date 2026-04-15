@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Terminal
+Comment=Terminal with tabs, splits, and colors
+Exec=flatpak run org.wezfurlong.wezterm
+Icon=/s7/s7-boot-assets/s7-plymouth-logo.png
+NoDisplay=false
+Categories=X-S7-SkyQUBi;

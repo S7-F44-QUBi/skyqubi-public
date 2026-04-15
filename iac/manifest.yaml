@@ -1,0 +1,108 @@
+# iac/manifest.yaml
+# S7 Fedora Base — declarative audit source of truth.
+# audit-pre.sh and audit-post.sh read this file. The Containerfile.base
+# must stay consistent with it. A mismatch is an audit failure, not a bug.
+
+fork_of:
+  registry: quay.io
+  image: fedora/fedora-minimal
+  tag: "44"
+  # Fedora signing key fingerprint prefix — audit-pre.sh verifies the pulled
+  # image was signed by a key whose fingerprint begins with this.
+  signing_key_fingerprint_prefix: "4F2E 4CD1 6A0F 1E57"
+
+packages:
+  must_include:
+    - ca-certificates
+    - openssl
+    - shadow-utils      # provides /usr/bin/passwd in Fedora 44+
+    - tzdata
+    - procps-ng
+    - iproute
+    - iputils
+    - glibc-langpack-en
+    - python3
+    - python3-pip
+  must_exclude:
+    - openssh-server
+    - telnet
+    - rsh
+    - ftp
+    - firewalld
+    - NetworkManager
+
+users:
+  must_include:
+    - name: s7
+      uid: 1000
+      gid: 1000
+      home: /var/lib/s7
+      shell: /sbin/nologin
+  root_must_be_locked: true
+  root_shell_must_be: /sbin/nologin
+
+directories:
+  must_exist:
+    - path: /var/lib/s7
+      owner: s7
+      group: s7
+      mode: "0750"
+    - path: /etc/s7
+      owner: s7
+      group: s7
+      mode: "0750"
+    - path: /var/log/s7
+      owner: s7
+      group: s7
+      mode: "0750"
+
+files:
+  must_exist:
+    - path: /etc/s7/base.covenant
+      mode: "0644"
+      must_contain: "CWS-BSL-1.1"
+
+network:
+  exposed_ports_max: 0
+
+default_user:
+  name: s7
+  uid: 1000
+
+build:
+  chunk_size_bytes: 104857600
+  image_name: "localhost/s7-fedora-base"
+  default_tag_format: "v%Y.%m.%d"
+
+# ── Intake gate (iac/intake/) ──
+# Every upstream artifact pulled by iac/intake/pull-*.sh must be
+# pinned here. An unpinned artifact cannot pass the gate. See
+# iac/intake/README.md for the contract.
+intake:
+  containers:
+    - name: quay.io/fedora/fedora-minimal:44
+      sha256: 659eef30e5bf713e98557c1b324738d462a41607bf60ac9d8955d5a9516b9c8e
+      signing_key_fingerprint_prefix: "4F2E 4CD1 6A0F 1E57"
+      promote_to: localhost/fedora-minimal:44
+    # ── S7 service images, pinned 2026-04-13. Each promotes into TimeCapsule. ──
+    - name: ghcr.io/gchq/cyberchef:10.22.1
+      sha256: 3aa4eb2c52c9f9e22bda450cae3187e1de114581f7850d8136c98164837a406c
+      promote_to: localhost/s7/cyberchef:10.22.1
+    - name: docker.io/jellyfin/jellyfin:latest
+      sha256: 1ebca12ee68116ddc6bd38ea01af2db50d6e4cee64a5076981ef75c35709d5e8
+      promote_to: localhost/s7/jellyfin:2026-04-12
+    - name: ghcr.io/crosstalk-solutions/project-nomad:latest
+      sha256: c4c6a38b875f4d1ecab5cd5e05d04c3ed89a4fefdc7772864f28464bf796edb1
+      promote_to: localhost/s7/nomad:2026-04-12
+    - name: docker.io/qdrant/qdrant:v1.16
+      sha256: 26509b92c44ded1ad344e18a005383c20bb3fbf9dbf4d337265a230b2aa89e79
+      promote_to: localhost/s7/qdrant:1.16
+    - name: docker.io/library/mysql:8.0
+      sha256: ce4d5c5f9df534fb059e6826805ad7dc3cb431589d4d99cc0869f5ee766e0f47
+      promote_to: localhost/s7/mysql:8.0
+    - name: docker.io/library/redis:7-alpine
+      sha256: 4bfd9eca23339865dc14fe75f6d9ae643f714924623978dd2798f1a673b08f43
+      promote_to: localhost/s7/redis:7-alpine
+  # npm:      (not yet — adapter pull-npm.sh pending)
+  # pip:      (not yet — adapter pull-pip.sh pending)
+  # git:      (not yet — adapter pull-git.sh pending)

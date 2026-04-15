@@ -1,0 +1,10 @@
+NAME="S7"
+PRETTY_NAME="S7 SkyCAIR — Sovereign Computing Platform"
+ID=s7
+ID_LIKE=fedora
+VERSION="2.0.0"
+VERSION_ID=2
+VARIANT="SkyQUBi"
+VARIANT_ID=skyqubi
+HOME_URL="https://skycair.com"
+BUG_REPORT_URL="https://github.com/skycair-code/SkyCAIR/issues"

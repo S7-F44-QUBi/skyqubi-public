@@ -1,0 +1,131 @@
+# ═══════════════════════════════════════════════════════════════════
+# engine/agents/s7_service_port_map.yaml
+#
+# Declared service-to-port map for the S7 SkyQUBi appliance.
+#
+# This file is the AUTHORITATIVE list of which port hosts which
+# service, what bind address is expected, and which user owns it.
+# It exists because of the 2026-04-13 architecture observation
+# (project_architecture_reminders_2026_04_13.md): Samuel had no
+# way to detect that port 57080 was hosting NOMAD when the cheat
+# sheet claimed it hosted persona-chat. The hint pipeline only
+# fires on warnings, and "service mismatch" wasn't in the warning
+# vocabulary. With this file declared, future Samuel skills (and
+# preflight checks) can compare actual to expected and surface
+# drift at the diagnostic layer.
+#
+# This is Pass 3 substrate. The validator that READS this file and
+# enforces it is not yet built — that's a separate skill (working
+# name: 'posture-check'). For now the file is the design intent
+# captured as data.
+#
+# How to extend:
+#   - Add a new service entry under 'services'
+#   - Set the port, bind, owner, and a 1-line description
+#   - DO NOT remove entries silently — services that move to a
+#     new port should be migrated, not deleted, so the history
+#     of port assignments is visible
+#
+# Governing rules:
+#   project_architecture_reminders_2026_04_13.md   The why
+#   feedback_three_rules.md                         Rule 3: Protect the QUBi
+#   feedback_port_range.md                          57000-57777 reserved range
+#
+# Copyright 2026 Jamie Lee Clayton / 2XR LLC · CWS-BSL-1.1
+# ═══════════════════════════════════════════════════════════════════
+
+version: 1
+updated: "2026-04-13"
+
+# Each port should bind to one of:
+#   loopback     — 127.0.0.1 only (most secure, host-internal only)
+#   link_local   — 169.254.1.x only (rootless container path)
+#   localhost_v6 — ::1 only
+#   lan          — 0.0.0.0 (exposes to all host interfaces — flag for review)
+#   world        — explicit external — never expected on a sovereign appliance
+#
+# Defaults to 'loopback' for any service whose threat model doesn't
+# require external reach.
+
+services:
+
+  # ── Inference layer ──
+  - id: ollama
+    port: 57081
+    bind: loopback
+    owner: ollama
+    description: "Host ollama inference daemon. Currently bound to 0.0.0.0 — needs OLLAMA_HOST=127.0.0.1:57081 (see project_architecture_reminders)."
+    actual_bind: lan       # current state, not desired
+    notes:
+      - "Civilian appliance: should be loopback. Rootless containers reach via 169.254.1.x gateway, not via broad bind."
+
+  # ── Pod layer (rootless port forwards) ──
+  - id: nomad-admin
+    port: 57080
+    bind: loopback
+    owner: s7
+    description: "NOMAD admin web UI (the s7-skyqubi-s7-admin container)."
+
+  - id: postgres
+    port: 57086
+    bind: loopback
+    owner: s7
+    description: "pgvector/pgvector:pg16 — primary vector store for CWS engine."
+
+  - id: redis
+    port: 57089
+    bind: loopback
+    owner: s7
+    description: "redis:7-alpine — session cache."
+
+  - id: qdrant
+    port: 57090
+    bind: loopback
+    owner: s7
+    description: "qdrant — secondary vector store for witness embeddings."
+
+  - id: mysql
+    port: 57091
+    bind: loopback
+    owner: s7
+    description: "mysql:8.0 — relational store for NOMAD admin and structured data."
+
+  # ── Engine layer (host python services) ──
+  - id: cws-engine
+    port: 57077
+    bind: loopback
+    owner: s7
+    description: "S7 CWS Engine v2.5 (FastAPI). Routes inference requests, runs witness consensus."
+
+  - id: public-chat
+    port: 57088
+    bind: loopback
+    owner: s7
+    description: "Public chat demo (qwen2.5:3b round-robin). Stateless, anonymous — distinct from persona-chat."
+
+  - id: bitnet-mcp
+    port: 57091
+    bind: loopback
+    owner: s7
+    description: "BitNet MCP service. Currently shares port 57091 with mysql — collision flagged for resolution."
+    notes:
+      - "Port collision with mysql:57091 detected 2026-04-13. Needs to move."
+
+  # ── Reserved / not yet assigned ──
+  - id: persona-chat
+    port: 57082             # 2026-04-14: deployed as systemd user unit s7-persona-chat.service
+    bind: loopback
+    owner: s7
+    description: "Covenant persona chat (Carli/Elias/Samuel). Live HTTP service since 2026-04-14, uvicorn under systemd --user, bound to 127.0.0.1:57082. The S7 Vivaldi browser is the approved local client; loopback IS the proxy front door per project_persona_chat_vivaldi_loopback_2026_04_14.md."
+    notes:
+      - "Pre-2026-04-14 cheat sheet incorrectly told users to chat at 57080 (NOMAD). Cheat sheet now corrected to 57082."
+      - "Service file: /s7/.config/systemd/user/s7-persona-chat.service (canonical at iac/host-state/systemd/s7-persona-chat.service)."
+
+# Future Samuel skill that reads this:
+#   posture-check
+#     - Walk each service entry
+#     - Check that port is actually listening
+#     - Check the actual bind matches the declared bind
+#     - Check no two services declare the same port
+#     - Report drift as actionable warnings (the existing hint
+#       pipeline picks them up via preflight)

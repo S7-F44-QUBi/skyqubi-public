@@ -1,0 +1,64 @@
+S7 SkyQUBi — Command Center for Sovereign Offline AI Inference
+Copyright 2024-2026 2XR LLC / 123Tech
+Author: Jamie Lee Clayton
+
+This product is based on Project N.O.M.A.D.
+Copyright 2024-2026 Crosstalk Solutions, LLC
+https://github.com/CrosstalkSolutions/project-nomad
+Licensed under the Apache License, Version 2.0
+
+Modifications and additions by 2XR LLC / 123Tech include:
+- Full UI rebrand from Project N.O.M.A.D. to S7 SkyQUBi
+- S7 Blue Identity color theme and design system
+- CWS Engine v2.3 (Convergence Weight Schema)
+  - QBIT Prism convergence vector decomposition (s7_prism.py)
+  - ForToken/RevToken bidirectional discernment (s7_discernment.py)
+  - 7-Witness consensus with RLHF bandage detection (s7_witness.py)
+  - 70% BABEL circuit breaker (s7_breaker.py)
+  - OCTi 8-plane INSERT-only semantic memory
+  - Direction-verified RAG reasoning (s7_rag.py)
+  - QUANTi benchmark module (s7_quanti.py)
+- S7 Molecular Bond Table (s7_molecular.py)
+  - Unified INSERT-only storage: 9 planes, 27 named vectors
+  - Dual backend: PostgreSQL (pgvector) + SQLite
+  - 77.777% (7/9) trust threshold, ANCHORED at 7+ sessions
+- S7 SkyAVi Security + Orchestration Engine (s7_skyavi.py)
+  - Parallel witness consensus via asyncio.gather
+  - S7 MemPalace recall/store (sentience unity)
+  - Agent config loader (YAML), scheduler, health checks
+  - Samuel/Carli/Elias chat personas
+  - 98 FACTS skills: system, security, network (CCNA+), database
+    (PostgreSQL/pgvector), container (Podman/K3s), cloud/IaC,
+    cross-platform (PowerShell/WSL), security testing, training data
+  - Sandboxed shell executor with allowlist/denylist
+  - Self-audit, internal notifications, password sanitizer
+  - 7 scheduled monitors: service health (auto-heal), port baseline,
+    outbound scan, disk usage, CIS Fedora Level 1, FIPS crypto, comms
+  - Communications intelligence: NOAA space weather, Meshtastic mesh
+    radio, GPS/satellite, RF propagation assessment
+  - MemPalace awareness: all skills share, all components aware
+- S7 Custom Models (s7-qwen3:0.6b, s7-deepseek:1.3b)
+  - Fine-tuned with S7 system prompts via Ollama Modelfile
+  - Self-training pipeline: skills → bonds → MemPalace → export → fine-tune
+- Trinity coordinate system {-1, 0, +1} storage architecture
+  - SkyQBIT (-1 ROCK, body) + CWS (0 DOOR, judgment) + MemPalace (+1 REST, mind)
+- Podman rootless pod deployment (replacing Docker)
+- systemd user service with TMPDIR and security hardening
+- Pod state reconcile provider (startup deployment sync)
+- Caddy HTTPS reverse proxy configuration
+- AdonisJS CWS proxy controller
+- 7xxx internal port scheme (7080/7081/7086/7090/7091)
+
+The CWS Engine components listed above are subject to CWS-BSL-1.1
+(see LICENSE at repo root) and are Patent Pending.
+Case Reference: TPP99606 — 123Tech / 2XR, LLC
+
+The SkyBRICK-QUBi Command Center (UI layer) remains under Apache-2.0
+(see APACHE-LICENSE at repo root).
+
+Third-party software attributions are listed in the Legal Notices
+section of the Command Center UI (Settings → Legal).
+
+CIVILIAN USE ONLY — Military, surveillance, weapons, and mass
+surveillance applications are expressly prohibited by the CWS-BSL-1.1
+Civilian-Only Covenant and the patent application covenant clause.

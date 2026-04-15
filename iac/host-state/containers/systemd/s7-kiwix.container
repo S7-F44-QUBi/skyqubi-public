@@ -1,0 +1,19 @@
+[Unit]
+Description=S7 Kiwix Server (offline knowledge library)
+Documentation=https://kiwix.org
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+ContainerName=s7_kiwix_server
+Image=ghcr.io/kiwix/kiwix-serve:3.8.1
+PublishPort=127.0.0.1:8090:8080
+Volume=/s7/s7-timecapsule-assets/nomad-storage/zim:/data:Z
+Exec=-l /data/kiwix-library.xml --monitorLibrary --address=all
+
+[Service]
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

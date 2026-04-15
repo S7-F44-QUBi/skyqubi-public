@@ -1,0 +1,299 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160" width="3840" height="2160">
+  <defs>
+    <!-- S7 Blue Identity — deep navy background -->
+    <radialGradient id="bgGrad" cx="50%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#0f1a2e"/>
+      <stop offset="50%" stop-color="#0a1222"/>
+      <stop offset="100%" stop-color="#060c18"/>
+    </radialGradient>
+
+    <!-- Ambient glow behind cube -->
+    <radialGradient id="cubeAmbient" cx="50%" cy="40%" r="30%">
+      <stop offset="0%" stop-color="#4A90E2" stop-opacity="0.06"/>
+      <stop offset="40%" stop-color="#3AAFBF" stop-opacity="0.03"/>
+      <stop offset="100%" stop-color="#060c18" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Lego stud highlight -->
+    <radialGradient id="studHL" cx="40%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.25)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+
+    <!-- Face gradients — Trinity mapped -->
+    <!-- LEFT = FATHER / BLUE / ROCK (-1) -->
+    <linearGradient id="faceLeft" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3a7bd5"/>
+      <stop offset="100%" stop-color="#2a5fa0"/>
+    </linearGradient>
+    <linearGradient id="faceLeftDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2a5fa0"/>
+      <stop offset="100%" stop-color="#1e4a80"/>
+    </linearGradient>
+
+    <!-- TOP = SON / CYAN / DOOR (0) -->
+    <linearGradient id="faceTop" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3AAFBF"/>
+      <stop offset="100%" stop-color="#2e9aaa"/>
+    </linearGradient>
+    <linearGradient id="faceTopBright" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4cc4d4"/>
+      <stop offset="100%" stop-color="#3AAFBF"/>
+    </linearGradient>
+
+    <!-- RIGHT = HOLY SPIRIT / PURPLE / REST (+1) -->
+    <linearGradient id="faceRight" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8B6BAE"/>
+      <stop offset="100%" stop-color="#6a4f8a"/>
+    </linearGradient>
+    <linearGradient id="faceRightDark" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6a4f8a"/>
+      <stop offset="100%" stop-color="#523d6e"/>
+    </linearGradient>
+
+    <!-- Cube glow -->
+    <filter id="cubeGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="12" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Soft text glow -->
+    <filter id="txtGlow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="4" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Subtle glow for floating pieces -->
+    <filter id="pieceGlow" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="6" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <!--  BACKGROUND                                                         -->
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <rect width="3840" height="2160" fill="url(#bgGrad)"/>
+  <rect width="3840" height="2160" fill="url(#cubeAmbient)"/>
+
+  <!-- Subtle grid (circuit/pixel feel) -->
+  <g opacity="0.025" stroke="#4A90E2" stroke-width="0.5" fill="none">
+    <line x1="0" y1="300" x2="3840" y2="300" stroke-dasharray="6,30"/>
+    <line x1="0" y1="500" x2="3840" y2="500" stroke-dasharray="6,30"/>
+    <line x1="0" y1="700" x2="3840" y2="700" stroke-dasharray="6,30"/>
+    <line x1="0" y1="900" x2="3840" y2="900" stroke-dasharray="6,30"/>
+    <line x1="0" y1="1100" x2="3840" y2="1100" stroke-dasharray="6,30"/>
+    <line x1="0" y1="1300" x2="3840" y2="1300" stroke-dasharray="6,30"/>
+    <line x1="0" y1="1500" x2="3840" y2="1500" stroke-dasharray="6,30"/>
+    <line x1="0" y1="1700" x2="3840" y2="1700" stroke-dasharray="6,30"/>
+    <line x1="0" y1="1900" x2="3840" y2="1900" stroke-dasharray="6,30"/>
+  </g>
+  <g opacity="0.015" stroke="#3AAFBF" stroke-width="0.5" fill="none">
+    <line x1="400" y1="0" x2="400" y2="2160" stroke-dasharray="6,40"/>
+    <line x1="800" y1="0" x2="800" y2="2160" stroke-dasharray="6,40"/>
+    <line x1="1200" y1="0" x2="1200" y2="2160" stroke-dasharray="6,40"/>
+    <line x1="1600" y1="0" x2="1600" y2="2160" stroke-dasharray="6,40"/>
+    <line x1="2000" y1="0" x2="2000" y2="2160" stroke-dasharray="6,40"/>
+    <line x1="2400" y1="0" x2="2400" y2="2160" stroke-dasharray="6,40"/>
+    <line x1="2800" y1="0" x2="2800" y2="2160" stroke-dasharray="6,40"/>
+    <line x1="3200" y1="0" x2="3200" y2="2160" stroke-dasharray="6,40"/>
+    <line x1="3600" y1="0" x2="3600" y2="2160" stroke-dasharray="6,40"/>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <!--  SCATTERED PIXEL STARS                                              -->
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <g>
+    <circle cx="180" cy="120" r="2" fill="#4A90E2" opacity="0.35"/>
+    <circle cx="520" cy="280" r="1.5" fill="#4A90E2" opacity="0.25"/>
+    <circle cx="880" cy="90" r="2.5" fill="#4A90E2" opacity="0.4"/>
+    <circle cx="1400" cy="180" r="1.5" fill="#4A90E2" opacity="0.3"/>
+    <circle cx="2200" cy="140" r="2" fill="#4A90E2" opacity="0.35"/>
+    <circle cx="2800" cy="220" r="1.5" fill="#4A90E2" opacity="0.25"/>
+    <circle cx="3200" cy="100" r="2" fill="#4A90E2" opacity="0.4"/>
+    <circle cx="3600" cy="300" r="1.5" fill="#4A90E2" opacity="0.2"/>
+    <circle cx="300" cy="1800" r="1.5" fill="#4A90E2" opacity="0.2"/>
+    <circle cx="700" cy="1950" r="2" fill="#4A90E2" opacity="0.25"/>
+    <circle cx="3100" cy="1850" r="1.5" fill="#4A90E2" opacity="0.25"/>
+    <circle cx="3500" cy="2000" r="2" fill="#4A90E2" opacity="0.2"/>
+    <circle cx="1920" cy="80" r="2.5" fill="#3AAFBF" opacity="0.45"/>
+    <circle cx="640" cy="500" r="1.5" fill="#3AAFBF" opacity="0.2"/>
+    <circle cx="3400" cy="600" r="1.5" fill="#3AAFBF" opacity="0.2"/>
+    <circle cx="200" cy="1080" r="2" fill="#3AAFBF" opacity="0.15"/>
+    <circle cx="3640" cy="1080" r="2" fill="#3AAFBF" opacity="0.15"/>
+    <circle cx="1100" cy="1900" r="1.5" fill="#3AAFBF" opacity="0.2"/>
+    <circle cx="2700" cy="1980" r="1.5" fill="#3AAFBF" opacity="0.2"/>
+    <circle cx="400" cy="400" r="1.5" fill="#8B6BAE" opacity="0.2"/>
+    <circle cx="1600" cy="350" r="1" fill="#8B6BAE" opacity="0.15"/>
+    <circle cx="3000" cy="450" r="1.5" fill="#8B6BAE" opacity="0.2"/>
+    <circle cx="500" cy="1600" r="1" fill="#8B6BAE" opacity="0.15"/>
+    <circle cx="3300" cy="1700" r="1.5" fill="#8B6BAE" opacity="0.2"/>
+    <circle cx="1200" cy="250" r="1.5" fill="#C48B30" opacity="0.2"/>
+    <circle cx="2600" cy="350" r="1" fill="#C48B30" opacity="0.15"/>
+    <circle cx="1800" cy="1950" r="1.5" fill="#C48B30" opacity="0.15"/>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <!--  ISOMETRIC QUBi CUBE — Trinity face colors                         -->
+  <!--  Center at (1920, 760), scaled for 4K                               -->
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <g filter="url(#cubeGlow)" transform="translate(1920, 760)">
+
+    <!-- ══════ TOP FACE — SON / CYAN / DOOR (0) ══════ -->
+    <g>
+      <polygon points="0,-320 160,-240 0,-160 -160,-240" fill="url(#faceTopBright)" stroke="#2e9aaa" stroke-width="1.5"/>
+      <polygon points="0,-160 160,-80 0,0 -160,-80" fill="url(#faceTop)" stroke="#2e9aaa" stroke-width="1.5"/>
+      <polygon points="-160,-240 0,-160 -160,-80 -320,-160" fill="#35a0b0" stroke="#2e9aaa" stroke-width="1.5"/>
+      <polygon points="160,-240 320,-160 160,-80 0,-160" fill="#42b8c8" stroke="#2e9aaa" stroke-width="1.5"/>
+
+      <line x1="-160" y1="-80" x2="0" y2="-160" stroke="#28909e" stroke-width="0.8" opacity="0.3"/>
+      <line x1="0" y1="-160" x2="160" y2="-80" stroke="#28909e" stroke-width="0.8" opacity="0.3"/>
+
+      <!-- Lego studs on top -->
+      <ellipse cx="0" cy="-260" rx="18" ry="9" fill="#5cd0e0" stroke="#3AAFBF" stroke-width="1.2"/>
+      <ellipse cx="0" cy="-263" rx="15" ry="7.5" fill="url(#studHL)" opacity="0.6"/>
+      <ellipse cx="-80" cy="-180" rx="18" ry="9" fill="#5cd0e0" stroke="#3AAFBF" stroke-width="1.2"/>
+      <ellipse cx="-80" cy="-183" rx="15" ry="7.5" fill="url(#studHL)" opacity="0.6"/>
+      <ellipse cx="80" cy="-180" rx="18" ry="9" fill="#5cd0e0" stroke="#3AAFBF" stroke-width="1.2"/>
+      <ellipse cx="80" cy="-183" rx="15" ry="7.5" fill="url(#studHL)" opacity="0.6"/>
+      <ellipse cx="0" cy="-140" rx="18" ry="9" fill="#4cc4d4" stroke="#3AAFBF" stroke-width="1.2"/>
+      <ellipse cx="0" cy="-143" rx="15" ry="7.5" fill="url(#studHL)" opacity="0.6"/>
+      <ellipse cx="-160" cy="-100" rx="18" ry="9" fill="#4cc4d4" stroke="#3AAFBF" stroke-width="1.2"/>
+      <ellipse cx="160" cy="-100" rx="18" ry="9" fill="#4cc4d4" stroke="#3AAFBF" stroke-width="1.2"/>
+      <ellipse cx="0" cy="-20" rx="18" ry="9" fill="#60d6e6" stroke="#3AAFBF" stroke-width="1.2"/>
+      <ellipse cx="0" cy="-23" rx="15" ry="7.5" fill="url(#studHL)" opacity="0.7"/>
+    </g>
+
+    <!-- ══════ LEFT FACE — FATHER / BLUE / ROCK (-1) ══════ -->
+    <g>
+      <polygon points="-320,-160 -160,-80 -160,80 -320,0" fill="url(#faceLeft)" stroke="#2a5fa0" stroke-width="1.5"/>
+      <polygon points="-160,-80 0,0 0,160 -160,80" fill="url(#faceLeftDark)" stroke="#1e4a80" stroke-width="1.5"/>
+      <polygon points="-320,0 -160,80 -160,240 -320,160" fill="#3570b8" stroke="#2a5fa0" stroke-width="1.5"/>
+      <polygon points="-160,80 0,160 0,320 -160,240" fill="#1e4a80" stroke="#1a3f6e" stroke-width="1.5"/>
+
+      <line x1="-320" y1="0" x2="-160" y2="80" stroke="#1a3f6e" stroke-width="0.8" opacity="0.4"/>
+      <line x1="-160" y1="80" x2="0" y2="160" stroke="#1a3f6e" stroke-width="0.8" opacity="0.4"/>
+      <line x1="-240" y1="-40" x2="-240" y2="120" stroke="#1a3f6e" stroke-width="0.7" opacity="0.25"/>
+      <line x1="-80" y1="40" x2="-80" y2="200" stroke="#1a3f6e" stroke-width="0.7" opacity="0.25"/>
+
+      <ellipse cx="-240" cy="-35" rx="14" ry="5" fill="#5a9de6" stroke="#4A90E2" stroke-width="1"/>
+      <ellipse cx="-240" cy="125" rx="14" ry="5" fill="#5a9de6" stroke="#4A90E2" stroke-width="1"/>
+      <ellipse cx="-80" cy="45" rx="14" ry="5" fill="#4A90E2" stroke="#3a7bd5" stroke-width="1"/>
+      <ellipse cx="-80" cy="205" rx="14" ry="5" fill="#4A90E2" stroke="#3a7bd5" stroke-width="1"/>
+    </g>
+
+    <!-- ══════ RIGHT FACE — HOLY SPIRIT / PURPLE / REST (+1) ══════ -->
+    <g>
+      <polygon points="0,0 160,-80 160,80 0,160" fill="url(#faceRight)" stroke="#6a4f8a" stroke-width="1.5"/>
+      <polygon points="160,-80 320,-160 320,0 160,80" fill="url(#faceRightDark)" stroke="#523d6e" stroke-width="1.5"/>
+      <polygon points="0,160 160,80 160,240 0,320" fill="#7a5c9e" stroke="#6a4f8a" stroke-width="1.5"/>
+      <polygon points="160,80 320,0 320,160 160,240" fill="#523d6e" stroke="#442f5c" stroke-width="1.5"/>
+
+      <line x1="0" y1="160" x2="160" y2="80" stroke="#442f5c" stroke-width="0.8" opacity="0.4"/>
+      <line x1="160" y1="80" x2="320" y2="0" stroke="#442f5c" stroke-width="0.8" opacity="0.4"/>
+      <line x1="80" y1="40" x2="80" y2="200" stroke="#442f5c" stroke-width="0.7" opacity="0.25"/>
+      <line x1="240" y1="-40" x2="240" y2="120" stroke="#442f5c" stroke-width="0.7" opacity="0.25"/>
+
+      <ellipse cx="80" cy="45" rx="14" ry="5" fill="#9e80c0" stroke="#8B6BAE" stroke-width="1"/>
+      <ellipse cx="80" cy="205" rx="14" ry="5" fill="#9e80c0" stroke="#8B6BAE" stroke-width="1"/>
+      <ellipse cx="240" cy="-35" rx="14" ry="5" fill="#8B6BAE" stroke="#7a5c9e" stroke-width="1"/>
+      <ellipse cx="240" cy="125" rx="14" ry="5" fill="#8B6BAE" stroke="#7a5c9e" stroke-width="1"/>
+    </g>
+
+    <!-- ══════ FLOATING TETRIS PIECES ══════ -->
+
+    <!-- T-piece above-left (cyan) -->
+    <g opacity="0.5" filter="url(#pieceGlow)" transform="translate(-400, -440)">
+      <polygon points="0,0 80,-40 160,0 80,40" fill="#3AAFBF" stroke="#2e9aaa" stroke-width="1.2"/>
+      <polygon points="-80,40 0,0 80,40 0,80" fill="#35a0b0" stroke="#2e9aaa" stroke-width="1.2"/>
+      <polygon points="80,40 160,0 240,40 160,80" fill="#42b8c8" stroke="#2e9aaa" stroke-width="1.2"/>
+      <ellipse cx="80" cy="16" rx="9" ry="4.5" fill="#5cd0e0"/>
+    </g>
+
+    <!-- L-piece right (blue) -->
+    <g opacity="0.35" filter="url(#pieceGlow)" transform="translate(440, -400)">
+      <polygon points="0,0 80,-40 160,0 80,40" fill="#4A90E2" stroke="#3a7bd5" stroke-width="1.2"/>
+      <polygon points="0,0 80,40 80,100 0,60" fill="#2a5fa0" stroke="#1e4a80" stroke-width="1.2"/>
+      <polygon points="80,40 160,0 160,60 80,100" fill="#1e4a80" stroke="#1a3f6e" stroke-width="1.2"/>
+      <ellipse cx="80" cy="16" rx="9" ry="4.5" fill="#6aace8"/>
+    </g>
+
+    <!-- S-piece far left (purple) -->
+    <g opacity="0.22" filter="url(#pieceGlow)" transform="translate(-560, -280)">
+      <polygon points="0,0 60,-30 120,0 60,30" fill="#8B6BAE" stroke="#6a4f8a" stroke-width="1"/>
+      <polygon points="60,-30 120,-60 180,-30 120,0" fill="#9e80c0" stroke="#7a5c9e" stroke-width="1"/>
+    </g>
+
+    <!-- I-piece far right (amber accent) -->
+    <g opacity="0.18" filter="url(#pieceGlow)" transform="translate(560, -200)">
+      <polygon points="0,0 50,-25 100,0 50,25" fill="#C48B30" stroke="#a07228" stroke-width="1"/>
+      <polygon points="50,25 100,0 150,25 100,50" fill="#a07228" stroke="#8a6020" stroke-width="1"/>
+    </g>
+
+    <!-- Z-piece below-left (blue, faint) -->
+    <g opacity="0.15" transform="translate(-480, 200)">
+      <polygon points="0,0 50,-25 100,0 50,25" fill="#4A90E2" stroke="#3a7bd5" stroke-width="1"/>
+      <polygon points="50,-25 100,-50 150,-25 100,0" fill="#3a7bd5" stroke="#2a5fa0" stroke-width="1"/>
+    </g>
+
+    <!-- T-piece below-right (purple, faint) -->
+    <g opacity="0.12" transform="translate(480, 260)">
+      <polygon points="0,0 50,-25 100,0 50,25" fill="#8B6BAE" stroke="#6a4f8a" stroke-width="1"/>
+      <polygon points="-50,25 0,0 50,25 0,50" fill="#7a5c9e" stroke="#6a4f8a" stroke-width="1"/>
+    </g>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <!--  S7 HEART LOGO                                                      -->
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <g transform="translate(1920, 1140)">
+    <g filter="url(#txtGlow)">
+      <path d="M0,-18 C-8,-36 -36,-36 -36,-18 C-36,0 0,30 0,36 C0,30 36,0 36,-18 C36,-36 8,-36 0,-18Z"
+            fill="none" stroke="#4A90E2" stroke-width="2.5" opacity="0.7"/>
+      <path d="M0,-12 C-6,-24 -27,-24 -27,-12 C-27,3 0,24 0,27 C0,24 27,3 27,-12 C27,-24 6,-24 0,-12Z"
+            fill="#4A90E2" opacity="0.15"/>
+    </g>
+    <text x="0" y="9" font-family="'Orbitron', 'DejaVu Sans', sans-serif" font-size="20"
+          font-weight="bold" fill="#c8ddf5" text-anchor="middle" letter-spacing="2">S7</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <!--  BRANDING TEXT                                                       -->
+  <!-- ════════════════════════════════════════════════════════════════════ -->
+  <g filter="url(#txtGlow)">
+    <text x="1920" y="1240" font-family="'Orbitron', 'DejaVu Sans', sans-serif" font-size="72"
+          font-weight="bold" fill="#d0e2f5" text-anchor="middle" letter-spacing="12">
+      S7 SkyCAIR
+    </text>
+  </g>
+
+  <text x="1920" y="1300" font-family="'Share Tech Mono', 'DejaVu Sans Mono', monospace" font-size="28"
+        fill="#4A90E2" text-anchor="middle" letter-spacing="6" opacity="0.8">
+    SOVEREIGN COMPUTING PLATFORM
+  </text>
+
+  <!-- Trinity coordinate bar -->
+  <g transform="translate(1920, 1360)">
+    <line x1="-300" y1="0" x2="300" y2="0" stroke="#1e2d48" stroke-width="1"/>
+    <text x="-200" y="-8" font-family="'Share Tech Mono', 'DejaVu Sans Mono', monospace" font-size="16"
+          fill="#4A90E2" text-anchor="middle" letter-spacing="2" opacity="0.6">-1 ROCK</text>
+    <text x="0" y="-8" font-family="'Share Tech Mono', 'DejaVu Sans Mono', monospace" font-size="16"
+          fill="#3AAFBF" text-anchor="middle" letter-spacing="2" opacity="0.6">0 DOOR</text>
+    <text x="200" y="-8" font-family="'Share Tech Mono', 'DejaVu Sans Mono', monospace" font-size="16"
+          fill="#8B6BAE" text-anchor="middle" letter-spacing="2" opacity="0.6">+1 REST</text>
+    <circle cx="-200" cy="0" r="3" fill="#4A90E2" opacity="0.5"/>
+    <circle cx="0" cy="0" r="3" fill="#3AAFBF" opacity="0.5"/>
+    <circle cx="200" cy="0" r="3" fill="#8B6BAE" opacity="0.5"/>
+  </g>
+
+  <text x="1920" y="1420" font-family="'Share Tech Mono', 'DejaVu Sans Mono', monospace" font-size="18"
+        fill="#3AAFBF" text-anchor="middle" letter-spacing="3" opacity="0.45">
+    AI + Humanity — Built on Trust
+  </text>
+
+  <!-- Version watermark -->
+  <text x="3780" y="2130" font-family="'Share Tech Mono', 'DejaVu Sans Mono', monospace" font-size="14"
+        fill="#1e2d48" text-anchor="end" opacity="0.35">
+    v2.0 · QUBi-Ti7
+  </text>
+</svg>

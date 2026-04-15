@@ -1,0 +1,63 @@
+# syntax=docker/dockerfile:1.6
+# iac/Containerfile.base
+# S7 Fedora Base — hardened fork of quay.io/fedora/fedora-minimal:44
+# Source of truth for audits: iac/manifest.yaml
+# Not for public registry distribution (feedback_no_ghcr.md).
+#
+# Important: this FROMs localhost/fedora-minimal:44 — the ALIAS the
+# intake gate sets after a successful pull. It is NOT quay.io directly.
+# If this image is missing, run:
+#
+#     iac/intake/pull-container.sh quay.io/fedora/fedora-minimal:44
+#
+# which quarantines the upstream image, verifies its sha256 and
+# signing-key fingerprint against iac/manifest.yaml, then airlock-
+# promotes it under localhost/fedora-minimal:44. See iac/intake/README.md.
+
+FROM localhost/fedora-minimal:44
+
+LABEL org.opencontainers.image.title="S7 Fedora Base"
+LABEL org.opencontainers.image.description="S7 SkyQUBi hardened base — Fedora Server Minimal 44 fork, pre/post audited"
+LABEL org.opencontainers.image.vendor="2XR LLC / 123Tech / S7"
+LABEL org.opencontainers.image.licenses="MIT AND Apache-2.0 AND CWS-BSL-1.1"
+LABEL org.opencontainers.image.source="private — not for public registry per feedback_no_ghcr.md"
+LABEL org.s7.fork-of="quay.io/fedora/fedora-minimal:44"
+LABEL org.s7.audit-pre="iac/audit-pre.sh"
+LABEL org.s7.audit-post="iac/audit-post.sh"
+LABEL org.s7.manifest="iac/manifest.yaml"
+
+# Upgrade + install minimal required package set. The list here must
+# match packages.must_include in iac/manifest.yaml — audit-post.sh will
+# fail the build if they drift.
+RUN microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs upgrade -y && \
+    microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y \
+        ca-certificates \
+        openssl \
+        shadow-utils \
+        tzdata \
+        procps-ng \
+        iproute \
+        iputils \
+        glibc-langpack-en \
+        python3 \
+        python3-pip \
+    && microdnf clean all \
+    && rm -rf /var/cache/yum /var/cache/dnf /var/log/dnf* /tmp/* /var/tmp/*
+
+# S7 service user — uid/gid 1000, nologin shell, home under /var/lib/s7
+RUN groupadd -g 1000 s7 && \
+    useradd -u 1000 -g 1000 -s /sbin/nologin -d /var/lib/s7 -M s7 && \
+    mkdir -p /var/lib/s7 /etc/s7 /var/log/s7 && \
+    chown -R s7:s7 /var/lib/s7 /etc/s7 /var/log/s7 && \
+    chmod 0750 /var/lib/s7 /etc/s7 /var/log/s7
+
+# Lock root — no password, no shell
+RUN passwd -l root && \
+    usermod -s /sbin/nologin root
+
+# Covenant marker — audit-post.sh reads this to confirm the S7 fork identity
+RUN printf 'fork-of: quay.io/fedora/fedora-minimal:44\nbuild-spec: iac/Containerfile.base\ncovenant: CWS-BSL-1.1\n' > /etc/s7/base.covenant && \
+    chmod 0644 /etc/s7/base.covenant
+
+USER s7:s7
+WORKDIR /var/lib/s7

@@ -1,0 +1,27 @@
+[Unit]
+Description=S7 SkyQUBi Persona Chat (Carli / Elias / Samuel)
+After=network.target s7-cws-engine.service
+# Wants is a soft dep — persona-chat starts even if the engine is down,
+# but it's healthier when both are up. After ensures ordering.
+Wants=s7-cws-engine.service
+
+[Service]
+Type=simple
+WorkingDirectory=/s7/skyqubi-private/persona-chat
+EnvironmentFile=/s7/.env.secrets
+# S7_LEDGER_ROOT defaults to /s7/.s7-chat-sessions per app.py; allow
+# override here for future relocation without code change
+Environment=PYTHONPATH=/s7/skyqubi-private/persona-chat
+Environment=S7_LEDGER_ROOT=/s7/.s7-chat-sessions
+# CRITICAL: --host 127.0.0.1 — loopback only.
+# The S7 Vivaldi browser is the approved local client. Loopback IS
+# the proxy front door to the QUBi from the user's perspective.
+# DO NOT broaden this bind. See:
+#   project_persona_chat_vivaldi_loopback_2026_04_14.md
+# Port 57082 is reserved for persona-chat in s7_service_port_map.yaml.
+ExecStart=/usr/bin/python3 -m uvicorn app:app --host 127.0.0.1 --port 57082
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

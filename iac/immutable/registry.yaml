@@ -1,0 +1,87 @@
+# S7 Immutable Fork Registry
+#
+# Append-only record of all authorized CORE yearly update advances.
+# Each entry is a signed, content-addressed reference to a specific
+# git bundle that represents the frozen state of private/main at the
+# moment of the advance ceremony.
+#
+# The audit gate's zero #12 (Immutable lineage integrity) reads this
+# file and verifies that public/main's current content matches what
+# `rebuild-public.sh` would produce from the newest non-retired entry.
+#
+# STATUS: pre-first-ceremony. No immutables advanced yet. The first
+# entry will be added by Jamie + Tonya in the CORE yearly update
+# ceremony per CHEF Recipe #4.
+#
+# ═══════════════════════════════════════════════════════════════════
+# SCHEMA (canonical — one entry per immutable advance)
+# ═══════════════════════════════════════════════════════════════════
+#
+# immutable:
+#   - version: v<year>                    # e.g. v2026
+#     advanced: <ISO8601>                 # e.g. 2026-07-07T07:00:00-05:00
+#     private_main_sha: <40-char sha>     # full commit sha of private/main
+#                                         #   at the moment of advance
+#     bundle_path: </s7/immutable/...>    # absolute path to the .bundle file
+#                                         #   DEFERRED — bundle storage location
+#                                         #   contract to be specified in the
+#                                         #   first advance ceremony. Default
+#                                         #   proposal: /s7/immutable/S7-QUBi-
+#                                         #   IMMUTABLE-v<year>.bundle (outside
+#                                         #   the private repo tree because a
+#                                         #   bundle of the repo inside the
+#                                         #   repo would be circular).
+#     bundle_sha256: <64-char hex>        # sha256sum of the bundle file
+#     signed_by: s7-image-signing         # image-signing key identifier
+#     signature_path: <path>.sig          # detached GPG signature
+#     public_manifest_sha256: <64-char>   # sha256 of the PUBLIC_MANIFEST.txt
+#                                         #   file INSIDE the bundle (the
+#                                         #   whitelist of public-visible files)
+#     tonya_signoff:                      # DEFERRED — Tonya's sign-off artifact
+#       artifact_path: <path>             #   contract. Current proposal: a
+#       signed_at: <ISO8601>              #   plain-text file at
+#       notes: <string>                   #   <bundle>.tonya.txt containing a
+#                                         #   hand-signed statement + date +
+#                                         #   reason, plus a GPG signature file
+#                                         #   at <bundle>.tonya.sig. To be
+#                                         #   formally specified in the first
+#                                         #   ceremony's council round.
+#     council_round: docs/internal/chef/council-rounds/<date>-immutable-<version>-advance.md
+#     advanced_by: [jamie, tonya]         # the two required human signers
+#     retires: <prior version or null>    # which prior immutable this retires
+#     frozen_trees_pin_update:            # DEFERRED — interaction with
+#       lifecycle: <sha>                  #   iac/audit/frozen-trees.txt.
+#       private_main: <sha>               #   When an immutable advances, the
+#                                         #   public/main pin entry in
+#                                         #   frozen-trees.txt becomes moot
+#                                         #   (public is now a function of the
+#                                         #   immutable, not a tracked branch).
+#                                         #   The first ceremony must remove
+#                                         #   the public/main line from
+#                                         #   frozen-trees.txt in the same
+#                                         #   commit that adds the immutable
+#                                         #   entry here.
+#     notes: <string>                     # human notes about this advance
+#
+# ═══════════════════════════════════════════════════════════════════
+# The six DEFERRED items (from Round 2 council findings)
+# ═══════════════════════════════════════════════════════════════════
+#
+# Round 2 of the CHEF Recipe #4 council named six gaps that the
+# stub must surface explicitly rather than silently. All six are
+# named above in the schema comments:
+#
+#   1. bundle transport location         (bundle_path field)
+#   2. Tonya's sign-off artifact         (tonya_signoff subtree)
+#   3. frozen-trees.txt interaction      (frozen_trees_pin_update subtree)
+#   4. PINNED transition rule            (see README.md §"PINNED transition")
+#   5. ceremony freeze-gate + sync handoff (see README.md §"Sync-to-ceremony handoff")
+#   6. who holds the ceremony gate       (see README.md §"The gatekeeper")
+#
+# None of the six are LOST from the stub. All six are NAMED as
+# deferred, with the resolution path pointing at the first advance
+# ceremony. Visible gaps are not silent gaps.
+#
+# ═══════════════════════════════════════════════════════════════════
+
+immutable: []

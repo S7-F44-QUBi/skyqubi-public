@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=S7 CWS Engine
+GenericName=Convergence Weight Schema Engine
+Comment=Start the CWS Engine on 127.0.0.1:57077 on login
+Exec=/usr/bin/bash -c "set -a; source /s7/skyqubi/.env; set +a; cd /s7/skyqubi/engine && /usr/bin/python3 -m uvicorn s7_server:app --host 127.0.0.1 --port 57077 >> /tmp/s7-cws-engine.log 2>&1"
+Icon=/s7/s7-boot-assets/s7-qubi-splash.svg
+Terminal=false
+Categories=System;Science;
+Keywords=CWS;QUBi;Prism;Engine;S7;Autostart;
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=12
+StartupNotify=false

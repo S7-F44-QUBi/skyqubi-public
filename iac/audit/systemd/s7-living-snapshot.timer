@@ -1,0 +1,14 @@
+[Unit]
+Description=S7 Living Audit — fire the nightly snapshot at 03:00 local
+Documentation=file:///s7/skyqubi-private/docs/internal/chef/jamie-love-rca.md
+
+[Timer]
+# Once a night, in a quiet window. Persistent=true so a missed run
+# (box was off) catches up on next boot.
+OnCalendar=*-*-* 03:00:00
+AccuracySec=5min
+Persistent=true
+Unit=s7-living-snapshot.service
+
+[Install]
+WantedBy=timers.target

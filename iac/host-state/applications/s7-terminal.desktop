@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=S7 Terminal
+GenericName=S7 Console
+Comment=S7 SkyQUBi terminal — kitty, GPU-accelerated.
+Exec=/usr/bin/kitty
+Icon=/s7/skyqubi-private/branding/icons/s7-shield-icon-256.png
+Terminal=false
+Categories=X-S7-SkyQUBi;
+Keywords=S7;SkyQUBi;Terminal;Console;Shell;Kitty;
+StartupNotify=true

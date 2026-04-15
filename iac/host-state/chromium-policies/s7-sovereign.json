@@ -1,0 +1,39 @@
+{
+  "_comment": "S7 SkyQUBi sovereign chromium policy. Locks the browser to the local SPA, kills the Chrome Web Store + Apps shortcut, disables default search, removes the bookmark bar so no random external URLs leak in. Drop into /s7/.var/app/io.github.ungoogled_software.ungoogled_chromium/config/chromium/policies/managed/.",
+
+  "HomepageLocation": "http://127.0.0.1:8080",
+  "HomepageIsNewTabPage": false,
+  "ShowHomeButton": true,
+
+  "RestoreOnStartup": 4,
+  "RestoreOnStartupURLs": ["http://127.0.0.1:8080"],
+
+  "NewTabPageLocation": "http://127.0.0.1:8080",
+
+  "DefaultSearchProviderEnabled": false,
+
+  "BookmarkBarEnabled": false,
+  "EditBookmarksEnabled": false,
+  "ShowAppsShortcutInBookmarkBar": false,
+
+  "DeveloperToolsAvailability": 1,
+  "BrowserAddPersonEnabled": false,
+  "BrowserGuestModeEnabled": false,
+  "BrowserSignin": 0,
+  "SyncDisabled": true,
+  "MetricsReportingEnabled": false,
+  "SafeBrowsingEnabled": false,
+  "SearchSuggestEnabled": false,
+  "PromotionalTabsEnabled": false,
+  "PromotionsEnabled": false,
+  "WelcomePageOnOSUpgradeEnabled": false,
+  "BlockExternalExtensions": true,
+  "ExtensionInstallBlocklist": ["*"],
+
+  "URLBlocklist": [
+    "chrome://apps/*",
+    "chrome://web-store/*",
+    "https://chromewebstore.google.com/*",
+    "https://chrome.google.com/webstore/*"
+  ]
+}

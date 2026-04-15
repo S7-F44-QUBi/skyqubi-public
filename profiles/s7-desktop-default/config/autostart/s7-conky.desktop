@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=S7 Conky
+Comment=S7 desktop system overlay
+Exec=conky -c /s7/.config/conky/s7-conky.conf
+Terminal=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=15
+Hidden=true

@@ -1,0 +1,175 @@
+{
+  "SchemaVersion": 2,
+  "Trivy": {
+    "Version": "0.69.3"
+  },
+  "ReportID": "019d853f-5c66-73f5-b1fa-b4f7d27b68fe",
+  "CreatedAt": "2026-04-13T00:10:15.39826609-05:00",
+  "ArtifactID": "sha256:e399e4df4b15486e48463952ac659a3d48939b000c3ec418a31603f56256b270",
+  "ArtifactName": "localhost/s7-fedora-base:v2026.04.13",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "Size": 223233536,
+    "OS": {
+      "Family": "fedora",
+      "Name": "44"
+    },
+    "ImageID": "sha256:d22921fdb59b496271bcda236a5e0562b7e67f6f1f82af2bef7e45258304a62a",
+    "DiffIDs": [
+      "sha256:b126a5b51c7af1924534492695529c4919e0538726735b6caa9531f372620171",
+      "sha256:a7fc6f28d8c3f06463e5070161d466f72648ab21c7596542b0edd643f10635f1",
+      "sha256:1ac2a09cf365a66618240ee552100e47285c7d017662c9a03f67eeae9fb40b5c",
+      "sha256:232064f01fc990cfd940310cba200edaa8543f36c7619ecb1c92ebc5db858a3c",
+      "sha256:866aa3204560cecb203f5ebab8e18eacfdc44053ad9c4f62fcc9beb75c821c0e"
+    ],
+    "RepoTags": [
+      "localhost/s7-fedora-base:latest",
+      "localhost/s7-fedora-base:v2026.04.13"
+    ],
+    "RepoDigests": [
+      "localhost/s7-fedora-base@sha256:8cca82416c265c75353bbb9edcab0ae3e9f0b572ebcab1a6e1a37d4c06650442"
+    ],
+    "Reference": "localhost/s7-fedora-base:v2026.04.13",
+    "ImageConfig": {
+      "architecture": "amd64",
+      "author": "Fedora Project Contributors \u003cdevel@lists.fedoraproject.org\u003e",
+      "created": "2026-04-13T04:27:38.607918289Z",
+      "history": [
+        {
+          "created": "2026-04-12T07:54:34Z",
+          "created_by": "KIWI 10.3.0"
+        },
+        {
+          "created": "2026-04-12T19:41:05Z",
+          "created_by": "/bin/sh -c #(nop) LABEL org.opencontainers.image.title=\"S7 Fedora Base\"",
+          "comment": "FROM quay.io/fedora/fedora-minimal:44",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-12T19:41:05Z",
+          "created_by": "/bin/sh -c #(nop) LABEL org.opencontainers.image.description=\"S7 SkyQUBi hardened base — Fedora Server Minimal 44 fork, pre/post audited\"",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-12T19:41:05Z",
+          "created_by": "/bin/sh -c #(nop) LABEL org.opencontainers.image.vendor=\"2XR LLC / 123Tech / S7\"",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-12T19:41:05Z",
+          "created_by": "/bin/sh -c #(nop) LABEL org.opencontainers.image.licenses=\"MIT AND Apache-2.0 AND CWS-BSL-1.1\"",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-12T19:41:05Z",
+          "created_by": "/bin/sh -c #(nop) LABEL org.opencontainers.image.source=\"private — not for public registry per feedback_no_ghcr.md\"",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-12T19:41:05Z",
+          "created_by": "/bin/sh -c #(nop) LABEL org.s7.fork-of=\"quay.io/fedora/fedora-minimal:44\"",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-12T19:41:05Z",
+          "created_by": "/bin/sh -c #(nop) LABEL org.s7.audit-pre=\"iac/audit-pre.sh\"",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-12T19:41:05Z",
+          "created_by": "/bin/sh -c #(nop) LABEL org.s7.audit-post=\"iac/audit-post.sh\"",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-12T19:41:05Z",
+          "created_by": "/bin/sh -c #(nop) LABEL org.s7.manifest=\"iac/manifest.yaml\"",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-12T19:43:14Z",
+          "created_by": "/bin/sh -c microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs upgrade -y \u0026\u0026     microdnf --setopt=install_weak_deps=0 --setopt=tsflags=nodocs install -y         ca-certificates         openssl         shadow-utils         tzdata         procps-ng         iproute         iputils         glibc-langpack-en         python3         python3-pip     \u0026\u0026 microdnf clean all     \u0026\u0026 rm -rf /var/cache/yum /var/cache/dnf /var/log/dnf* /tmp/* /var/tmp/*"
+        },
+        {
+          "created": "2026-04-12T19:43:16Z",
+          "created_by": "/bin/sh -c groupadd -g 1000 s7 \u0026\u0026     useradd -u 1000 -g 1000 -s /sbin/nologin -d /var/lib/s7 -M s7 \u0026\u0026     mkdir -p /var/lib/s7 /etc/s7 /var/log/s7 \u0026\u0026     chown -R s7:s7 /var/lib/s7 /etc/s7 /var/log/s7 \u0026\u0026     chmod 0750 /var/lib/s7 /etc/s7 /var/log/s7"
+        },
+        {
+          "created": "2026-04-12T19:43:16Z",
+          "created_by": "/bin/sh -c passwd -l root \u0026\u0026     usermod -s /sbin/nologin root"
+        },
+        {
+          "created": "2026-04-12T19:43:17Z",
+          "created_by": "/bin/sh -c printf 'fork-of: quay.io/fedora/fedora-minimal:44\\nbuild-spec: iac/Containerfile.base\\ncovenant: CWS-BSL-1.1\\n' \u003e /etc/s7/base.covenant \u0026\u0026     chmod 0644 /etc/s7/base.covenant"
+        },
+        {
+          "created": "2026-04-12T19:43:17Z",
+          "created_by": "/bin/sh -c #(nop) USER s7:s7",
+          "empty_layer": true
+        },
+        {
+          "created": "2026-04-13T04:27:38Z",
+          "created_by": "/bin/sh -c #(nop) WORKDIR /var/lib/s7",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:b126a5b51c7af1924534492695529c4919e0538726735b6caa9531f372620171",
+          "sha256:a7fc6f28d8c3f06463e5070161d466f72648ab21c7596542b0edd643f10635f1",
+          "sha256:1ac2a09cf365a66618240ee552100e47285c7d017662c9a03f67eeae9fb40b5c",
+          "sha256:232064f01fc990cfd940310cba200edaa8543f36c7619ecb1c92ebc5db858a3c",
+          "sha256:866aa3204560cecb203f5ebab8e18eacfdc44053ad9c4f62fcc9beb75c821c0e"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "/bin/bash"
+        ],
+        "Env": [
+          "PATH=/usr/local/bin:/usr/bin",
+          "container=oci"
+        ],
+        "Labels": {
+          "io.buildah.version": "1.43.0",
+          "org.opencontainers.image.description": "S7 SkyQUBi hardened base — Fedora Server Minimal 44 fork, pre/post audited",
+          "org.opencontainers.image.licenses": "MIT AND Apache-2.0 AND CWS-BSL-1.1",
+          "org.opencontainers.image.source": "private — not for public registry per feedback_no_ghcr.md",
+          "org.opencontainers.image.title": "S7 Fedora Base",
+          "org.opencontainers.image.url": "https://fedoraproject.org/",
+          "org.opencontainers.image.vendor": "2XR LLC / 123Tech / S7",
+          "org.opencontainers.image.version": "44",
+          "org.s7.audit-post": "iac/audit-post.sh",
+          "org.s7.audit-pre": "iac/audit-pre.sh",
+          "org.s7.fork-of": "quay.io/fedora/fedora-minimal:44",
+          "org.s7.manifest": "iac/manifest.yaml"
+        },
+        "User": "s7:s7",
+        "WorkingDir": "/var/lib/s7"
+      }
+    },
+    "Layers": [
+      {
+        "Size": 138119168,
+        "DiffID": "sha256:b126a5b51c7af1924534492695529c4919e0538726735b6caa9531f372620171"
+      },
+      {
+        "Size": 85085696,
+        "DiffID": "sha256:a7fc6f28d8c3f06463e5070161d466f72648ab21c7596542b0edd643f10635f1"
+      },
+      {
+        "Size": 18944,
+        "DiffID": "sha256:1ac2a09cf365a66618240ee552100e47285c7d017662c9a03f67eeae9fb40b5c"
+      },
+      {
+        "Size": 6656,
+        "DiffID": "sha256:232064f01fc990cfd940310cba200edaa8543f36c7619ecb1c92ebc5db858a3c"
+      },
+      {
+        "Size": 3072,
+        "DiffID": "sha256:866aa3204560cecb203f5ebab8e18eacfdc44053ad9c4f62fcc9beb75c821c0e"
+      }
+    ]
+  }
+}

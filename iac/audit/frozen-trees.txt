@@ -1,0 +1,173 @@
+# S7 Frozen Tree Pins — the canonical commit shas for tier-crossing branches.
+#
+# Audit gate zero #10 (Axis A — Drift) reads this file and compares each
+# pinned ref's actual current sha against the pinned sha. A mismatch means
+# the branch has moved without going through the Core Update gate.
+#
+# ## Format
+#
+#   <ref-spec>  <commit-sha-or-PENDING>  [# comment]
+#
+# ref-spec values:
+#   private/lifecycle   — the active devops branch on the private repo
+#   private/main        — the go-live-private branch on the private repo
+#   public/main         — the public release branch (read from local mirror
+#                         at /s7/skyqubi-public, NOT git ls-remote — the
+#                         gate is offline-only by invariant of zeros 1-9)
+#
+# sha values:
+#   <40-char hex>       — the canonical sha. Mismatch → BLOCK (sync refused).
+#   PENDING             — known-unsettled state. The gate looks for a
+#                         pinned.yaml entry with id `frozen-tree-<ref>-pending`
+#                         and converts the finding from BLOCK to PINNED if
+#                         found. If no pinned.yaml entry exists, it BLOCKS.
+#
+# Lines starting with # and blank lines are ignored.
+#
+# ## Resolution path
+#
+# Updating a sha in this file is itself a tier-crossing decision. The
+# commit that changes this file is audited. The unlock path is NEVER
+# "revert the branch" — it's "update the pin OR add a pinned.yaml
+# acknowledgment." That keeps restart-as-remediation off the table.
+#
+# ## Lineage with existing patterns
+#
+# This file mirrors iac/audit/core-update-days.txt (the freeze override
+# date list). Both are flat in-tree files the gate consumes. Both treat
+# updates as tier-crossing actions. Both are reversible by deletion or
+# revert.
+#
+# ## Known characteristic — the lag-by-1 pattern
+#
+# Because the pin-update commit is itself a commit, an active-dev
+# branch's pin will always be exactly 1 commit behind the tip at the
+# end of any session that ends with a pin update. This is expected
+# and intentional: the pin marks the "last committed checkpoint," not
+# the literal tip. On the NEXT commit after a pin update, the gate
+# will BLOCK — that BLOCK is the gate asking "is this new commit
+# intentional?" and the answer is to pin again or add a pinned.yaml
+# acknowledgment.
+#
+# For sessions where the tip drifts faster than the human can update
+# pins (e.g., a multi-commit session), the pattern is:
+#   1. Work accumulates on lifecycle
+#   2. At the natural end of a coherent unit (e.g., a feature lands),
+#      update this file to the current tip
+#   3. Commit the pin update as the session's final artifact
+#   4. Accept that the gate will BLOCK briefly on the next commit
+#      until the next pin update
+#
+# A future enhancement (proposed) is to change the lifecycle check
+# from "exact match" to "pin must be an ancestor of tip" using
+# `git merge-base --is-ancestor`. That would remove the lag-by-1
+# characteristic entirely. Not done tonight — scope.
+
+# ── Pins ───────────────────────────────────────────────────────────
+
+# Active devops branch — advanced 2026-04-14T~23:00Z from 85ba276 to 49af1f3
+# after session close: CORE reframe addendum, incident confession row,
+# Seven Silences LYNC pellet, pillar+weight schema + 99 memory entries
+# tagged, Tonya review packet, session-close postmortem, council round on
+# CORE reframe, and the 90-minute hardening chunk (shell=True remediation
+# at source, s7-sync-public.sh wrapper-pipe structural refusal + --test-
+# freeze-only flag, bash set-flags pattern memory). Option C was executed:
+# public local rolled back from orphan genesis to origin/main (2f3cc9d),
+# public remote UNCHANGED throughout, zero household-visible deltas.
+#
+# This pin update is the final audit artifact of session 2026-04-14.
+# Zero #10's fast-forward-ancestor check will accept this pin and
+# future session commits advancing forward from it.
+lifecycle  49af1f30a3012607d86bfc6b1345919f9bc76aa4
+
+# Private go-live branch — pinned at 1b6a2d7, which is the last legitimate
+# state before tonight's lifecycle session (matches what got synced to
+# public via the unauthorized push window). When lifecycle is fast-forwarded
+# into private/main on the next Core Update day, update this pin.
+private/main  49af1f30a3012607d86bfc6b1345919f9bc76aa4
+
+# Public main — PENDING resolution of the (a)/(b)/(c) decision on the two
+# unauthorized 2026-04-14 commits (a6467b6, 2f3cc9d). The gate reads this
+# as PENDING and looks up `frozen-tree-public-pending` in pinned.yaml; the
+# pinned.yaml entry exists, so the gate converts the would-be BLOCK to a
+# PINNED finding. The PENDING marker plus the pinned.yaml entry is the
+# witness that the household knows about the gap and is choosing not to
+# act on it without explicit authorization.
+public/main  PENDING  # resolution path: a/b/c decision → update this pin
+
+# NEW 2026-04-14 evening — public immutable rebuild target
+# Repository: https://github.com/skycair-code/skyqubi-immutable (PUBLIC)
+# Announced by Jamie during the v5 trust block. This is the eventual
+# destination of rebuild-public.sh real runs — the signed immutable
+# bundle target, per CHEF Recipe #4. Tonight this repo is CREATED but
+# UNTOUCHED by S7 tooling. The first real push happens only after:
+#   (a) rebuild-public.sh advances past the refuse-real-runs guard
+#   (b) advance-immutable.sh is upgraded past stub
+#   (c) Tonya witnesses the first advance-immutable.sh ceremony and
+#       signs the sign-off artifact (per FORMATS.md)
+#   (d) the image-signing key is unlocked by the Chief of Covenant
+# All four preconditions are covenant-weight; none are met in an
+# interim session. The gate reads this line as PENDING and looks up
+# `frozen-tree-immutable-main-pending` in pinned.yaml (the gate
+# constructs the pin id by replacing '/' with '-' in the ref-spec).
+immutable/main  PENDING  # first-ceremony target, no commits yet
+
+# THREE PRIVATE CONTENT-TYPED IMMUTABLE REPOS added 2026-04-14 evening.
+# Jamie announced these after the skyqubi-immutable (public landing)
+# wiring. These are PRIVATE siblings, each holding a single content
+# class, so content lifecycles can advance independently:
+#
+#   immutable-assets  — signed branding, binaries, PNGs/SVGs, wallpapers,
+#                       Plymouth/GRUB, splash imagery, fonts.
+#                       Lifecycle: rare updates, covenant-grade rebranding.
+#
+#   immutable-S7-F44  — Fedora 44 bootc image artifacts (OCI layers, signed
+#                       container bundles, Containerfile lineage).
+#                       Lifecycle: tied to Fedora release cadence + S7
+#                       CORE Update years.
+#
+#   immutable-qubi    — QUBi appliance core (the kernel-of-kernel — firmware,
+#                       boot chain, covenant binary layer).
+#                       Lifecycle: yearly CORE Update ceremony only.
+#
+# All three are PRIVATE so the "don't break public links" rule does
+# not apply — but they are still covenant-weight and require Tonya
+# witness + image-signing key at first advance. Visibility flip to
+# PUBLIC is NOT planned for these three; they may stay PRIVATE
+# permanently and ship via signed release downloads rather than
+# public browsing. That is the "public for a reason" rule working
+# correctly — the reason is signed distribution, not casual browsing.
+immutable-assets/main  PENDING  # private asset store, no commits yet
+immutable-S7-F44/main  PENDING  # Fedora 44 bootc artifacts, no commits yet
+immutable-qubi/main    PENDING  # QUBi appliance core, no commits yet
+
+# FINAL branch added 2026-04-14 evening — SafeSecureLynX
+# Jamie: "final branch (SSL is common, its Sync Safe Lync or Safe
+# Secure Linux) added - SafeSecureLynX"
+#
+# SSL is reclaimed — two covenant readings:
+#   (1) Sync Safe Lync — the union of the three MemPalace pillars
+#       per project_mempalace_pillar_weight_schema.md. Every memory
+#       gets a pillar (SYNC/SAFE/LYNC); SSL is the named space that
+#       covers all three at once.
+#   (2) Safe Secure Linux — sovereign positioning. The household
+#       reclaims the acronym from the cryptographic context and
+#       uses it for what it should have always meant — a Linux
+#       that is safe and secure by construction, not by bolt-on.
+#
+# Rename 2026-04-14 evening: originally announced as SSL-Lynx2QUBi,
+# Jamie renamed to SafeSecureLynX in the same session. The rename
+# chose reading (2) — "Safe Secure LynX" with capital X at the end
+# echoing the X27/PorteuX/S7-X27 lineage. The LynX spelling is the
+# sovereign variant of Linux, not the spelled-out word. The Linux
+# lineage is honored; the sovereign identity is preserved.
+#
+# Role in constellation — Chair's read (PENDING Jamie confirmation):
+#   The ingest/protocol/sync layer between Local-Private-Assets
+#   staging and the four-repo immutable constellation — the named
+#   wire protocol that makes LIVE outside + LIVE inside actually
+#   work. SSL = SYNC + SAFE + LYNC by construction, so this repo
+#   touches all three MemPalace pillars. Chair is NOT certain
+#   about this reading. Awaiting Jamie's correction in
+#   three-repo-model.md §9.
+SafeSecureLynX/main  PENDING  # final ref-spec, role awaiting Jamie

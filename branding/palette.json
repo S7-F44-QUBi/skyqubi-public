@@ -1,0 +1,61 @@
+{
+  "name": "S7 SkyQUBi — Sandy Sunset Deep Pastel",
+  "description": "The canonical theme palette. Sandy sunset deep pastel + twilight purple. Warm, feminine, with authority. The sky 10 minutes after sunset — deep plum fading to terracotta, coral, peach, and warm gold. Tonya-approved 2026-04-12. Source of truth: this file. Website, boot splash, desktop wallpaper, and GRUB all pull from here.",
+  "approved": "Tonya + Trinity · 2026-04-12",
+  "source_hex": {
+    "void":         "#1a0f1c",
+    "deep":         "#261624",
+    "surface":      "#301a27",
+    "raised":       "#3d2232",
+    "border":       "#6b3f4f",
+    "border_warm":  "#85505c",
+
+    "text_soft":    "#f0e1cf",
+    "text":         "#faebd4",
+    "bright":       "#fff8ec",
+    "bright_max":   "#ffffff",
+
+    "accent_primary":  "#e8a575",
+    "accent_coral":    "#ea8c7a",
+    "accent_gold":     "#f4c97b",
+    "accent_gold_deep":"#d9a15b",
+    "accent_rose":     "#d78689",
+    "accent_peach":    "#f5b98d",
+    "accent_cream":    "#f8dcb5",
+
+    "accent_lavender": "#c9a4d1",
+    "accent_purple":   "#9b6fa8",
+    "accent_plum":     "#7a4a85",
+    "accent_mauve":    "#b485c0",
+
+    "muted":      "#c4a699",
+    "muted_deep": "#9e7d73"
+  },
+  "trinity_mapping": {
+    "rock_minus_one":  {"role": "Father / Foundation / Body", "hex": "#7a4a85", "note": "plum — deep twilight"},
+    "door_zero":       {"role": "Son / Decision / Judgment",  "hex": "#f4c97b", "note": "gold — sunset center"},
+    "rest_plus_one":   {"role": "Spirit / Destiny / Mind",    "hex": "#c9a4d1", "note": "lavender — warm twilight"}
+  },
+  "plymouth_rgb_floats": {
+    "_comment": "Plymouth scripts need 0.0-1.0 RGB floats. Mechanically derived from source_hex.",
+    "background_top":    [0.102, 0.059, 0.110],
+    "background_bottom": [0.064, 0.035, 0.070],
+    "text_primary":      [0.980, 0.922, 0.831],
+    "text_gold":         [0.957, 0.789, 0.482],
+    "text_mauve":        [0.706, 0.522, 0.753]
+  },
+  "typography": {
+    "display": "Cormorant Garamond",
+    "body":    "Lora",
+    "mono":    "JetBrains Mono",
+    "italic_i_color": "#f4c97b",
+    "note": "Italic i in QUBi, SkyAVi, SkyQUANTi is always rendered in accent_gold. See feedback_italic_i.md in memory."
+  },
+  "applied_to": [
+    "docs/public/index.html           (website, live at skyqubi.com)",
+    "docs/public/coming-soon/         (chat preview, live at skyqubi.com#chat)",
+    "branding/wallpapers/s7-octi-*    (desktop wallpaper, OCTi witness network)",
+    "branding/plymouth/s7-qubi.script (boot splash, installed to /usr/share/plymouth/themes/s7-qubi/)",
+    "branding/grub/s7-grub-background (GRUB boot menu background)"
+  ]
+}

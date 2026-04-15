@@ -1,0 +1,15 @@
+[SddmGreeterTheme]
+Name=S7 SkyQUBi
+Description=S7 SkyQUBi placeholder SDDM theme — Sandy Sunset Deep Pastel
+Author=2XR LLC / 123Tech
+Copyright=(C) 2026 2XR LLC
+License=CWS-BSL-1.1
+Type=sddm-theme
+Version=0.1
+Website=https://skyqubi.com
+Screenshot=
+MainScript=Main.qml
+ConfigFile=theme.conf
+Email=omegaanswers@123tech.net
+Theme-Id=s7-skyqubi
+Theme-API=2.0

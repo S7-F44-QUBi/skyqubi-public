@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=S7 SkyQUBi Pod
+GenericName=AI Stack Pod
+Comment=Start the S7 SkyQUBi Podman pod on login
+Exec=/usr/bin/bash /s7/skyqubi/start-pod.sh
+Icon=/s7/s7-boot-assets/s7-plymouth-logo.png
+Terminal=false
+Categories=System;
+Keywords=SkyQUBi;Pod;Podman;S7;Autostart;
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=5
+StartupNotify=false

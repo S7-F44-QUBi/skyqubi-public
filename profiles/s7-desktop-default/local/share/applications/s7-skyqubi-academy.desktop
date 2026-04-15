@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Tri-Force Academy
+GenericName=S7 Education
+Comment=S7 SkyQUBi — Education, training, and certification. Trinity −1 / 0 / +1 · Foundation / Decision / Destiny.
+Exec=xdg-open http://127.0.0.1:57080/academy
+Icon=/s7/skyqubi-private/branding/icons/s7-shield-icon-256.png
+Terminal=false
+Categories=X-S7-SkyQUBi;Education;
+Keywords=SkyQUBi;Academy;Education;Training;Certification;Trinity;TriForce;Learning;S7;
+StartupNotify=true

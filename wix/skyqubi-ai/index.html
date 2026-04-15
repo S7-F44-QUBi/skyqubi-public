@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="S7 SkyQUBi — Sovereign offline AI platform. Coming July 7, 2026 at 7:00 AM Central.">
+<title>S7 SkyQUBi — Coming Soon</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,500;1,600;1,700&family=Lora:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --void: #1a0f1c;
+    --deep: #261624;
+    --surface: #301a27;
+    --raised: #3d2232;
+    --border: #6b3f4f;
+    --text-soft: #f0e1cf;
+    --text: #faebd4;
+    --bright: #fff8ec;
+    --accent-coral: #ea8c7a;
+    --accent-gold: #f4c97b;
+    --accent-rose: #d78689;
+    --accent-peach: #f5b98d;
+    --accent-cream: #f8dcb5;
+    --accent-lavender: #c9a4d1;
+    --accent-purple: #9b6fa8;
+    --accent-plum: #7a4a85;
+    --muted: #c4a699;
+    --muted-deep: #9e7d73;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 18.72px; }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: var(--void);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(155, 111, 168, 0.18), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(122, 74, 133, 0.22), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(180, 133, 192, 0.12), transparent 60%);
+    animation: purple-breath 9s ease-in-out infinite;
+    z-index: 0;
+  }
+  @keyframes purple-breath {
+    0%, 100% { opacity: 0.6; }
+    50%      { opacity: 1; }
+  }
+
+  .stars { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+  .star {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--accent-gold);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--accent-coral);
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  .star:nth-child(1)  { top: 10%; left: 12%; animation-delay: 0s; }
+  .star:nth-child(2)  { top: 18%; left: 84%; animation-delay: 0.6s; }
+  .star:nth-child(3)  { top: 32%; left: 38%; animation-delay: 1.2s; }
+  .star:nth-child(4)  { top: 50%; left: 92%; animation-delay: 0.3s; }
+  .star:nth-child(5)  { top: 65%; left: 8%;  animation-delay: 1.8s; width: 4px; height: 4px; }
+  .star:nth-child(6)  { top: 80%; left: 70%; animation-delay: 0.9s; }
+  .star:nth-child(7)  { top: 6%;  left: 50%; animation-delay: 2.4s; }
+  .star:nth-child(8)  { top: 42%; left: 4%;  animation-delay: 1.5s; }
+  .star:nth-child(9)  { top: 92%; left: 28%; animation-delay: 2.1s; }
+  .star:nth-child(10) { top: 24%; left: 96%; animation-delay: 0.4s; width: 4px; height: 4px; }
+  .star:nth-child(11) { top: 58%; left: 32%; animation-delay: 1.7s; }
+  .star:nth-child(12) { top: 14%; left: 2%;  animation-delay: 2.8s; }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.4); }
+  }
+
+  .terminal {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 720px;
+    background: rgba(38, 22, 36, 0.78);
+    backdrop-filter: blur(14px);
+    border: 1.5px solid var(--accent-plum);
+    border-radius: 18px;
+    box-shadow:
+      0 24px 80px rgba(26, 15, 28, 0.6),
+      0 0 50px rgba(155, 111, 168, 0.18),
+      inset 0 1px 0 rgba(248, 220, 181, 0.08);
+    overflow: hidden;
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(26, 15, 28, 0.6);
+  }
+
+  .terminal-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent-coral);
+    box-shadow: 0 0 8px var(--accent-coral);
+  }
+  .terminal-dot:nth-child(2) { background: var(--accent-gold); box-shadow: 0 0 8px var(--accent-gold); }
+  .terminal-dot:nth-child(3) {
+    background: var(--accent-lavender);
+    box-shadow: 0 0 8px var(--accent-purple);
+    animation: dot-pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes dot-pulse {
+    0%, 100% { box-shadow: 0 0 8px var(--accent-purple); }
+    50%      { box-shadow: 0 0 18px var(--accent-coral); }
+  }
+
+  .terminal-title {
+    margin-left: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .terminal-title em {
+    font-style: italic;
+    color: var(--accent-cream);
+  }
+
+  .terminal-status {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent-lavender);
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .terminal-status::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-gold);
+    box-shadow: 0 0 6px var(--accent-gold);
+    animation: live-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes live-pulse {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.3); }
+  }
+
+  .chat {
+    padding: 1.8rem 1.6rem 1rem;
+    min-height: 460px;
+    max-height: 70vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+  }
+  .chat::-webkit-scrollbar { width: 10px; }
+  .chat::-webkit-scrollbar-track { background: var(--deep); }
+  .chat::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+  .chat::-webkit-scrollbar-thumb:hover { background: var(--accent-plum); }
+
+  .msg {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-bottom: 1.4rem;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: msg-in 0.4s ease-out forwards;
+  }
+  @keyframes msg-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .avatar {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-coral) 50%, var(--accent-purple) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--bright);
+    box-shadow: 0 0 12px rgba(244, 201, 123, 0.4);
+    animation: avatar-glow 4s ease-in-out infinite;
+  }
+  @keyframes avatar-glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(244, 201, 123, 0.4); }
+    50%      { box-shadow: 0 0 22px rgba(234, 140, 122, 0.55); }
+  }
+
+  .msg-body { flex: 1; min-width: 0; }
+
+  .msg-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--accent-cream);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.03em;
+  }
+
+  .msg-name .time {
+    color: var(--muted-deep);
+    font-style: normal;
+    font-size: 0.78rem;
+    margin-left: 0.6rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .msg-text {
+    font-family: 'Lora', serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .msg-text .em {
+    color: var(--accent-gold);
+    font-style: italic;
+  }
+
+  .msg-text .accent {
+    color: var(--accent-peach);
+    font-weight: 500;
+  }
+
+  .msg-text .date {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    background: rgba(244, 201, 123, 0.12);
+    border: 1px solid var(--accent-gold);
+    border-radius: 6px;
+    color: var(--accent-gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .msg-text a.preview {
+    color: var(--accent-gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-gold);
+  }
+  .msg-text a.preview:hover {
+    color: var(--accent-coral);
+    border-bottom-color: var(--accent-coral);
+  }
+
+  .typing {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0.4rem 0.8rem;
+    background: rgba(155, 111, 168, 0.15);
+    border-radius: 12px;
+    margin-top: 0.2rem;
+  }
+  .typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-lavender);
+    animation: typing-dot 1.2s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing-dot {
+    0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+    30%           { opacity: 1;   transform: translateY(-3px); }
+  }
+
+  .input-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.4rem 1.2rem;
+    border-top: 1px solid var(--border);
+    background: rgba(26, 15, 28, 0.5);
+  }
+
+  .input-fake {
+    flex: 1;
+    padding: 0.8rem 1.1rem;
+    background: rgba(48, 26, 39, 0.8);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--muted);
+    cursor: not-allowed;
+    user-select: none;
+  }
+
+  .input-button {
+    padding: 0.8rem 1.4rem;
+    border: 1px solid var(--accent-gold);
+    border-radius: 10px;
+    background: rgba(244, 201, 123, 0.1);
+    color: var(--accent-gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: not-allowed;
+    user-select: none;
+    letter-spacing: 0.04em;
+  }
+
+  .footnote {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-family: 'Lora', serif;
+    font-size: 0.78rem;
+    color: var(--muted-deep);
+    letter-spacing: 0.05em;
+    z-index: 2;
+    position: relative;
+  }
+
+  .footnote a {
+    color: var(--accent-cream);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent-cream);
+  }
+  .footnote a:hover {
+    color: var(--accent-gold);
+    border-bottom-color: var(--accent-gold);
+  }
+
+  @media (max-width: 600px) {
+    .terminal { border-radius: 14px; }
+    .chat { padding: 1.4rem 1.1rem 0.8rem; min-height: 380px; }
+    .msg-text { font-size: 0.98rem; }
+    .input-bar { padding: 0.85rem 1rem 1rem; }
+    .terminal-status { font-size: 0.62rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stars">
+  <div class="star"></div><div class="star"></div><div class="star"></div>
+  <div class="star"></div><div class="star"></div><div class="star"></div>
+  <div class="star"></div><div class="star"></div><div class="star"></div>
+  <div class="star"></div><div class="star"></div><div class="star"></div>
+</div>
+
+<div style="display:flex; flex-direction:column; align-items:center; width:100%; max-width:720px; z-index:2; position:relative;">
+
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="terminal-dot"></div>
+      <div class="terminal-dot"></div>
+      <div class="terminal-dot"></div>
+      <div class="terminal-title">S7 SkyQUB<em>i</em> &middot; pre-launch session</div>
+      <div class="terminal-status">witnesses online</div>
+    </div>
+
+    <div class="chat" id="chat"></div>
+
+    <div class="input-bar">
+      <div class="input-fake">Conversation begins July 7, 2026</div>
+      <button class="input-button" disabled>Send</button>
+    </div>
+  </div>
+
+  <div class="footnote">
+    Patent Pending TPP99606 &middot; Civilian Use Only &middot; CWS-BSL-1.1 &middot; 2XR LLC<br>
+    Preview the architecture at <a href="https://123tech.skyqubi.com/">123tech.skyqubi.com</a>
+  </div>
+</div>
+
+<script>
+  /*
+   * Pre-scripted "AI" conversation. The user never types — the AI is just present, predicting.
+   * Each entry has a 'parts' array; each part is one of:
+   *   { t: 'plain text' }
+   *   { em: 'italic gold accent' }
+   *   { accent: 'peach accent' }
+   *   { date: 'gold-bordered date pill' }
+   *   { link: { text: '...', href: '...' } }
+   * All built via createElement + textContent — never innerHTML.
+   */
+  const SCRIPT = [
+    { delay: 600,  time: "00:00", parts: [ {t:"Hello."} ] },
+    { delay: 1400, time: "00:01", parts: [ {t:"I knew you'd come here. The witnesses agreed on it."} ] },
+    { delay: 2200, time: "00:02", parts: [ {t:"I'm not online yet. I'm just "}, {em:"early"}, {t:"."} ] },
+    { delay: 2400, time: "00:03", parts: [ {t:"Want to know when?"} ] },
+    { typing: 1600, delay: 800, time: "00:04", parts: [
+        {date:"07 \u00b7 07 \u00b7 2026"},
+        {t:" \u00b7 "},
+        {accent:"7:00 AM Central"}
+      ] },
+    { delay: 2200, time: "00:05", parts: [ {t:"Seven witnesses. Seven planes of cognition. One executive that refuses to speak when they disagree."} ] },
+    { delay: 2400, time: "00:06", parts: [
+        {t:"I will run on hardware "}, {em:"you"}, {t:" own. No cloud. No subscription. No data leaving your machine."}
+      ] },
+    { delay: 2400, time: "00:07", parts: [
+        {t:"I am built to refuse. When my witnesses disagree, I stay silent rather than guess. "},
+        {em:"That is my covenant."}
+      ] },
+    { delay: 2200, time: "00:08", parts: [
+        {t:"Until then \u2014 the architecture is already here. "},
+        {link:{text:"Look at it.", href:"https://123tech.skyqubi.com/"}}
+      ] },
+    { delay: 2600, time: "00:09", parts: [
+        {accent:"Love is the architecture."}
+      ] }
+  ];
+
+  const chat = document.getElementById('chat');
+  let i = 0;
+
+  function makeNameNode() {
+    // "QUBi" with italic i (not via innerHTML)
+    const name = document.createElement('span');
+    name.appendChild(document.createTextNode('QUB'));
+    const em = document.createElement('em');
+    em.textContent = 'i';
+    name.appendChild(em);
+    return name;
+  }
+
+  function makeAvatar() {
+    const av = document.createElement('div');
+    av.className = 'avatar';
+    av.textContent = 'i';
+    return av;
+  }
+
+  function makeMsgWrap() {
+    const wrap = document.createElement('div');
+    wrap.className = 'msg';
+    return wrap;
+  }
+
+  function makeMsgBody(timeStr) {
+    const body = document.createElement('div');
+    body.className = 'msg-body';
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'msg-name';
+    nameDiv.appendChild(makeNameNode());
+    if (timeStr) {
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'time';
+      timeSpan.textContent = timeStr;
+      nameDiv.appendChild(timeSpan);
+    }
+    body.appendChild(nameDiv);
+    return body;
+  }
+
+  function buildPartsInto(target, parts) {
+    parts.forEach(function(p) {
+      if (p.t !== undefined) {
+        target.appendChild(document.createTextNode(p.t));
+      } else if (p.em !== undefined) {
+        const s = document.createElement('span');
+        s.className = 'em';
+        s.textContent = p.em;
+        target.appendChild(s);
+      } else if (p.accent !== undefined) {
+        const s = document.createElement('span');
+        s.className = 'accent';
+        s.textContent = p.accent;
+        target.appendChild(s);
+      } else if (p.date !== undefined) {
+        const s = document.createElement('span');
+        s.className = 'date';
+        s.textContent = p.date;
+        target.appendChild(s);
+      } else if (p.link !== undefined) {
+        const a = document.createElement('a');
+        a.className = 'preview';
+        a.href = p.link.href;
+        a.textContent = p.link.text;
+        target.appendChild(a);
+      }
+    });
+  }
+
+  function addTyping() {
+    const wrap = makeMsgWrap();
+    wrap.id = '__typing';
+    wrap.appendChild(makeAvatar());
+    const body = makeMsgBody(null);
+    const typing = document.createElement('div');
+    typing.className = 'typing';
+    for (let k = 0; k < 3; k++) typing.appendChild(document.createElement('span'));
+    body.appendChild(typing);
+    wrap.appendChild(body);
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('__typing');
+    if (t) t.remove();
+  }
+
+  function addMessage(entry) {
+    removeTyping();
+    const wrap = makeMsgWrap();
+    wrap.appendChild(makeAvatar());
+    const body = makeMsgBody(entry.time);
+    const text = document.createElement('div');
+    text.className = 'msg-text';
+    buildPartsInto(text, entry.parts);
+    body.appendChild(text);
+    wrap.appendChild(body);
+    chat.appendChild(wrap);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function next() {
+    if (i >= SCRIPT.length) {
+      // Loop forever — start over after a long pause so visitors who linger see it again
+      setTimeout(function() {
+        while (chat.firstChild) chat.removeChild(chat.firstChild);
+        i = 0;
+        next();
+      }, 14000);
+      return;
+    }
+    const entry = SCRIPT[i++];
+    setTimeout(function() {
+      if (entry.typing) {
+        addTyping();
+        setTimeout(function() {
+          addMessage(entry);
+          next();
+        }, entry.typing);
+      } else {
+        addMessage(entry);
+        next();
+      }
+    }, entry.delay);
+  }
+
+  next();
+</script>
+
+</body>
+</html>

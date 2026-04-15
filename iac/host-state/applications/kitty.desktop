@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=kitty
+NoDisplay=true
+Hidden=true
+Exec=/usr/bin/kitty
+Icon=kitty
+Categories=System;TerminalEmulator;

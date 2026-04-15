@@ -1,0 +1,15 @@
+[Unit]
+Description=S7 TimeCapsule registry verification (rootless)
+Documentation=file:///s7/skyqubi-private/iac/timecapsule/README.md
+After=default.target
+ConditionPathExists=/s7/timecapsule/registry/manifest.json
+
+[Service]
+Type=oneshot
+ExecStart=/s7/.local/bin/s7-timecapsule-verify.sh
+StandardOutput=journal
+StandardError=journal
+RemainAfterExit=no
+
+[Install]
+WantedBy=default.target

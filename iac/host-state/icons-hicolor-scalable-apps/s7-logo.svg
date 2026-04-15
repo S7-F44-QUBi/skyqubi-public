@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Gold gradient -->
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="30%" stop-color="#DAA520"/>
+      <stop offset="60%" stop-color="#B8860B"/>
+      <stop offset="100%" stop-color="#996515"/>
+    </linearGradient>
+
+    <!-- Silver gradient -->
+    <linearGradient id="silver" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8E8E8"/>
+      <stop offset="30%" stop-color="#C0C0C0"/>
+      <stop offset="60%" stop-color="#A8A8A8"/>
+      <stop offset="100%" stop-color="#808080"/>
+    </linearGradient>
+
+    <!-- Bronze gradient -->
+    <linearGradient id="bronze" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#CD7F32"/>
+      <stop offset="30%" stop-color="#B87333"/>
+      <stop offset="60%" stop-color="#A0522D"/>
+      <stop offset="100%" stop-color="#8B4513"/>
+    </linearGradient>
+
+    <!-- Shield highlight -->
+    <linearGradient id="shieldHL" x1="30%" y1="0%" x2="70%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.3)"/>
+      <stop offset="50%" stop-color="rgba(255,255,255,0.05)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0.2)"/>
+    </linearGradient>
+
+    <!-- Outer glow -->
+    <filter id="glow" x="-15%" y="-15%" width="130%" height="130%">
+      <feGaussianBlur stdDeviation="6" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Inner shadow -->
+    <filter id="innerShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+      <feOffset dx="2" dy="3" result="offset"/>
+      <feComposite in="SourceGraphic" in2="offset" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Shield shape — pointed bottom, Kodachi-style -->
+  <!-- Outer gold border -->
+  <path d="M256,28 C256,28 100,28 68,28 C58,28 48,38 48,48
+           C48,48 48,220 48,280
+           C48,360 140,440 256,488
+           C372,440 464,360 464,280
+           C464,220 464,48 464,48
+           C464,38 454,28 444,28
+           C412,28 256,28 256,28Z"
+        fill="url(#gold)" filter="url(#glow)"/>
+
+  <!-- Silver middle layer -->
+  <path d="M256,48 C256,48 110,48 82,48
+           C74,48 68,54 68,62
+           C68,62 68,225 68,278
+           C68,348 152,422 256,466
+           C360,422 444,348 444,278
+           C444,225 444,62 444,62
+           C444,54 438,48 430,48
+           C402,48 256,48 256,48Z"
+        fill="url(#silver)"/>
+
+  <!-- Bronze inner shield -->
+  <path d="M256,72 C256,72 124,72 100,72
+           C93,72 88,77 88,84
+           C88,84 88,230 88,275
+           C88,336 164,404 256,443
+           C348,404 424,336 424,275
+           C424,230 424,84 424,84
+           C424,77 419,72 412,72
+           C388,72 256,72 256,72Z"
+        fill="url(#bronze)"/>
+
+  <!-- Shield highlight overlay -->
+  <path d="M256,72 C256,72 124,72 100,72
+           C93,72 88,77 88,84
+           C88,84 88,230 88,275
+           C88,336 164,404 256,443
+           C348,404 424,336 424,275
+           C424,230 424,84 424,84
+           C424,77 419,72 412,72
+           C388,72 256,72 256,72Z"
+        fill="url(#shieldHL)"/>
+
+  <!-- S7 text — gold on bronze -->
+  <text x="256" y="235" font-family="'DejaVu Sans', 'Helvetica', sans-serif"
+        font-size="140" font-weight="bold" fill="#FFD700" text-anchor="middle"
+        stroke="#996515" stroke-width="2" filter="url(#innerShadow)">S7</text>
+
+  <!-- Horizontal gold divider line -->
+  <line x1="130" y1="270" x2="382" y2="270" stroke="url(#gold)" stroke-width="3" opacity="0.8"/>
+
+  <!-- Subtitle — silver -->
+  <text x="256" y="310" font-family="'DejaVu Sans', 'Helvetica', sans-serif"
+        font-size="36" font-weight="bold" fill="#E8E8E8" text-anchor="middle"
+        stroke="#808080" stroke-width="0.5" letter-spacing="6">SHIELD</text>
+
+  <!-- Trinity dots — gold, silver, bronze -->
+  <circle cx="210" cy="350" r="10" fill="url(#gold)"/>
+  <circle cx="256" cy="350" r="10" fill="url(#silver)"/>
+  <circle cx="302" cy="350" r="10" fill="url(#bronze)"/>
+
+  <!-- Small star accent at top of shield -->
+  <polygon points="256,90 262,108 280,108 266,118 272,136 256,126 240,136 246,118 232,108 250,108"
+           fill="#FFD700" opacity="0.8"/>
+</svg>

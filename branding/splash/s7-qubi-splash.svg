@@ -1,0 +1,277 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <defs>
+    <!-- S7 Blue Identity Gradient Background -->
+    <radialGradient id="bgGrad" cx="50%" cy="42%" r="65%">
+      <stop offset="0%" stop-color="#1a2340"/>
+      <stop offset="50%" stop-color="#0f1525"/>
+      <stop offset="100%" stop-color="#080c18"/>
+    </radialGradient>
+
+    <!-- Lego stud highlights -->
+    <radialGradient id="studHL" cx="35%" cy="30%" r="55%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.35)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+
+    <!-- Cube glow -->
+    <filter id="cubeGlow" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur stdDeviation="10" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Text glow -->
+    <filter id="tGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="2.5" result="g"/>
+      <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- S7 Blue palette from design system -->
+    <!-- BLUE=#4A90E2  CYAN=#3AAFBF  PURPLE=#8B6BAE  AMBER=#C48B30 -->
+  </defs>
+
+  <!-- Background -->
+  <rect width="1920" height="1080" fill="url(#bgGrad)"/>
+
+  <!-- Subtle grid (circuit-board feel) -->
+  <g opacity="0.025" stroke="#4A90E2" stroke-width="0.5" fill="none">
+    <line x1="0" y1="120" x2="1920" y2="120" stroke-dasharray="3,24"/>
+    <line x1="0" y1="240" x2="1920" y2="240" stroke-dasharray="3,24"/>
+    <line x1="0" y1="360" x2="1920" y2="360" stroke-dasharray="3,24"/>
+    <line x1="0" y1="480" x2="1920" y2="480" stroke-dasharray="3,24"/>
+    <line x1="0" y1="600" x2="1920" y2="600" stroke-dasharray="3,24"/>
+    <line x1="0" y1="720" x2="1920" y2="720" stroke-dasharray="3,24"/>
+    <line x1="0" y1="840" x2="1920" y2="840" stroke-dasharray="3,24"/>
+    <line x1="0" y1="960" x2="1920" y2="960" stroke-dasharray="3,24"/>
+  </g>
+
+  <!-- ================================================================== -->
+  <!--  ISOMETRIC TETRIS-BRICK CUBE (QUBi)                                -->
+  <!--  Lego blocks + Tetris tetrominoes in S7 Blue Identity              -->
+  <!--  Three faces = Trinity: Father(blue) Son(cyan) Spirit(purple)      -->
+  <!-- ================================================================== -->
+  <g filter="url(#cubeGlow)" transform="translate(960, 350)">
+
+    <!-- ============ TOP FACE — FATHER (Blue) — ROCK ============ -->
+    <g>
+      <!-- T-tetromino -->
+      <polygon points="0,-170 90,-125 0,-80 -90,-125" fill="#4A90E2" stroke="#3A78C2" stroke-width="1.5" opacity="0.95"/>
+      <polygon points="0,-80 90,-35 0,10 -90,-35" fill="#4080D0" stroke="#3A78C2" stroke-width="1.5" opacity="0.9"/>
+      <polygon points="-90,-125 0,-80 -90,-35 -180,-80" fill="#5A9AE8" stroke="#3A78C2" stroke-width="1.5" opacity="0.85"/>
+      <polygon points="90,-125 180,-80 90,-35 0,-80" fill="#6AA4EE" stroke="#3A78C2" stroke-width="1.5" opacity="0.85"/>
+
+      <!-- Lego studs on top -->
+      <ellipse cx="0" cy="-135" rx="14" ry="7" fill="#7AB4F4" stroke="#4A90E2" stroke-width="1.2"/>
+      <ellipse cx="0" cy="-137" rx="11" ry="5.5" fill="url(#studHL)" opacity="0.7"/>
+
+      <ellipse cx="-45" cy="-95" rx="14" ry="7" fill="#7AB4F4" stroke="#4A90E2" stroke-width="1.2"/>
+      <ellipse cx="-45" cy="-97" rx="11" ry="5.5" fill="url(#studHL)" opacity="0.7"/>
+
+      <ellipse cx="45" cy="-95" rx="14" ry="7" fill="#7AB4F4" stroke="#4A90E2" stroke-width="1.2"/>
+      <ellipse cx="45" cy="-97" rx="11" ry="5.5" fill="url(#studHL)" opacity="0.7"/>
+
+      <ellipse cx="0" cy="-55" rx="14" ry="7" fill="#7AB4F4" stroke="#4A90E2" stroke-width="1.2"/>
+      <ellipse cx="0" cy="-57" rx="11" ry="5.5" fill="url(#studHL)" opacity="0.7"/>
+
+      <ellipse cx="-90" cy="-55" rx="14" ry="7" fill="#7AB4F4" stroke="#4A90E2" stroke-width="1.2"/>
+      <ellipse cx="90" cy="-55" rx="14" ry="7" fill="#7AB4F4" stroke="#4A90E2" stroke-width="1.2"/>
+
+      <ellipse cx="0" cy="-15" rx="14" ry="7" fill="#8AC4FF" stroke="#4A90E2" stroke-width="1.2"/>
+      <ellipse cx="0" cy="-17" rx="11" ry="5.5" fill="url(#studHL)" opacity="0.8"/>
+    </g>
+
+    <!-- ============ LEFT FACE — SON (Cyan) — DOOR ============ -->
+    <g>
+      <!-- L-tetromino + S-tetromino -->
+      <polygon points="-180,-80 -90,-35 -90,55 -180,10" fill="#3AAFBF" stroke="#2A9AAA" stroke-width="1.5"/>
+      <polygon points="-90,-35 0,10 0,100 -90,55" fill="#2E9DAD" stroke="#2A9AAA" stroke-width="1.5"/>
+
+      <polygon points="-180,10 -90,55 -90,145 -180,100" fill="#35A5B5" stroke="#2A9AAA" stroke-width="1.5"/>
+      <polygon points="-90,55 0,100 0,190 -90,145" fill="#289098" stroke="#2A9AAA" stroke-width="1.5"/>
+
+      <!-- Brick mortar lines -->
+      <line x1="-180" y1="10" x2="-90" y2="55" stroke="#1A7A8A" stroke-width="1" opacity="0.4"/>
+      <line x1="-90" y1="55" x2="0" y2="100" stroke="#1A7A8A" stroke-width="1" opacity="0.4"/>
+      <line x1="-135" y1="-15" x2="-135" y2="75" stroke="#1A7A8A" stroke-width="0.8" opacity="0.25"/>
+      <line x1="-45" y1="30" x2="-45" y2="120" stroke="#1A7A8A" stroke-width="0.8" opacity="0.25"/>
+
+      <!-- Studs on left face -->
+      <ellipse cx="-135" cy="-8" rx="10" ry="4" fill="#4ABFCF" stroke="#3AAFBF" stroke-width="1"/>
+      <ellipse cx="-135" cy="72" rx="10" ry="4" fill="#4ABFCF" stroke="#3AAFBF" stroke-width="1"/>
+      <ellipse cx="-45" cy="35" rx="10" ry="4" fill="#50C5D5" stroke="#3AAFBF" stroke-width="1"/>
+      <ellipse cx="-45" cy="115" rx="10" ry="4" fill="#50C5D5" stroke="#3AAFBF" stroke-width="1"/>
+    </g>
+
+    <!-- ============ RIGHT FACE — HOLY SPIRIT (Purple) — REST ============ -->
+    <g>
+      <!-- Z-tetromino + I-tetromino -->
+      <polygon points="0,10 90,-35 90,55 0,100" fill="#7B5B9E" stroke="#6B4B8E" stroke-width="1.5"/>
+      <polygon points="90,-35 180,-80 180,10 90,55" fill="#6B4B8E" stroke="#5B3B7E" stroke-width="1.5"/>
+
+      <polygon points="0,100 90,55 90,145 0,190" fill="#8B6BAE" stroke="#6B4B8E" stroke-width="1.5"/>
+      <polygon points="90,55 180,10 180,100 90,145" fill="#7050A0" stroke="#5B3B7E" stroke-width="1.5"/>
+
+      <!-- Brick mortar -->
+      <line x1="0" y1="100" x2="90" y2="55" stroke="#4A2A6E" stroke-width="1" opacity="0.4"/>
+      <line x1="90" y1="55" x2="180" y2="10" stroke="#4A2A6E" stroke-width="1" opacity="0.4"/>
+      <line x1="45" y1="30" x2="45" y2="120" stroke="#4A2A6E" stroke-width="0.8" opacity="0.25"/>
+      <line x1="135" y1="-15" x2="135" y2="75" stroke="#4A2A6E" stroke-width="0.8" opacity="0.25"/>
+
+      <!-- Studs on right face -->
+      <ellipse cx="45" cy="32" rx="10" ry="4" fill="#9B7BBE" stroke="#8B6BAE" stroke-width="1"/>
+      <ellipse cx="45" cy="112" rx="10" ry="4" fill="#9B7BBE" stroke="#8B6BAE" stroke-width="1"/>
+      <ellipse cx="135" cy="-10" rx="10" ry="4" fill="#8B6BAE" stroke="#7B5B9E" stroke-width="1"/>
+      <ellipse cx="135" cy="70" rx="10" ry="4" fill="#8B6BAE" stroke="#7B5B9E" stroke-width="1"/>
+    </g>
+
+    <!-- ============ FLOATING TETRIS PIECES (assembling) ============ -->
+
+    <!-- T-piece (blue) floating top-left -->
+    <g opacity="0.55" transform="translate(-230, -240)">
+      <polygon points="0,0 45,-22 90,0 45,22" fill="#4A90E2" stroke="#3A78C2" stroke-width="1"/>
+      <polygon points="-45,22 0,0 45,22 0,44" fill="#5A9AE8" stroke="#3A78C2" stroke-width="1"/>
+      <polygon points="45,22 90,0 135,22 90,44" fill="#3A80D2" stroke="#3A78C2" stroke-width="1"/>
+      <ellipse cx="45" cy="8" rx="7" ry="3.5" fill="#7AB4F4"/>
+    </g>
+
+    <!-- L-piece (cyan) floating right -->
+    <g opacity="0.4" transform="translate(240, -210)">
+      <polygon points="0,0 40,-20 80,0 40,20" fill="#3AAFBF" stroke="#2A9AAA" stroke-width="1"/>
+      <polygon points="0,0 40,20 40,55 0,35" fill="#2E9DAD" stroke="#2A9AAA" stroke-width="1"/>
+      <polygon points="40,20 80,0 80,35 40,55" fill="#289098" stroke="#2A9AAA" stroke-width="1"/>
+      <ellipse cx="40" cy="8" rx="6" ry="3" fill="#5ACFDF"/>
+    </g>
+
+    <!-- S-piece (purple) floating far right -->
+    <g opacity="0.3" transform="translate(300, -120)">
+      <polygon points="0,0 35,-18 70,0 35,18" fill="#8B6BAE" stroke="#7B5B9E" stroke-width="1"/>
+      <polygon points="35,-18 70,-36 105,-18 70,0" fill="#7B5B9E" stroke="#6B4B8E" stroke-width="1"/>
+    </g>
+
+    <!-- I-piece (blue) floating far left -->
+    <g opacity="0.25" transform="translate(-300, -150)">
+      <polygon points="0,0 30,-15 60,0 30,15" fill="#4A90E2" stroke="#3A78C2" stroke-width="1"/>
+      <polygon points="30,15 60,0 90,15 60,30" fill="#3A80D2" stroke="#3A78C2" stroke-width="1"/>
+    </g>
+
+    <!-- Z-piece (amber accent) floating top -->
+    <g opacity="0.35" transform="translate(50, -280)">
+      <polygon points="0,0 30,-15 60,0 30,15" fill="#C48B30" stroke="#A47020" stroke-width="1"/>
+      <polygon points="-30,15 0,0 30,15 0,30" fill="#D49B40" stroke="#A47020" stroke-width="1"/>
+    </g>
+  </g>
+
+  <!-- ================================================================== -->
+  <!--  TRINITY COORDINATE BAR  -1 · 0 · +1                              -->
+  <!-- ================================================================== -->
+  <g transform="translate(960, 555)">
+    <line x1="-120" y1="0" x2="120" y2="0" stroke="#1E2540" stroke-width="2" opacity="0.4"/>
+
+    <!-- -1 FATHER (Blue) -->
+    <circle cx="-120" cy="0" r="16" fill="#4A90E210" stroke="#4A90E2" stroke-width="2"/>
+    <text x="-120" y="5" font-family="'DejaVu Sans', sans-serif" font-size="13" font-weight="bold"
+          fill="#4A90E2" text-anchor="middle">-1</text>
+    <text x="-120" y="30" font-family="'DejaVu Sans Mono', monospace" font-size="9"
+          fill="#4A90E2" text-anchor="middle" opacity="0.7">ROCK</text>
+
+    <!-- 0 SON (Cyan) -->
+    <circle cx="0" cy="0" r="18" fill="#3AAFBF15" stroke="#3AAFBF" stroke-width="2.5"/>
+    <text x="0" y="5" font-family="'DejaVu Sans', sans-serif" font-size="14" font-weight="bold"
+          fill="#3AAFBF" text-anchor="middle">0</text>
+    <text x="0" y="30" font-family="'DejaVu Sans Mono', monospace" font-size="9"
+          fill="#3AAFBF" text-anchor="middle" opacity="0.7">DOOR</text>
+
+    <!-- +1 HOLY SPIRIT (Purple) -->
+    <circle cx="120" cy="0" r="16" fill="#8B6BAE10" stroke="#8B6BAE" stroke-width="2"/>
+    <text x="120" y="5" font-family="'DejaVu Sans', sans-serif" font-size="13" font-weight="bold"
+          fill="#8B6BAE" text-anchor="middle">+1</text>
+    <text x="120" y="30" font-family="'DejaVu Sans Mono', monospace" font-size="9"
+          fill="#8B6BAE" text-anchor="middle" opacity="0.7">REST</text>
+
+    <line x1="-104" y1="0" x2="-16" y2="0" stroke="#3AAFBF" stroke-width="2" opacity="0.3"/>
+    <line x1="16" y1="0" x2="104" y2="0" stroke="#8B6BAE" stroke-width="2" opacity="0.3"/>
+  </g>
+
+  <!-- ================================================================== -->
+  <!--  S7 HEART LOGO                                                     -->
+  <!-- ================================================================== -->
+  <g transform="translate(960, 615)">
+    <path d="M0,-10 C-5,-20 -20,-20 -20,-10 C-20,2 0,18 0,22 C0,18 20,2 20,-10 C20,-20 5,-20 0,-10Z"
+          fill="none" stroke="#4A90E2" stroke-width="1.8" opacity="0.6"/>
+    <path d="M0,-6 C-3,-13 -14,-13 -14,-6 C-14,2 0,14 0,16 C0,14 14,2 14,-6 C14,-13 3,-13 0,-6Z"
+          fill="#4A90E2" opacity="0.15"/>
+    <text x="0" y="7" font-family="'DejaVu Sans', sans-serif" font-size="12"
+          font-weight="bold" fill="#e8f0ff" text-anchor="middle" letter-spacing="1">S7</text>
+  </g>
+
+  <!-- ================================================================== -->
+  <!--  BRANDING TEXT                                                      -->
+  <!-- ================================================================== -->
+  <g filter="url(#tGlow)">
+    <text x="960" y="690" font-family="'DejaVu Sans', sans-serif" font-size="52"
+          font-weight="bold" fill="#e8f0ff" text-anchor="middle" letter-spacing="7">
+      SkyCAIR 7
+    </text>
+  </g>
+
+  <text x="960" y="730" font-family="'DejaVu Sans', sans-serif" font-size="20"
+        fill="#4A90E2" text-anchor="middle" letter-spacing="5" opacity="0.9">
+    SOVEREIGN COMPUTING PLATFORM
+  </text>
+
+  <text x="960" y="770" font-family="'DejaVu Sans', sans-serif" font-size="15"
+        fill="#3AAFBF" text-anchor="middle" letter-spacing="2" opacity="0.6">
+    AI + Humanity — Built on Trust
+  </text>
+
+  <!-- ================================================================== -->
+  <!--  LUKS PASSWORD AREA                                                -->
+  <!-- ================================================================== -->
+  <line x1="660" y1="830" x2="1260" y2="830" stroke="#4A90E2" stroke-width="0.5" opacity="0.2"/>
+
+  <text x="960" y="885" font-family="'DejaVu Sans Mono', monospace" font-size="18"
+        fill="#c8d8f0" text-anchor="middle" letter-spacing="1" opacity="0.7">
+    Unlock S7 · Enter Passphrase
+  </text>
+
+  <rect x="780" y="905" width="360" height="44" rx="8" ry="8"
+        fill="#0f1525" stroke="#4A90E2" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- ================================================================== -->
+  <!--  AMBIENT STARS                                                      -->
+  <!-- ================================================================== -->
+  <g fill="#4A90E2">
+    <circle cx="140" cy="90" r="1.5" opacity="0.35"/>
+    <circle cx="360" cy="170" r="1" opacity="0.25"/>
+    <circle cx="580" cy="55" r="1.5" opacity="0.4"/>
+    <circle cx="800" cy="210" r="1" opacity="0.2"/>
+    <circle cx="1120" cy="110" r="1.5" opacity="0.35"/>
+    <circle cx="1380" cy="75" r="1" opacity="0.25"/>
+    <circle cx="1600" cy="190" r="1.5" opacity="0.4"/>
+    <circle cx="1780" cy="95" r="1" opacity="0.2"/>
+    <circle cx="960" cy="45" r="2" opacity="0.5"/>
+  </g>
+  <g fill="#3AAFBF">
+    <circle cx="220" cy="920" r="1" opacity="0.2"/>
+    <circle cx="480" cy="980" r="1.5" opacity="0.25"/>
+    <circle cx="1460" cy="940" r="1" opacity="0.25"/>
+    <circle cx="1720" cy="1000" r="1.5" opacity="0.2"/>
+  </g>
+  <g fill="#8B6BAE">
+    <circle cx="90" cy="560" r="1" opacity="0.15"/>
+    <circle cx="1830" cy="520" r="1" opacity="0.15"/>
+    <circle cx="300" cy="440" r="1.2" opacity="0.2"/>
+    <circle cx="1650" cy="380" r="1.2" opacity="0.2"/>
+  </g>
+
+  <!-- Version -->
+  <text x="1890" y="1060" font-family="'DejaVu Sans Mono', monospace" font-size="10"
+        fill="#1E2540" text-anchor="end" opacity="0.5">
+    v2.0 · QUBi-Ti7 · -1.0.+1
+  </text>
+
+  <!-- Civilian mandate -->
+  <text x="30" y="1060" font-family="'DejaVu Sans Mono', monospace" font-size="9"
+        fill="#C48B30" text-anchor="start" opacity="0.3">
+    CIVILIAN ONLY
+  </text>
+</svg>

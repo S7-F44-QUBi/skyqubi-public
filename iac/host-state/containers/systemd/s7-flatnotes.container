@@ -1,0 +1,23 @@
+[Unit]
+Description=S7 FlatNotes (local markdown notes)
+Documentation=https://github.com/Dullage/flatnotes
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+ContainerName=s7_flatnotes
+Image=docker.io/dullage/flatnotes:v5.5.4
+PublishPort=127.0.0.1:8200:8080
+Volume=/s7/s7-timecapsule-assets/nomad-storage/flatnotes:/data:Z
+Environment=FLATNOTES_PATH=/data
+Environment=FLATNOTES_HOST=0.0.0.0
+Environment=FLATNOTES_AUTH_TYPE=none
+Environment=PUID=1000
+Environment=PGID=1000
+
+[Service]
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

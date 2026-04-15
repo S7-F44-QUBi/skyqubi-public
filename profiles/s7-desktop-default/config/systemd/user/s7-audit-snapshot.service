@@ -1,0 +1,15 @@
+[Unit]
+Description=S7 Audit Snapshot — continuous file change ingest
+Documentation=https://github.com/skycair-code/SkyQUBi-public
+After=s7-skyqubi-pod.service
+
+[Service]
+Type=oneshot
+ExecStart=/s7/skyqubi-private/engine/s7_audit_snapshot.sh
+# Keep the run short; if postgres is unreachable we'll try again at
+# the next timer tick.
+TimeoutStartSec=120
+Nice=10
+
+[Install]
+WantedBy=default.target

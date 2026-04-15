@@ -1,0 +1,20 @@
+[Unit]
+Description=S7 Living Audit — nightly snapshot of the audit Living Document
+Documentation=file:///s7/skyqubi-private/docs/internal/chef/01-trinity-foundation.md
+
+[Service]
+Type=oneshot
+# 1. Re-run the pre-sync gate so the Living Document captures the
+#    night's state (the gate always writes the doc; the leading '-'
+#    tells systemd to ignore the gate's exit code so the snapshot
+#    still runs even when the gate finds warnings).
+ExecStart=-/s7/skyqubi-private/iac/audit/pre-sync-gate.sh
+# 2. Insert-only cp the Living Document to audit-living/<date>.md.
+#    The script refuses to overwrite an existing date, so this is
+#    safe to re-run.
+ExecStart=/s7/skyqubi-private/iac/audit/nightly-snapshot.sh
+TimeoutStartSec=120
+Nice=10
+
+[Install]
+WantedBy=default.target

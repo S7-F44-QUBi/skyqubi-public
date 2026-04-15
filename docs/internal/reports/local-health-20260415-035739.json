@@ -1,0 +1,56 @@
+{
+  "schema": "s7-local-health/v1",
+  "generated_at": "2026-04-15T03:57:39Z",
+  "core_update": "v6-genesis",
+  "overall_status": "green",
+  "lifecycle": {
+    "pass": 55,
+    "fail": 0,
+    "total": 55
+  },
+  "audit_gate": {
+    "pass": 9,
+    "pinned": 18,
+    "warn": 0,
+    "block": 0
+  },
+  "pod": {
+    "running": true,
+    "status": "Running",
+    "containers": [
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      }
+    ]
+  },
+  "performance": {
+    "cws_latency": "00.010",
+    "ollama_port_running": "*:57081",
+    "samuel_skills": 1
+  },
+  "frozen_trees": {
+    "pending": 13
+  },
+  "findings": []
+}

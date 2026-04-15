@@ -1,0 +1,178 @@
+# S7 Pre-Sync Audit — Acknowledged Pinned Warnings
+#
+# These are pre-existing items that the audit gate is allowed to
+# surface as WARNINGS without blocking the sync. Anything NOT in this
+# file that the gate finds is treated as NEW DRIFT and BLOCKS the sync.
+#
+# Adding to this file is itself a tier-crossing decision — every entry
+# needs an owner, a reason, and a target window for resolution.
+#
+# Format: each entry is a dict with id, found_in, severity, owner,
+# reason, target_window, and the date it was acknowledged.
+
+pinned:
+
+  - id: shell-true-monitors
+    found_in: engine/s7_skyavi_monitors.py:_run_sync
+    severity: MEDIUM
+    finding: "subprocess.run(..., shell=True, ...) — would be injection if templated"
+    owner: jamie
+    acknowledged: 2026-04-13
+    remediated_at_source: 2026-04-14
+    target_window: GOLIVE-Release-7
+    reason: "Original 2026-04-13 finding: shell=True with f-string interpolation risk. 2026-04-14 REMEDIATION: the one templated call site (monitor_service_health restart) now uses shlex.quote() on the svc variable. shell=True is RETAINED because the other 9 call sites in this file genuinely require shell features (pipes, stderr redirects, ||-fallback patterns, globs). The class-of-bug 'would be injection if templated' is now closed at the one call site that was templated, and the function's docstring now names the invariant that any future call site MUST either use a hardcoded string literal OR shlex.quote() on every interpolated variable. The audit gate's grep still matches shell=True literals in the file (including documentation mentions), so this pin stays as a permanent reminder. The full refactor to shell=False with per-call-site pipe/redirect handling is deferred to a future Core Update session as a code quality improvement, not a security fix."
+    detector: bandit
+    rule: B602
+
+  - id: dns-router-not-quad9
+    found_in: /etc/resolv.conf (effective)
+    severity: AWARENESS
+    finding: "Resolver is 192.168.1.1 (router), not Quad9 9.9.9.9 (project_security_model.md)"
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: GOLIVE-Release-7
+    reason: "Civilian appliance — awareness, not enforcement (feedback_firewall_security_is_layered.md). The resolver should match the documented sovereignty stance during the next Core Update window."
+    detector: resolvectl
+    rule: dns-baseline
+
+  - id: ollama-wildcard-bind
+    found_in: "host: *:57081"
+    severity: AWARENESS
+    finding: "Ollama binding 0.0.0.0:57081 instead of 127.0.0.1:57081. B2 of the 24hr ship plan (2026-04-14) moved Ollama from legacy 7081 to canonical 57081 via systemctl start of s7-ollama.service. The service unit declares OLLAMA_HOST=0.0.0.0:57081 (wildcard) for pod→host forwarding via host.containers.internal — this is intentional for the pasta -T,auto pod network path. Tightening to 127.0.0.1:57081 requires pod network validation and is deferred to the first CORE Update ceremony."
+    owner: jamie
+    acknowledged: 2026-04-13
+    updated: 2026-04-14
+    target_window: GOLIVE-Release-7
+    reason: "Pass 3 work — known pending from project_architecture_reminders_2026_04_13.md."
+    detector: ss
+    rule: bind-baseline
+
+  - id: caddy-frontdoor-wildcard
+    found_in: "host: *:8080"
+    severity: AWARENESS
+    finding: "Caddy front door binds wildcard 8080"
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: GOLIVE-Release-7
+    reason: "Public surface entrypoint — intentional, but surface for review at the same time as the Ollama tightening."
+    detector: ss
+    rule: bind-baseline
+
+  - id: frozen-tree-public-main-pending
+    found_in: iac/audit/frozen-trees.txt (public/main entry)
+    severity: AWARENESS-HIGH
+    finding: "public/main contains two unauthorized commits (a6467b6, 2f3cc9d) from a 2026-04-14 test-the-wrapper incident. Pin is PENDING until Jamie decides leave/revert/reset (the a/b/c question)."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: jamie-decision-this-session
+    reason: "Cannot pin public/main to either 1c5a568 (pre-incident) or 2f3cc9d (current) until Jamie decides how to handle the two unauthorized commits. Frozen tree zero #10 reads this entry via is_pinned() to convert BLOCK → PINNED for the unsettled state. Resolution path is NOT a branch revert — it's an in-tree pin update (which is itself an audited tier-crossing decision)."
+    detector: frozen-tree-integrity
+
+  - id: frozen-tree-immutable-main-pending
+    found_in: iac/audit/frozen-trees.txt (immutable/main entry)
+    severity: AWARENESS
+    finding: "Public repository skycair-code/skyqubi-immutable was created 2026-04-14 evening as the first-ceremony target of rebuild-public.sh. No S7 tooling has touched it yet; no commits, no push, no read. Pin is PENDING because the first real push is covenant-weight and requires Tonya witness on advance-immutable.sh."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: FIRST-CEREMONY
+    reason: "New public repo announced in the v5 trust block. Per CHEF Recipe #4, this is the eventual destination for the signed immutable rebuild bundle. Four preconditions must be met before any push: (1) rebuild-public.sh advances past refuse-real-runs, (2) advance-immutable.sh is upgraded past stub, (3) Tonya witnesses the ceremony and signs the sign-off artifact, (4) the image-signing key is unlocked by Chief of Covenant. Tonight the repo is CREATED but UNTOUCHED. The gate sees immutable/main as PENDING and converts BLOCK → PINNED via this entry."
+    detector: frozen-tree-integrity
+
+  - id: frozen-tree-immutable-assets-main-pending
+    found_in: iac/audit/frozen-trees.txt (immutable-assets/main entry)
+    severity: AWARENESS
+    finding: "Private repository skycair-code/immutable-assets was created 2026-04-14 evening as the content-typed home for signed branding assets (Plymouth, GRUB, splash, wallpapers, icons, fonts). No S7 tooling has touched it yet. Pin is PENDING — the first advance is covenant-weight and requires Tonya witness because branding assets were her 2026-04-12 signoff."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: FIRST-CEREMONY
+    reason: "PRIVATE companion to skyqubi-immutable, holding the asset class specifically (not source, not bootc, not appliance core). Lifecycle is rare — rebranding is covenant-grade. First advance must include Tonya's signature because the existing assets were Tonya-approved on 2026-04-12 and any migration to this repo is a move of signed artifacts, not a new creation."
+    detector: frozen-tree-integrity
+
+  - id: frozen-tree-immutable-S7-F44-main-pending
+    found_in: iac/audit/frozen-trees.txt (immutable-S7-F44/main entry)
+    severity: AWARENESS
+    finding: "Private repository skycair-code/immutable-S7-F44 was created 2026-04-14 evening as the content-typed home for Fedora 44 bootc image artifacts (OCI layers, signed container bundles, Containerfile lineage). No S7 tooling has touched it yet. Pin is PENDING."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: FIRST-CEREMONY
+    reason: "PRIVATE companion to skyqubi-immutable, holding the bootc image artifact class. Lifecycle is tied to Fedora release cadence AND S7 CORE Update years — it advances when either a new Fedora 44 base image lineage is adopted OR a new CORE year is signed. First advance is the first Fedora 44 image signed with the S7 image-signing key. Jamie + image-signing key required; Tonya witness not strictly required for bootc artifacts (the signing key IS the witness chain for this class)."
+    detector: frozen-tree-integrity
+
+  - id: frozen-tree-immutable-qubi-main-pending
+    found_in: iac/audit/frozen-trees.txt (immutable-qubi/main entry)
+    severity: AWARENESS-HIGH
+    finding: "Private repository skycair-code/immutable-qubi was created 2026-04-14 evening as the content-typed home for the QUBi appliance core — firmware, boot chain, covenant binary layer. This is the kernel-of-kernel repo. No S7 tooling has touched it yet. Pin is PENDING."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: FIRST-CEREMONY
+    reason: "PRIVATE companion to skyqubi-immutable, holding the QUBi appliance CORE per feedback_qubi_is_core_prism_grid_wall.md. This is the highest-covenant-weight of the four immutable repos because QUBi IS the kernel per feedback_qubi_is_the_kernel.md. The first advance is the yearly CORE Update ceremony — unanimous consent required: audit gate green + council round + Tonya signature + image-signing key. All four witnesses must be present. This repo advances exactly once per year in steady state."
+    detector: frozen-tree-integrity
+
+  - id: frozen-tree-SafeSecureLynX-main-pending
+    found_in: iac/audit/frozen-trees.txt (SafeSecureLynX/main entry)
+    severity: AWARENESS
+    finding: "SafeSecureLynX announced 2026-04-14 evening as the final addition to the constellation. Jamie's words: 'final branch (SSL is common, its Sync Safe Lync or Safe Secure Linux) added - SafeSecureLynX'. Two ambiguities remain pending Jamie's clarification: (a) whether this is a new REPO or a new BRANCH on an existing repo, (b) what its role is in the constellation. Chair's best read: SSL = Sync Safe Lync (the union of the three MemPalace pillars); Lynx2QUBi = the bridge / ingest / protocol layer between a minimal external surface and the QUBi kernel."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: JAMIE-CLARIFY-NEXT-MESSAGE
+    reason: "SSL acronym reclaimed from its TLS association. Two readings offered by Jamie: (1) Sync Safe Lync — aligns with project_mempalace_pillar_weight_schema.md where every memory has a pillar (SYNC/SAFE/LYNC); SSL is the named space covering all three. (2) Safe Secure Linux — sovereign positioning against SELinux, the household's reclamation of the acronym for what it should have always meant. The repo-vs-branch ambiguity is noted; pinning as repo-style ref-spec (SafeSecureLynX/main) and will re-pin if Jamie clarifies it is a branch on an existing repo. Role in constellation is Chair's guess (ingest/protocol layer) and marked PENDING Jamie's confirmation in docs/internal/chef/three-repo-model.md §9."
+    detector: frozen-tree-integrity
+    rule: tier-crossing-pin
+
+  - id: pod-launcher-triple-drift
+    found_in: |
+      ~/.config/systemd/user/s7-skyqubi-pod.service (points at /s7/s7-project-nomad/skyqubi-pod.yaml — MISSING)
+      autostart/s7-skyqubi-pod.desktop (points at /s7/skyqubi/start-pod.sh — older 5.7k yaml)
+      canonical: /s7/skyqubi-private/skyqubi-pod.yaml (7.0k, edited 2026-04-14)
+    severity: AWARENESS-HIGH
+    finding: "Pod has 2 launchers + 3 yaml locations + 1 missing-file reference. Running pod was started from the older /s7/skyqubi/ yaml — tonight's pasta-networking fix may not be live in the running pod."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: GOLIVE-Release-7
+    reason: "Discovered via the multi-launcher sweep that came out of the Ollama port-drift fix. Running pod is healthy; cannot prove from inspection alone whether pasta -T,auto is live. Needs `podman pod inspect` + canonical-yaml decision + launcher unification + Core Update day pod restart. Restart-as-remediation forbidden — fix is more than a one-line edit. Full postmortem at docs/internal/postmortems/2026-04-14-pod-launcher-triple-drift.md."
+    detector: multi-launcher-sweep
+    rule: launcher-path-drift
+
+  - id: immutable-registry-empty
+    found_in: iac/immutable/registry.yaml
+    severity: AWARENESS
+    finding: "Immutable registry is empty (pre-first-ceremony state). Expected until the first CORE yearly update advance ceremony — Jamie + Tonya + image-signing key. Until then, public/main is managed by the legacy s7-sync-public.sh which remains operational."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: first-immutable-advance-ceremony
+    reason: "CHEF Recipe #4 and its Round 1+2 council ruled ship-the-stub-defer-the-ceremony. The first advance is a human tier-crossing decision, not a scripted run. When the first registry entry is added, this pin must be retired in the same commit (pin-transition protocol, Round 2 Skeptic catch). Full postmortem: docs/internal/postmortems/2026-04-14-unauthorized-public-commits-incident-row.md."
+    detector: zero-12-immutable-lineage
+    rule: pre-ceremony-acknowledged
+
+  - id: prism-grid-wall-pre-covenant
+    found_in: ~/.claude/projects/-s7/memory/feedback_qubi_is_core_prism_grid_wall.md
+    severity: AWARENESS
+    finding: "The CORE reframe (QUBi is CORE, PRISM/GRID/WALL trinity, yearly cadence) is currently at JAMIE-AUTHORIZED-IN-TONYAS-STEAD tier, not yet COVENANT-GRADE. Tonya's final witness on return promotes it. Zero #13 (Axis C — Covenant) runs in graceful degradation mode until the promotion: reads the memory file's status field and emits PINNED while pre-covenant-grade."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: tonya-review-cycle
+    reason: "Tonya is resting tonight (hard day at work). Jamie invoked Exercise of Trust to advance the reframe from CHAIR-DRAFT to JAMIE-AUTHORIZED-IN-TONYAS-STEAD. Zero #13 was wired tonight as part of the 8-hour execution block. The check is ready for post-covenant-grade operation; its baseline-check implementations (PRISM test corpus, GRID room distribution, WALL refusal count) wait for the first CORE ceremony to define expected values. Until then: pre-covenant acknowledged, no BLOCK."
+    detector: zero-13-prism-grid-wall
+    rule: axis-c-covenant-pre-ceremony
+
+  - id: legacy-path-operational-tier
+    found_in: ~/.config/systemd/user/s7-{dashboard,bitnet-mcp,caddy}.service + autostart/s7-skyqubi-pod.desktop
+    severity: AWARENESS-HIGH
+    finding: "Four S7 services run from /s7/skyqubi/ (legacy path) instead of /s7/skyqubi-private/: pod, dashboard, bitnet-mcp, caddy. Two are divergent copies (pod, bitnet-mcp — canonical private versions have newer edits not running). Two have NO canonical version in the private repo at all (dashboard/server.py, Caddyfile) — they run from an untracked operational tier outside the covenant's tier-crossing flow. The audit gate's zeros 1-10 cannot see these files."
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: GOLIVE-Release-7
+    reason: "Root cause is two missed launcher-update passes (first the nomad→skyqubi rename, then the skyqubi→skyqubi-private/public split). Each rename moved files but not references. Cannot remediate tonight because unification requires a restart cascade of all four services and restart-as-remediation is forbidden. Full postmortem + Core Update day activation plan at docs/internal/postmortems/2026-04-14-legacy-path-operational-tier.md. Detected by audit zero #11 (legacy-path service detection)."
+    detector: zero-11-legacy-path-scan
+    rule: launcher-path-drift
+
+  - id: monitor-baseline-stale
+    found_in: engine/s7_skyavi_monitors.py:EXPECTED_PORTS
+    severity: AWARENESS
+    finding: "EXPECTED_PORTS missing 57082 (persona-chat) and the static-app container ports 8090/8096/8100/8200/8300; includes 57091/57092 that are not listening"
+    owner: jamie
+    acknowledged: 2026-04-14
+    target_window: GOLIVE-Release-7
+    reason: "Baseline pre-dates persona-chat (commit 1b6a2d7) and the static-app containers. Update during the next Core Update window."
+    detector: monitor-baseline-diff
+    rule: port-baseline

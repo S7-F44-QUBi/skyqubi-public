@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=S7 Vivaldi
+Comment=Full-featured web browser
+Exec=vivaldi-stable %U
+Icon=/s7/skyqubi-private/branding/icons/s7-shield-icon-256.png
+NoDisplay=false
+Categories=Network;
+MimeType=x-scheme-handler/unknown;x-scheme-handler/about;x-scheme-handler/https;x-scheme-handler/http;text/html;

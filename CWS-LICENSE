@@ -1,0 +1,112 @@
+CWS Business Source License 1.1
+================================
+
+License text copyright © 2026 123Tech / 2XR, LLC. All rights reserved.
+
+Parameters
+
+Licensor:             123Tech / 2XR, LLC
+                      321 Williams St, Arena, WI 53503, United States
+                      OmegaAnswers@123Tech.net
+
+Licensed Work:        Convergence Weight Schema (CWS) Engine
+                      QBIT Prism Convergence Vector Decomposition
+                      ForToken/RevToken Bidirectional Token Discernment
+                      7-Witness Consensus with RLHF Bandage Detection
+                      OCTi 8-Plane INSERT-Only Semantic Memory Architecture
+                      QUANTi Benchmark Module
+                      The QUBi Architecture (complete integrated system)
+
+                      As embodied in:
+                        engine/s7_prism.py
+                        engine/s7_discernment.py
+                        engine/s7_witness.py
+                        engine/s7_breaker.py
+                        engine/s7_quanti.py
+                        engine/s7_rag.py
+                        engine/s7_store.py
+                        engine/s7_bridge.py
+                        engine/s7_router.py
+                        engine/s7_server.py
+                        engine/s7_db.py
+                        engine/s7_http.py
+                        engine/s7_witness.py
+                        engine/s7_akashic.py
+                        engine/s7_skyavi_orchestrator.py
+                        engine/s7_skyavi.py
+                        engine/s7_skyavi_skills.py
+                        engine/s7_skyavi_monitors.py
+                        engine/s7_skyavi_comms.py
+                        engine/s7_molecular.py
+                        engine/sql/
+                        patents/
+
+Additional Use Grant:  You may use the Licensed Work for non-commercial,
+                       personal, educational, and research purposes without
+                       restriction, provided that:
+
+                       (a) You do not deploy the Licensed Work in a
+                           production environment serving more than 10
+                           concurrent users without a commercial license.
+
+                       (b) You comply with the Civilian-Only Covenant
+                           (see below).
+
+                       (c) You retain this license notice and all patent
+                           pending notices in any copy or derivative work.
+
+Change Date:           April 10, 2030
+
+Change License:        Apache License, Version 2.0
+
+-------------------------------------------------------------------------------
+
+CIVILIAN-ONLY COVENANT
+
+The Licensed Work and any derivative works may NOT be used for:
+
+  1. Weapons systems or autonomous lethal decision-making of any kind
+  2. Mass surveillance systems targeting civilian populations
+  3. Applications designed to harm human life or dignity
+  4. Any deployment that overrides human agency in consequential decisions
+     affecting life, liberty, or safety without human review
+  5. Military intelligence analysis, targeting, or operational planning
+  6. Law enforcement predictive policing or automated charging systems
+
+This covenant is a condition of the license. Violation terminates all
+rights granted herein immediately and without notice.
+
+-------------------------------------------------------------------------------
+
+NOTICE OF PATENT PENDING
+
+The Licensed Work is protected by one or more pending patent applications:
+
+  Case Reference: TPP99606
+  Inventor: Jamie Lee Clayton
+  Assignee: 123Tech / 2XR, LLC
+  Filed: April 2026, United States Patent and Trademark Office
+
+All rights in and to the patents are reserved by 123Tech / 2XR, LLC.
+This license does not grant any rights under any patents, patent
+applications, or other intellectual property rights of Licensor, except
+as expressly set forth herein.
+
+-------------------------------------------------------------------------------
+
+DISCLAIMER
+
+THE LICENSED WORK IS PROVIDED "AS IS". THE LICENSOR HEREBY DISCLAIMS ALL
+WARRANTIES, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE. THE LICENSOR
+SPECIFICALLY DISCLAIMS ALL IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT, AND ALL WARRANTIES
+ARISING FROM COURSE OF DEALING, USAGE, OR TRADE PRACTICE. THE LICENSOR
+WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+CONSEQUENTIAL, OR PUNITIVE DAMAGES OF ANY KIND ARISING OUT OF OR IN
+CONNECTION WITH THE LICENSED WORK.
+
+-------------------------------------------------------------------------------
+
+For commercial licensing inquiries:
+  OmegaAnswers@123Tech.net | jamie@123tech.net
+  123Tech / 2XR, LLC — 321 Williams St, Arena, WI 53503

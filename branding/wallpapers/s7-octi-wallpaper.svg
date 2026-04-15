@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  S7 SkyQUBi — OCTi Witness Network Wallpaper
+  Sandy sunset deep pastel palette · Tonya-approved 2026-04-12
+  Canonical colors: /s7/skyqubi-private/branding/palette.json
+  viewBox is 3840×2160 (16:9) so native 4K raster is a 1:1 pixel map;
+  1080p and 1440p scale down cleanly from the same source.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160" preserveAspectRatio="xMidYMid slice" aria-label="S7 SkyQUBi OCTi Witness Network">
+
+  <defs>
+    <!-- Sandy sunset background gradient: void → deep → surface -->
+    <radialGradient id="bgGrad" cx="50%" cy="55%" r="75%">
+      <stop offset="0%"  stop-color="#301a27"/>
+      <stop offset="45%" stop-color="#261624"/>
+      <stop offset="100%" stop-color="#1a0f1c"/>
+    </radialGradient>
+
+    <!-- Soft twilight halo behind the cube -->
+    <radialGradient id="haloGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#9b6fa8" stop-opacity="0.55"/>
+      <stop offset="40%" stop-color="#7a4a85" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#1a0f1c" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Cube face gradients (same as website) -->
+    <linearGradient id="cubeTop" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5b98d"/>
+      <stop offset="100%" stop-color="#d9a15b"/>
+    </linearGradient>
+    <linearGradient id="cubeLeft" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ea8c7a"/>
+      <stop offset="100%" stop-color="#7a4a85"/>
+    </linearGradient>
+    <linearGradient id="cubeRight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e8a575"/>
+      <stop offset="100%" stop-color="#9b6fa8"/>
+    </linearGradient>
+
+    <!-- Tentacle gradient: plum → lavender → peach -->
+    <linearGradient id="tentacleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#7a4a85" stop-opacity="0.90"/>
+      <stop offset="50%"  stop-color="#c9a4d1" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#f5b98d" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- CWS executive octagon radial gradient -->
+    <radialGradient id="cwsGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#fff8ec"/>
+      <stop offset="60%" stop-color="#f4c97b"/>
+      <stop offset="100%" stop-color="#9b6fa8"/>
+    </radialGradient>
+
+    <!-- Star glow filter -->
+    <filter id="starGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="3840" height="2160" fill="url(#bgGrad)"/>
+
+  <!-- Scattered stars across the top half -->
+  <g fill="#f4c97b" opacity="0.5">
+    <circle cx="300"  cy="180"  r="2"/>
+    <circle cx="620"  cy="90"   r="3"/>
+    <circle cx="1050" cy="220"  r="2"/>
+    <circle cx="1400" cy="140"  r="2"/>
+    <circle cx="1800" cy="90"   r="3"/>
+    <circle cx="2200" cy="180"  r="2"/>
+    <circle cx="2560" cy="110"  r="2"/>
+    <circle cx="2950" cy="230"  r="3"/>
+    <circle cx="3300" cy="140"  r="2"/>
+    <circle cx="3600" cy="200"  r="2"/>
+    <circle cx="200"  cy="540"  r="2"/>
+    <circle cx="3700" cy="480"  r="2"/>
+    <circle cx="100"  cy="1100" r="2"/>
+    <circle cx="3740" cy="1200" r="2"/>
+  </g>
+
+  <!-- OCTi witness network — centered, ~1600px square viewBox mapped to 1600px -->
+  <!-- Translate so center of the 800×800 OCTi is at (1920, 1080) -->
+  <g transform="translate(1120, 280) scale(2.0)">
+
+    <!-- Soft twilight halo behind the whole network -->
+    <circle cx="400" cy="400" r="380" fill="url(#haloGrad)"/>
+
+    <!-- 7 witness tentacles -->
+    <g fill="none" stroke="url(#tentacleGrad)" stroke-width="2.5" stroke-linecap="round">
+      <path d="M 360 360 C 280 300, 220 240, 140 160"/>
+      <path d="M 440 360 C 520 300, 580 240, 660 160"/>
+      <path d="M 340 400 C 240 410, 160 410, 70 400"/>
+      <path d="M 460 400 C 560 410, 640 410, 730 400"/>
+      <path d="M 360 440 C 280 510, 220 560, 140 640"/>
+      <path d="M 440 440 C 520 510, 580 560, 660 640"/>
+      <path d="M 400 460 C 400 560, 400 640, 400 720"/>
+    </g>
+
+    <!-- Witness stars + labels -->
+    <g font-family="'Cormorant Garamond', serif" text-anchor="middle">
+      <g filter="url(#starGlow)">
+        <circle cx="140" cy="160" r="7" fill="#f4c97b"/>
+        <circle cx="660" cy="160" r="7" fill="#f4c97b"/>
+        <circle cx="70"  cy="400" r="7" fill="#f4c97b"/>
+        <circle cx="730" cy="400" r="7" fill="#f4c97b"/>
+        <circle cx="140" cy="640" r="7" fill="#f4c97b"/>
+        <circle cx="660" cy="640" r="7" fill="#f4c97b"/>
+        <circle cx="400" cy="720" r="7" fill="#f4c97b"/>
+      </g>
+
+      <text x="140" y="108" fill="#faebd4" font-size="17">LLaMA 3.2</text>
+      <text x="140" y="125" fill="#f8dcb5" font-size="14" font-style="italic">Sensory</text>
+
+      <text x="660" y="108" fill="#faebd4" font-size="17">Mistral 7B</text>
+      <text x="660" y="125" fill="#f8dcb5" font-size="14" font-style="italic">Episodic</text>
+
+      <text x="70"  y="358" fill="#faebd4" font-size="17">Gemma 2 9B</text>
+      <text x="70"  y="375" fill="#f8dcb5" font-size="14" font-style="italic">Semantic</text>
+
+      <text x="730" y="358" fill="#faebd4" font-size="17">Phi-4 14B</text>
+      <text x="730" y="375" fill="#f8dcb5" font-size="14" font-style="italic">Associative</text>
+
+      <text x="140" y="688" fill="#faebd4" font-size="17">Qwen 2.5 32B</text>
+      <text x="140" y="668" fill="#f8dcb5" font-size="14" font-style="italic">Procedural</text>
+
+      <text x="660" y="688" fill="#faebd4" font-size="17">DeepSeek R1</text>
+      <text x="660" y="668" fill="#f8dcb5" font-size="14" font-style="italic">Relational</text>
+
+      <text x="400" y="768" fill="#faebd4" font-size="17">BLOOM</text>
+      <text x="400" y="748" fill="#f8dcb5" font-size="14" font-style="italic">Lexical</text>
+    </g>
+
+    <!-- The QUBi cube (isometric) -->
+    <g>
+      <path d="M 400 320 L 470 360 L 400 400 L 330 360 Z" fill="url(#cubeTop)"   stroke="#fff8ec" stroke-width="1.5"/>
+      <path d="M 330 360 L 400 400 L 400 480 L 330 440 Z" fill="url(#cubeLeft)"  stroke="#fff8ec" stroke-width="1.5"/>
+      <path d="M 470 360 L 400 400 L 400 480 L 470 440 Z" fill="url(#cubeRight)" stroke="#fff8ec" stroke-width="1.5"/>
+    </g>
+
+    <!-- Italic i inside the cube -->
+    <text x="400" y="440" text-anchor="middle"
+          font-family="'Cormorant Garamond', serif"
+          font-style="italic" font-size="48"
+          fill="#f4c97b"
+          filter="url(#starGlow)">i</text>
+
+    <!-- CWS executive octagon above the cube -->
+    <g>
+      <polygon points="400,200 432,212 444,244 432,276 400,288 368,276 356,244 368,212"
+               fill="url(#cwsGrad)" stroke="#f4c97b" stroke-width="1.5"/>
+      <text x="400" y="248" text-anchor="middle"
+            font-family="'Cormorant Garamond', serif" font-size="18" fill="#1a0f1c">CWS</text>
+      <text x="400" y="268" text-anchor="middle"
+            font-family="'Cormorant Garamond', serif" font-size="11"
+            letter-spacing="2" fill="#1a0f1c">EXECUTIVE</text>
+    </g>
+  </g>
+
+  <!-- S7 SkyQUBi wordmark — bottom center -->
+  <g text-anchor="middle" font-family="'Cormorant Garamond', serif">
+    <text x="1920" y="1920" fill="#fff8ec" font-size="92" letter-spacing="6">
+      S7 SkyQUB<tspan font-style="italic" fill="#f4c97b">i</tspan>
+    </text>
+    <text x="1920" y="1980" fill="#f0e1cf" font-size="28" letter-spacing="14" font-style="italic">
+      YOUR AI · YOUR DATA · YOUR MACHINE
+    </text>
+    <text x="1920" y="2050" fill="#c9a4d1" font-size="22" letter-spacing="6" font-style="italic">
+      Love is the architecture.
+    </text>
+  </g>
+
+</svg>

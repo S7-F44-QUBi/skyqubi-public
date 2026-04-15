@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=S7 Browser
+Comment=Private web browsing — no tracking
+Exec=flatpak run io.github.ungoogled_software.ungoogled_chromium %U
+Icon=/usr/share/icons/WhiteSur-purple/apps/scalable/ungoogled-chromium.svg
+NoDisplay=false
+Categories=Network;
+MimeType=text/html;x-scheme-handler/http;x-scheme-handler/https;

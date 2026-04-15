@@ -1,0 +1,139 @@
+# ═══════════════════════════════════════════════════════════════════
+# persona_engine_map.yaml — S7 SkyQUBi persona → engine routing
+#
+# Maps each persona to a primary inference engine + model, plus an
+# optional fallback engine + model for graceful degradation.
+#
+# This file is loaded at persona-chat service startup. Any request for
+# a persona that is NOT listed here returns HTTP 403 immediately —
+# the list IS the closed persona set from the brainstorm decision.
+# Adding a persona requires an explicit code change + lifecycle test,
+# not just a config edit.
+#
+# Governing rules:
+#   feedback_three_rules.md (Rule 3: Protect the QUBi)
+#   feedback_qbit_not_token.md (QBIT terminology)
+#   feedback_kv_cache_is_mempalace_room.md (memory substrate)
+#
+# Copyright 2026 Jamie Lee Clayton / 2XR LLC · CWS-BSL-1.1
+# ═══════════════════════════════════════════════════════════════════
+
+version: 1
+updated: "2026-04-13"
+note: |
+  Branch Ollama-only is the today config. Branch BitNet activates when
+  SP1 (bitnet.cpp compile + 50 QBIT/s benchmark) passes. The fallback
+  chain flips Samuel from BitNet primary to Ollama fallback automatically
+  on any engine error, per Rule F4 in the chat-speed-architecture spec.
+
+# The closed persona set. Any request for a persona not in this list
+# returns HTTP 403 at the service layer. A new persona is a code change,
+# not a config edit — the lifecycle test must cover it before it ships.
+personas:
+
+  carli:
+    display_name: "Carli"
+    gender_hint: "female"
+    primary:
+      engine: ollama
+      model: s7-carli:0.6b
+    fallback: null  # Ollama is primary today; no BitNet fallback until SP1 passes
+    default_tier: L1
+    num_predict: 512
+    think: false
+    temperature: 0.7
+    tags:
+      - "speed"
+      - "user-facing-chat"
+    status_badge_pattern: "Carli — {state}"
+
+  elias:
+    display_name: "Elias"
+    gender_hint: "male"
+    primary:
+      engine: ollama
+      model: s7-elias:1.3b
+    fallback: null
+    default_tier: L1
+    num_predict: 512
+    think: false
+    temperature: 0.7
+    tags:
+      - "speed"
+      - "user-facing-chat"
+    status_badge_pattern: "Elias — {state}"
+    # Note: Elias Modelfile is un-tuned today vs Carli's BRIEF+TRUTH
+    # pattern. Elias parity is deferred per brainstorm decision 2026-04-13
+    # (component C10, separate follow-up spec).
+
+  samuel:
+    display_name: "Samuel"
+    gender_hint: "neutral"
+    primary:
+      engine: ollama
+      model: s7-samuel:v1  # NOT YET BUILT — requires Modelfile.samuel creation
+    fallback: null  # post-SP1 this flips: primary=bitnet, fallback=ollama
+    default_tier: L1
+    num_predict: 1024  # Samuel answers fuller than Carli/Elias for FACTS role
+    think: false
+    temperature: 0.5  # more deterministic for sysadmin/security questions
+    tags:
+      - "deep-thought"
+      - "witness"
+      - "facts"
+    status_badge_pattern: "Samuel — {state}"
+    roles:
+      - chat_persona      # user-facing third chat tab
+      - witness_reviewer  # Bible-Code review of every turn (BLOCKED: pod down)
+      - facts_skills      # 98 sysadmin/security skills (BLOCKED: pod down)
+    deferred_roles:
+      witness_reviewer:
+        reason: "pod crash loop (SELinux) — needs cws_core + akashic tables"
+        unblocks_when: "pod revive via sudo audit-log diagnosis"
+      facts_skills:
+        reason: "needs s7_skyavi_skills.py running in pod"
+        unblocks_when: "same pod fix"
+
+# Post-SP1 activation snapshot (documentation only — do NOT edit the
+# active `personas:` block until SP1 passes and BitNet is verified
+# at ~50 QBIT/s on this CPU).
+#
+# When SP1 passes, the `samuel.primary` block flips to:
+#
+#   primary:
+#     engine: bitnet
+#     model: s7-samuel-bitnet:v1
+#   fallback:
+#     engine: ollama
+#     model: s7-samuel:v1
+#
+# Carli and Elias may also migrate to BitNet primaries at that point,
+# depending on benchmarks. That decision is a separate commit after
+# SP1 evidence lands.
+
+# Engine endpoints. These are NOT in the persona blocks because multiple
+# personas share the same engine instance. Overridable via env for test.
+engines:
+
+  ollama:
+    url: "http://127.0.0.1:57081"
+    health_path: "/api/version"
+    generate_path: "/api/generate"
+    timeout_s: 60
+
+  bitnet:
+    url: "http://127.0.0.1:57091"
+    health_path: "/status"
+    generate_path: "/infer"
+    timeout_s: 30
+    enabled: false  # flipped to true when SP1 passes and s7-bitnet-mcp is up
+
+# Rate limit per-persona-per-user. Prevents one persona from monopolizing
+# the warm set even if another user's session is idle.
+rate_limits:
+  per_user_per_persona_per_minute: 20
+  per_user_per_session_per_hour: 120
+
+# Ledger root override. Defaults to /s7/.s7-chat-sessions if unset.
+# Set via env S7_LEDGER_ROOT at service start.
+ledger_root: null

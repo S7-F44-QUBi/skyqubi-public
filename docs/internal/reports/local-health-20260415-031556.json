@@ -1,0 +1,73 @@
+{
+  "schema": "s7-local-health/v1",
+  "generated_at": "2026-04-15T03:15:56Z",
+  "core_update": "v6-genesis",
+  "overall_status": "yellow",
+  "lifecycle": {
+    "pass": 47,
+    "fail": 8,
+    "total": 55
+  },
+  "audit_gate": {
+    "pass": 9,
+    "pinned": 18,
+    "warn": 0,
+    "block": 0
+  },
+  "pod": {
+    "running": true,
+    "status": "Running",
+    "containers": [
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      },
+      {
+        "name": null,
+        "state": null
+      }
+    ]
+  },
+  "performance": {
+    "cws_latency": "00.032",
+    "ollama_port_running": "*:7081",
+    "samuel_skills": 1
+  },
+  "frozen_trees": {
+    "pending": 13
+  },
+  "findings": [
+    {
+      "id": "lifecycle-ollama-drift",
+      "severity": "yellow",
+      "title": "Lifecycle test: 8 failures",
+      "root_cause": "known drift: Ollama on legacy 7081 not 57081 until autostart relogin",
+      "impact": "blocks-deploy if sustained; cosmetic in-session",
+      "next_step": "systemctl --user restart s7-ollama OR log out and back in"
+    },
+    {
+      "id": "ollama-legacy-port",
+      "severity": "yellow",
+      "title": "Ollama on legacy 7081 (not 57081)",
+      "root_cause": "autostart .desktop was source-fixed but running process predates restart — user has not re-logged-in",
+      "impact": "cosmetic at household level; breaks 7 lifecycle tests",
+      "next_step": "log out and back in (safest) OR systemctl --user restart s7-ollama"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# iac/boot/smoke-checks.txt
+# Newline-separated smoke checks the boot validator runs against a freshly
+# booted s7-base image. Format: URL<TAB>EXPECTED_STATUS<TAB>DESCRIPTION
+# Lines starting with # are comments. Blank lines ignored.
+http://127.0.0.1:8080/	200	S7 SPA root
+http://127.0.0.1:8080/health	200	S7 SPA health endpoint

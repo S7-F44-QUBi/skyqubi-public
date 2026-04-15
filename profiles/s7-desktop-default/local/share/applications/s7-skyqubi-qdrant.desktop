@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Vector DB
+GenericName=Vector Search Dashboard
+Comment=S7 SkyQUBi — Qdrant Vector Search Engine (:57086)
+Exec=xdg-open http://127.0.0.1:57086/dashboard
+Icon=s7-logo-icon
+Terminal=false
+Categories=X-S7-SkyQUBi;
+Keywords=SkyQUBi;Qdrant;Vector;Search;CWS;S7;
+StartupNotify=true

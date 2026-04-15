@@ -1,0 +1,9 @@
+{"ts":"2026-04-13T04:21:34Z","kind":"container","name":"quay.io/quay/busybox:latest","verdict":"fail","reason":"not pinned in manifest.yaml"}
+{"ts":"2026-04-13T04:21:44Z","kind":"container","name":"quay.io/quay/busybox:latest","verdict":"pass","sha256_ok":true,"sig_ok":"skipped","scan_ok":"skipped","size_bytes":1452382,"reason":""}
+{"ts":"2026-04-13T04:23:15Z","kind":"container","name":"quay.io/quay/busybox:latest","verdict":"pass","sha256_ok":true,"sig_ok":"skipped","scan_ok":"skipped","size_bytes":1452382,"reason":""}
+{"ts":"2026-04-13T04:24:42Z","kind":"container","name":"quay.io/quay/busybox:latest","verdict":"pass","sha256_ok":true,"sig_ok":"skipped","scan_ok":"skipped","size_bytes":1452382,"reason":""}
+{"ts":"2026-04-13T04:25:19Z","kind":"container","name":"quay.io/quay/busybox:latest","verdict":"pass","sha256_ok":true,"sig_ok":"skipped","scan_ok":"skipped","size_bytes":1452382,"reason":""}
+{"ts":"2026-04-13T04:55:26Z","kind":"container","name":"docker.io/jellyfin/jellyfin:latest","verdict":"pass","sha256_ok":true,"sig_ok":"skipped","scan_ok":"skipped","size_bytes":1552500801,"reason":""}
+{"ts":"2026-04-13T04:55:59Z","kind":"container","name":"docker.io/qdrant/qdrant:v1.16","verdict":"pass","sha256_ok":true,"sig_ok":"skipped","scan_ok":"skipped","size_bytes":192419323,"reason":""}
+{"ts":"2026-04-13T04:56:14Z","kind":"container","name":"docker.io/library/mysql:8.0","verdict":"pass","sha256_ok":true,"sig_ok":"skipped","scan_ok":"skipped","size_bytes":804177171,"reason":""}
+{"ts":"2026-04-13T04:56:34Z","kind":"container","name":"docker.io/library/redis:7-alpine","verdict":"pass","sha256_ok":true,"sig_ok":"skipped","scan_ok":"skipped","size_bytes":42229481,"reason":""}

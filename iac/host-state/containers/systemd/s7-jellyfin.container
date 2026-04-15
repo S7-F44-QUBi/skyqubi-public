@@ -1,0 +1,21 @@
+[Unit]
+Description=S7 Jellyfin (family media library)
+Documentation=https://jellyfin.org
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+ContainerName=s7-jellyfin
+Image=docker.io/jellyfin/jellyfin:latest
+HostName=s7-jellyfin
+PublishPort=127.0.0.1:8096:8096
+Volume=/s7/.local/share/s7-jellyfin/config:/config:Z
+Volume=/s7/.local/share/s7-jellyfin/cache:/cache:Z
+Volume=/s7/.local/share/s7-jellyfin/media:/media:ro,Z
+
+[Service]
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

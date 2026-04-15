@@ -1,0 +1,15 @@
+[Unit]
+Description=S7 CWS Engine v2.5 — SkyAVi + Samuel
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/s7/s7-project-nomad/admin
+EnvironmentFile=/s7/.env.secrets
+Environment=PYTHONPATH=/s7/s7-project-nomad/admin:/s7/s7-project-nomad/admin/engine
+ExecStart=/usr/bin/python3 -m uvicorn engine.s7_server:app --host 127.0.0.1 --port 57077
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

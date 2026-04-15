@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=S7 Budgie Panel
+Comment=Keep budgie-panel alive on login
+Exec=/usr/bin/budgie-panel --replace
+Terminal=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=3
+StartupNotify=false

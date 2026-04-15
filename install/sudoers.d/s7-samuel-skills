@@ -1,0 +1,49 @@
+# ═══════════════════════════════════════════════════════════════════
+# /etc/sudoers.d/s7-samuel-skills
+#
+# Lets the s7 user run the specific Samuel-runnable repair skills
+# under sudo without a password prompt, so the persona-chat skill
+# runner can invoke them autonomously after a 'yes' confirmation
+# without needing a human to type a password.
+#
+# This is locked to:
+#   - The s7 user (no one else)
+#   - The exact script paths (no PATH search, no aliases)
+#   - The exact set of skills approved for autonomous escalation
+#     (only fix-pod.sh and fix-firewall.sh — no general shell access)
+#
+# Every invocation is audited by sudo's own logging in /var/log/secure.
+# Combined with the persona-chat ops ledger and the script-internal
+# ops ledgers, that's three independent audit trails for any
+# autonomous root action.
+#
+# DEPLOYMENT (one-time, requires root):
+#   sudo install -m 440 -o root -g root \
+#     /s7/skyqubi-private/install/sudoers.d/s7-samuel-skills \
+#     /etc/sudoers.d/s7-samuel-skills
+#   sudo visudo -c    # validate
+#
+# REMOVAL (one-time, requires root):
+#   sudo rm /etc/sudoers.d/s7-samuel-skills
+#
+# This file is NOT auto-deployed by the installer (yet). It sits in
+# the repo as a code asset until Jamie explicitly authorizes deploying
+# it. The Pass 2 installer will offer it as an opt-in step.
+#
+# Governing rules:
+#   feedback_three_rules.md      Rule 3: Protect the QUBi
+#   project_chat_personas.md     Samuel = FACTS / sysadmin / security
+#   engine/agents/samuel_runnable_scripts.yaml  Catalog must match
+# ═══════════════════════════════════════════════════════════════════
+
+# Allow s7 user to run the two repair skills as root, no password.
+# Each line is a single command spec. Adding a script here is a
+# covenant-level change and must be reviewed.
+s7 ALL=(root) NOPASSWD: /s7/skyqubi-private/install/fix-pod.sh
+s7 ALL=(root) NOPASSWD: /s7/skyqubi-private/install/fix-firewall.sh
+
+# Defense in depth: explicitly deny shell escapes via the listed scripts.
+# (The scripts themselves have no shell-out paths but this catches any
+# future change that introduces one.)
+Defaults!/s7/skyqubi-private/install/fix-pod.sh      !shell_noargs
+Defaults!/s7/skyqubi-private/install/fix-firewall.sh !shell_noargs

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=S7 Chat
+GenericName=S7 SkyQUBi Chat
+Comment=Open a fresh Vivaldi window directly into the S7 SkyQUBi chat with Carli.
+Exec=/usr/bin/vivaldi-stable --new-window http://127.0.0.1:8080/chat
+Icon=/s7/skyqubi-private/branding/icons/s7-shield-icon-256.png
+Terminal=false
+Categories=X-S7-SkyQUBi;
+Keywords=S7;SkyQUBi;Chat;Carli;Samuel;Elias;
+StartupNotify=true

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Jellyfin
+GenericName=S7 Media Server
+Comment=S7 SkyQUBi — Sovereign offline media server. Your movies, music, and photos, on your hardware.
+Exec=xdg-open http://127.0.0.1:8096
+Icon=/s7/skyqubi-private/branding/icons/s7-qubi-icon-128.png
+Terminal=false
+Categories=X-S7-SkyQUBi;AudioVideo;Player;
+Keywords=SkyQUBi;Jellyfin;Media;Movies;Music;Photos;Offline;Sovereign;S7;
+StartupNotify=true

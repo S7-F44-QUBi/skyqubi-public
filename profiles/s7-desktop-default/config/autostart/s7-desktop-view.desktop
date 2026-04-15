@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=S7 Desktop View
+Comment=Renders wallpaper on Budgie Wayland
+Exec=/usr/bin/org.buddiesofbudgie.budgie-desktop-view
+Terminal=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=2
+StartupNotify=false

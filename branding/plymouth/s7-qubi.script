@@ -1,0 +1,67 @@
+# S7 QUBi — Plymouth Boot Script
+# S7 SkyQUBi — Protected by SkyAVi
+# Sovereign Computing · AI + Humanity · Built on Trust
+#
+# Palette: Sandy Sunset Deep Pastel (Tonya-approved 2026-04-12)
+# Canonical source: /s7/skyqubi-private/branding/palette.json
+# See also: /s7/skyqubi-private/docs/public/index.html :root block
+
+# ── Background — S7 Sandy Sunset (twilight plum → midnight wine) ────
+Window.SetBackgroundTopColor(0.102, 0.059, 0.110);     # --surface #301a27 ~top
+Window.SetBackgroundBottomColor(0.064, 0.035, 0.070);  # --void #1a0f1c ~bottom
+
+# ── OCTi watermark — centered, upper area ──────────────────────────
+logo_image = Image("watermark.png");
+logo_sprite = Sprite(logo_image);
+logo_sprite.SetX(Window.GetWidth() / 2 - logo_image.GetWidth() / 2);
+logo_sprite.SetY(Window.GetHeight() * 0.18);
+logo_sprite.SetOpacity(1.0);
+
+# ── Tagline — below logo, warm cream sand ─────────────────────────
+# RGB in 0.0-1.0 matching --text #faebd4
+tagline = Image.Text("S7 SkyQUBi — Sovereign Computing", 0.980, 0.922, 0.831, 1, "DejaVu Serif Bold 20");
+tagline_sprite = Sprite(tagline);
+tagline_sprite.SetX(Window.GetWidth() / 2 - tagline.GetWidth() / 2);
+tagline_sprite.SetY(Window.GetHeight() * 0.18 + logo_image.GetHeight() + 36);
+tagline_sprite.SetOpacity(1.0);
+
+# ── Sub-tagline — gold ────────────────────────────────────────────
+# RGB matching --accent-gold #f4c97b
+subtitle = Image.Text("Protected by SkyAVi", 0.957, 0.789, 0.482, 1, "DejaVu Serif Italic 15");
+subtitle_sprite = Sprite(subtitle);
+subtitle_sprite.SetX(Window.GetWidth() / 2 - subtitle.GetWidth() / 2);
+subtitle_sprite.SetY(Window.GetHeight() * 0.18 + logo_image.GetHeight() + 70);
+subtitle_sprite.SetOpacity(0.95);
+
+# ── Motto — lavender italic ───────────────────────────────────────
+# RGB matching --accent-lavender #c9a4d1
+motto = Image.Text("Love is the architecture.", 0.788, 0.643, 0.819, 1, "DejaVu Serif Italic 14");
+motto_sprite = Sprite(motto);
+motto_sprite.SetX(Window.GetWidth() / 2 - motto.GetWidth() / 2);
+motto_sprite.SetY(Window.GetHeight() * 0.82);
+motto_sprite.SetOpacity(0.85);
+
+# ── Progress bar — lower area ─────────────────────────────────────
+progress_box_image = Image("progress_box.png");
+progress_bar_original = Image("progress_bar.png");
+progress_bar.image = progress_bar_original.Scale(1, 6);
+progress_bar.sprite = Sprite();
+progress_box.sprite = Sprite();
+
+fun progress_callback(duration, progress) {
+    if (progress_bar.image.GetWidth() != Math.Int(progress * Window.GetWidth() * 0.4)) {
+        progress_bar.image = progress_bar_original.Scale(
+            Math.Int(progress * Window.GetWidth() * 0.4), 6
+        );
+        progress_bar.sprite.SetImage(progress_bar.image);
+    }
+    progress_box.sprite.SetImage(progress_box_image);
+    progress_box.sprite.SetX(Window.GetWidth() / 2 - Window.GetWidth() * 0.4 / 2);
+    progress_box.sprite.SetY(Window.GetHeight() * 0.75);
+    progress_box.sprite.SetOpacity(0.5);
+    progress_bar.sprite.SetX(Window.GetWidth() / 2 - Window.GetWidth() * 0.4 / 2);
+    progress_bar.sprite.SetY(Window.GetHeight() * 0.75);
+    progress_bar.sprite.SetOpacity(1.0);
+}
+
+Plymouth.SetBootProgressFunction(progress_callback);

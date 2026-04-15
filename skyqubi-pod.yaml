@@ -1,0 +1,227 @@
+# ═══════════════════════════════════════════════════════════════════
+# S7 SkyQUBi — Convergence Pod
+# UNIFIED LINUX SkyCAIR by S7 · 123Tech / 2XR, LLC
+#
+# N.O.M.A.D Command Center + CWS v2.5 — SkyAVi + Samuel
+# One pod. One management UI. All S7.
+#
+# Deploy:  podman play kube --network pasta:-T,auto skyqubi-pod.yaml
+# Stop:    podman play kube --down skyqubi-pod.yaml
+#
+# CRITICAL: the --network pasta:-T,auto flag is REQUIRED. Without it,
+# podman defaults to '-T none' which disables container→host TCP
+# forwarding. The admin container needs to reach host:57081 (ollama)
+# and host:57091 (bitnet), so the default would silently break Carli/
+# Elias/Samuel and the /witness endpoint. See:
+#   project_pasta_t_none_pod_network_2026_04_13.md  (lesson)
+#   man podman-play-kube                              (the docs that explain it)
+#
+# --network pasta:-T,auto stays link-local only (169.254.1.0/24,
+# RFC 3927) so it's loopback-only on the host — no LAN exposure.
+#
+# Love is the architecture.
+# ═══════════════════════════════════════════════════════════════════
+apiVersion: v1
+kind: Pod
+metadata:
+  name: s7-skyqubi
+  labels:
+    app: s7-skyqubi
+    brand: s7-skycair
+    vendor: 2xr-llc
+    version: "2.5"
+    arch: convergence
+    covenant: insert-only
+spec:
+  restartPolicy: Always
+  containers:
+
+    # ── S7 N.O.M.A.D Admin (Command Center on :57080) ────────────
+    - name: s7-admin
+      image: localhost/s7-skyqubi-admin:v2.6
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: false
+      ports:
+        - containerPort: 57080
+          hostPort: 57080
+          hostIP: 127.0.0.1
+      env:
+        - name: NODE_ENV
+          value: production
+        - name: PORT
+          value: "57080"
+        - name: HOST
+          value: 0.0.0.0
+        - name: APP_KEY
+          value: ${APP_KEY}
+        - name: URL
+          value: http://127.0.0.1:57080
+        - name: DB_HOST
+          value: 127.0.0.1
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_DATABASE
+          value: nomad
+        - name: DB_USER
+          value: nomad_user
+        - name: DB_PASSWORD
+          value: ${MYSQL_PASSWORD}
+        - name: DB_SSL
+          value: "false"
+        - name: REDIS_HOST
+          value: 127.0.0.1
+        - name: REDIS_PORT
+          value: "6379"
+        - name: LOG_LEVEL
+          value: info
+        - name: CWS_ENGINE_URL
+          value: http://127.0.0.1:7077
+        - name: CWS_ENGINE_TOKEN
+          value: ${CWS_ENGINE_TOKEN}
+        - name: PYTHONPATH
+          value: /app
+        - name: CWS_DB_HOST
+          value: 127.0.0.1
+        - name: CWS_DB_PORT
+          value: "5432"
+        - name: CWS_DB_NAME
+          value: ${POSTGRES_DB}
+        - name: CWS_DB_USER
+          value: ${POSTGRES_USER}
+        - name: CWS_DB_PASS
+          value: ${POSTGRES_PASSWORD}
+        # OLLAMA_URL override: 2026-04-13 fix for /witness ConnectError.
+        # engine/s7_http.py reads os.getenv("OLLAMA_URL", "http://127.0.0.1:57081").
+        # Inside the admin container, 127.0.0.1 means the container's own
+        # loopback — NOT the host Ollama. host.containers.internal is the
+        # rootless-podman-injected hostname that points back at the host.
+        # Without this override, /witness crashes with httpx.ConnectError.
+        # Takes effect on next pod restart.
+        - name: OLLAMA_URL
+          value: http://host.containers.internal:57081
+        # Same pattern for BITNET_URL (preempt the future BitNet fix)
+        - name: BITNET_URL
+          value: http://host.containers.internal:57091
+      volumeMounts:
+        - name: s7-admin-storage
+          mountPath: /app/storage
+        - name: s7-podman-sock
+          mountPath: /var/run/docker.sock
+      resources:
+        limits:
+          memory: 512Mi
+
+    # ── S7 MySQL (N.O.M.A.D admin database) ───────────────────────
+    #
+    # Covenant note (B5 of 24hr ship plan, 2026-04-14): all four
+    # docker.io images (mysql, pgvector, redis, qdrant) below are
+    # pinned to specific non-moving tags so the pod manifest is
+    # deterministic across rebuilds. For the full sovereignty story
+    # (offline pull + local verification workflow), see docs/public/
+    # DEPLOY.md and the signed-bundle distribution under the
+    # immutable constellation. These upstream images are used
+    # during development + early-release builds; post-v6 genesis
+    # the intent is to mirror them into the immutable-S7-F44 repo
+    # as signed OCI tars.
+    #
+    - name: s7-mysql
+      image: docker.io/mysql:8.0.39
+      securityContext:
+        allowPrivilegeEscalation: false
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: ${MYSQL_ROOT_PASSWORD}
+        - name: MYSQL_DATABASE
+          value: ${MYSQL_DATABASE}
+        - name: MYSQL_USER
+          value: ${MYSQL_USER}
+        - name: MYSQL_PASSWORD
+          value: ${MYSQL_PASSWORD}
+      volumeMounts:
+        - name: s7-mysql-data
+          mountPath: /var/lib/mysql
+      resources:
+        limits:
+          memory: 512Mi
+
+    # ── S7 CWS Database (PostgreSQL 16 + pgvector) ─────────────────
+    - name: s7-postgres
+      image: docker.io/pgvector/pgvector:pg16-v0.8.0
+      securityContext:
+        allowPrivilegeEscalation: false
+      ports:
+        - containerPort: 5432
+          hostPort: 57090
+          hostIP: 127.0.0.1
+      env:
+        - name: POSTGRES_USER
+          value: ${POSTGRES_USER}
+        - name: POSTGRES_PASSWORD
+          value: ${POSTGRES_PASSWORD}
+        - name: POSTGRES_DB
+          value: ${POSTGRES_DB}
+      volumeMounts:
+        - name: s7-pg-data
+          mountPath: /var/lib/postgresql/data
+        - name: s7-pg-init
+          mountPath: /docker-entrypoint-initdb.d
+          readOnly: true
+
+    # ── S7 Redis (shared: admin sessions + CWS cache) ─────────────
+    # Pinned to 7.4.1-alpine. Valkey (Linux Foundation fork, Apache 2.0)
+    # migration is on the v1.1 roadmap — Redis 7.4-alpine predates
+    # the 2024 RSAL license change and stays in scope for v6-genesis.
+    - name: s7-redis
+      image: docker.io/redis:7.4.1-alpine
+      securityContext:
+        allowPrivilegeEscalation: false
+      volumeMounts:
+        - name: s7-redis-data
+          mountPath: /data
+
+    # ── S7 Qdrant (document RAG vectors) ───────────────────────────
+    # Pinned to v1.12.5. 'latest' is covenant-incompatible —
+    # lineage determinism requires a specific tag. Upgrade cadence
+    # is a CORE Update day decision, not an automatic behavior.
+    - name: s7-qdrant
+      image: docker.io/qdrant/qdrant:v1.12.5
+      securityContext:
+        allowPrivilegeEscalation: false
+      ports:
+        - containerPort: 6333
+          hostPort: 57086
+          hostIP: 127.0.0.1
+      volumeMounts:
+        - name: s7-qdrant-data
+          mountPath: /qdrant/storage
+
+  volumes:
+    - name: s7-admin-storage
+      hostPath:
+        path: ${SKYQUBI_STORAGE}/admin
+        type: DirectoryOrCreate
+    - name: s7-podman-sock
+      hostPath:
+        path: ${PODMAN_SOCK}
+        type: Socket
+    - name: s7-mysql-data
+      hostPath:
+        path: ${SKYQUBI_STORAGE}/mysql
+        type: DirectoryOrCreate
+    - name: s7-pg-data
+      hostPath:
+        path: ${SKYQUBI_STORAGE}/postgres
+        type: DirectoryOrCreate
+    - name: s7-pg-init
+      hostPath:
+        path: ${SKYQUBI_SQL}
+        type: DirectoryOrCreate
+    - name: s7-redis-data
+      hostPath:
+        path: ${SKYQUBI_STORAGE}/redis
+        type: DirectoryOrCreate
+    - name: s7-qdrant-data
+      hostPath:
+        path: ${SKYQUBI_STORAGE}/qdrant
+        type: DirectoryOrCreate

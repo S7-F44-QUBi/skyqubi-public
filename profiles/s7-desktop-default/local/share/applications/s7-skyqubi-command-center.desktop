@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=SkyAVi - QUBi
+GenericName=SkyAVi QUBi
+Comment=S7 SkyQUBi — Protected by SkyAVi
+Exec=xdg-open http://127.0.0.1:8080
+Icon=/s7/.local/share/icons/s7-shield-icon.png
+Terminal=false
+Categories=X-S7-SkyQUBi;
+Keywords=SkyQUBi;AI;CWS;QUBi;S7;Convergence;
+StartupNotify=true

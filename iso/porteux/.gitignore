@@ -1,0 +1,5 @@
+work/
+module-build/
+dist/*
+!dist/.gitkeep
+*.log

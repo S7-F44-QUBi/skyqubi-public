@@ -1,0 +1,51 @@
+# Secrets — NEVER commit
+.env
+.env.secrets
+*.secret
+# Password files (belt-and-suspenders; real file lives at /s7/.config/s7/pg-password
+# which is outside the repo)
+pg-password
+**/pg-password
+
+# Node
+node_modules/
+dist/
+build/
+tmp/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.pytest_cache/
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Intake gate — quarantine is ephemeral, decisions are kept
+iac/intake/quarantine/
+# NOTE: iac/intake/decisions/ IS committed on purpose (audit trail)
+
+# S7 recall store — prior build artifacts keyed by content hash
+# (safety net against rebuild breakage, not in git)
+iso/porteux/recall/
+iso/rocky/recall/
+
+# Build artifacts
+*.xzm
+*.iso
+*.img
+*.tar
+
+# Pre-sync gate per-run JSON snapshots (Living Document is the committed trail)
+iac/audit/dist/

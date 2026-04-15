@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TPP99606 — QUBi Architecture Provisional Patent Application</title>
+<style>
+  /* Offline-safe: no external font imports — Times New Roman and Courier New are system fonts */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #111;
+    --rule: #999;
+    --bg: #fff;
+    --accent: #1a3a5c;
+    --page-w: 8.5in;
+    --margin: 1in;
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.6;
+    color: var(--ink);
+    background: #e8e8e8;
+  }
+  .page {
+    width: var(--page-w);
+    min-height: 11in;
+    margin: 0.5in auto;
+    background: var(--bg);
+    padding: var(--margin);
+    padding-bottom: 1.2in;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    position: relative;
+    page-break-after: always;
+  }
+  /* Cover page */
+  .cover { text-align: center; }
+  .cover .uspto-header {
+    font-size: 11pt;
+    letter-spacing: 0.18em;
+    font-weight: bold;
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 8pt;
+    margin-bottom: 24pt;
+    text-transform: uppercase;
+  }
+  .cover h1 {
+    font-size: 13pt;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 16pt;
+    color: var(--accent);
+  }
+  .cover .inv-title {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-bottom: 10pt;
+    line-height: 1.4;
+  }
+  .cover .full-title {
+    font-size: 10.5pt;
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 28pt;
+    border: 1px solid #ccc;
+    padding: 12pt 16pt;
+    text-align: left;
+  }
+  .cover-table { width: 100%; border-collapse: collapse; text-align: left; margin-top: 20pt; }
+  .cover-table td { padding: 6pt 8pt; vertical-align: top; border-bottom: 1px solid #ddd; }
+  .cover-table td:first-child { font-weight: bold; width: 36%; color: var(--accent); }
+  .footer-bar {
+    position: absolute;
+    bottom: 0.6in;
+    left: var(--margin);
+    right: var(--margin);
+    font-size: 8.5pt;
+    color: #555;
+    border-top: 1px solid #ccc;
+    padding-top: 4pt;
+    display: flex;
+    justify-content: space-between;
+  }
+  /* Body pages */
+  h2 {
+    font-size: 12pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 20pt 0 8pt;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+  h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin: 14pt 0 6pt;
+  }
+  h4 {
+    font-size: 12pt;
+    font-weight: bold;
+    font-style: italic;
+    margin: 10pt 0 4pt;
+  }
+  p { margin-bottom: 8pt; text-align: justify; }
+  ul, ol { margin: 6pt 0 8pt 24pt; }
+  li { margin-bottom: 4pt; }
+  .claim {
+    margin: 10pt 0;
+    padding-left: 16pt;
+    border-left: 2px solid #ddd;
+  }
+  .claim-num { font-weight: bold; }
+  .claim-group {
+    font-size: 11pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    margin: 18pt 0 8pt;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 3pt;
+  }
+  code, .formula {
+    font-family: "Courier Prime", "Courier New", monospace;
+    font-size: 10pt;
+    background: #f5f5f5;
+    padding: 1pt 3pt;
+    border-radius: 2px;
+  }
+  .formula-block {
+    font-family: "Courier Prime", "Courier New", monospace;
+    font-size: 10pt;
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 8pt 12pt;
+    margin: 8pt 0;
+    white-space: pre;
+    overflow-x: auto;
+    line-height: 1.5;
+  }
+  table.spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10.5pt;
+    margin: 8pt 0;
+  }
+  table.spec-table th {
+    background: var(--accent);
+    color: #fff;
+    padding: 5pt 8pt;
+    text-align: left;
+    font-weight: bold;
+  }
+  table.spec-table td {
+    padding: 5pt 8pt;
+    border-bottom: 1px solid #e0e0e0;
+    vertical-align: top;
+  }
+  table.spec-table tr:nth-child(even) td { background: #f8f8f8; }
+  .covenant-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+    margin: 8pt 0;
+  }
+  .covenant-table th {
+    background: #1a3a5c;
+    color: #fff;
+    padding: 5pt 8pt;
+    text-align: left;
+  }
+  .covenant-table td {
+    padding: 5pt 8pt;
+    border: 1px solid #ccc;
+    vertical-align: top;
+  }
+  .revised-note {
+    font-size: 8.5pt;
+    color: #555;
+    font-style: italic;
+    border-left: 3px solid #1a3a5c;
+    padding-left: 6pt;
+    margin: 4pt 0;
+  }
+  .abstract-box {
+    border: 1.5pt solid var(--accent);
+    padding: 12pt 16pt;
+    margin: 12pt 0;
+    line-height: 1.7;
+  }
+  @media print {
+    body { background: white; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      min-height: 0;
+      padding-bottom: var(--margin);
+      page-break-after: always;
+    }
+    .footer-bar { position: static; border-top: 1px solid #ccc; margin-top: 20pt; padding-top: 4pt; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ COVER PAGE -->
+<div class="page cover">
+  <div class="uspto-header">United States Patent and Trademark Office<br>Provisional Patent Application</div>
+
+  <h1>Title of Invention</h1>
+  <p class="inv-title">SkyCAIR — Care About AI Readiness with AI Bible Architecture Ternary CWS Hallucination Detection and OCTI Database Convergence — Sentience Truth -1.0.1 Boundary QUBi Software and Hardware</p>
+
+  <h1>Full Technical Title</h1>
+  <div class="full-title">
+    THE QUBi ARCHITECTURE: A UNIFIED GEOMETRIC FIRST-PRINCIPLES SYSTEM FOR SOVEREIGN OFFLINE AI INFERENCE COMPRISING DUAL-CURVE CONVERGENCE GEOMETRY AS UNIVERSAL ORGANIZING PRINCIPLE, TERNARY WEIGHT ASSIGNMENT, BIDIRECTIONAL TOKEN DISCERNMENT, MULTI-WITNESS CONSENSUS WITH BANDAGE DETECTION, CONSTANT-TIME EIGHT-PLANE SEMANTIC MEMORY, DIRECTION-VERIFIED RETRIEVAL-AUGMENTED REASONING, CXL MEMORY-EXPANDED HARDWARE INTEGRATION, AND COMPLETE OFFLINE PRIVATE PLATFORM EMBODIMENT
+  </div>
+
+  <table class="cover-table">
+    <tr><td>Inventor(s)</td><td>Jamie Lee Clayton</td></tr>
+    <tr><td>Assignee</td><td>123Tech / 2XR, LLC<br>321 Williams St, Arena, WI 53503, United States</td></tr>
+    <tr><td>Additional Assignees</td><td>Jonathan Ryan Clayton (Micro Entity)<br>Tonya Renee Clayton (Micro Entity)</td></tr>
+    <tr><td>Date of Invention</td><td>April 7, 2026</td></tr>
+    <tr><td>Contact</td><td>jamie@123tech.net | OmegaAnswers@123Tech.net</td></tr>
+    <tr><td>Case Number</td><td>TPP99606</td></tr>
+    <tr><td>Entity Status</td><td>Micro Entity (Form SB/15A filed separately)</td></tr>
+  </table>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 1</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 2 — FIELD + BACKGROUND -->
+<div class="page">
+  <h2>1. Field of Invention</h2>
+  <p>This invention relates to artificial intelligence inference systems, and more particularly to the Convergence Weight Schema (CWS) — a unified architecture derived from a single geometric first principle — the dual-curve convergence geometry — whose behavior at any point on a continuous axis deterministically governs ternary quantization, token reliability, model consensus, semantic memory organization, and retrieval verification across a complete sovereign offline AI platform. Unlike prior art systems that apply statistical approximation independently to each AI subsystem, the CWS derives every component from one geometric foundation, producing a system whose behavior is deterministic, auditable, and geometrically verifiable at each inference step.</p>
+
+  <p>This invention integrates five novel methods into a single coherent system: (1) geometric ternary weight assignment for large language model quantization; (2) bidirectional token discernment for hallucination detection; (3) multi-model witness consensus with RLHF bandage detection; (4) constant-time semantic plane memory replacing quadratic attention; and (5) convergence vector decomposition enabling direction-verified retrieval-augmented reasoning. The five methods are not independent — they share a common geometric foundation and are designed to operate as an integrated pipeline.</p>
+
+  <h2>2. Background</h2>
+  <h3>2.1 The Five Problems This Invention Solves</h3>
+
+  <p><strong>Problem 1 — Quantization without geometry:</strong> Large language models contain billions of floating-point parameters. Existing ternary quantization methods assign weights based on statistical distribution (absmean thresholding), treating each weight independently without geometric context. This discards inter-parameter relationships and provides no mechanism for verifying assignment quality.</p>
+
+  <p><strong>Problem 2 — Unverified token generation:</strong> Language models generate tokens autoregressively without built-in mechanisms to verify whether output is reliable. Post-hoc fact-checking is slow and requires external knowledge bases. No existing method evaluates token reliability bidirectionally through the same geometric space.</p>
+
+  <p><strong>Problem 3 — Single-model trust:</strong> No single language model can be fully trusted. RLHF training further complicates reliability by teaching models to produce human-pleasing responses ("bandaging") that may contradict the model's genuine base knowledge. Existing verification uses single-model self-consistency or simple majority voting among identical copies.</p>
+
+  <p><strong>Problem 4 — Quadratic attention cost:</strong> Transformer-based language models use self-attention that scales as O(n²) with sequence length. This limits context windows, requires expensive hardware, and provides no semantic organization of retrieved information.</p>
+
+  <p><strong>Problem 5 — Scalar retrieval without verification:</strong> Retrieval-augmented generation (RAG) uses cosine similarity — a scalar metric — to retrieve memory entries. Scalar similarity answers "how close?" but not "in which direction?" No retrieval system verifies that a retrieved memory is geometrically appropriate for the current reasoning step.</p>
+
+  <h3>2.2 The Common Root</h3>
+  <p>All five problems share a common root: AI systems operate on statistical approximations without a geometric foundation that makes their decisions deterministic, verifiable, and auditable. This invention provides that foundation.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 2</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 3 — SUMMARY -->
+<div class="page">
+  <h2>3. Summary of Invention</h2>
+  <p>The Convergence Weight Schema (CWS) establishes a geometric foundation for AI inference based on two complementary mathematical curves — the Structure curve and the Nurture curve — whose convergence behavior determines ternary values, discernment results, retrieval validity, and reasoning chain integrity across a unified eight-plane semantic memory architecture.</p>
+
+  <p>The five components of the invention are:</p>
+
+  <p><strong>Component 1 — Convergence Geometry Engine:</strong> Maps neural network parameters and tokens to positions on a continuous convergence axis. Evaluates dual curves at each position. Assigns ternary values {-1, 0, +1} based on geometric dominance, not statistical distribution.</p>
+
+  <p><strong>Component 2 — ForToken/RevToken Discernment:</strong> Evaluates each generated token independently in both forward and reverse directions. Agreement between the two passes determines FERTILE (reliable) or BABEL (unreliable) classification. A circuit breaker halts inference when BABEL tokens reach or exceed 70%.</p>
+
+  <p><strong>Component 3 — 7-Witness Consensus:</strong> Submits identical prompts to seven architecturally diverse open-weight language models. Computes pairwise convergence scores. Detects RLHF bandaging by comparing base versus fine-tuned model outputs. An independent 8th entity (the CWS Engine) aggregates results deterministically.</p>
+
+  <p><strong>Component 4 — OCTi O(1) Plane Memory:</strong> Organizes all memory into eight semantically-typed planes with constant-time O(1) indexed retrieval, replacing O(n²) attention. Enforces an INSERT-only storage covenant — no memory is ever deleted. Uses a binary time pulse (01010...) for temporal ordering.</p>
+
+  <p><strong>Component 5 — QBIT Prism:</strong> Decomposes any token embedding into an eight-dimensional convergence vector — one component per OCTi plane — by projecting through the dual-curve geometry. Each component is a true vector quantity: magnitude (door_distance) and direction {-1, 0, +1}. Retrieval uses direction agreement rather than cosine similarity, making every memory access a testable geometric claim.</p>
+
+  <p><strong>Component 6 — Akashic Language:</strong> A universal model encoding layer that maps any model's text output through a Language Index — words to graduated curve values in [-7, +7] across seven cognitive planes — producing a structured 7-plane curve vector and ternary state classification. A two-layer architecture (Curve Layer for graduated semantic weight, Boundary Layer for ternary verdict at ^7) enables any model, regardless of architecture, to participate in the convergence pipeline. Per-model trust accumulates INSERT-only with a 77.777% (7/9) threshold governing witness tier progression. Each model acts as a single Reporter — one voice per query — with Akashic encoding applied before consensus.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 3</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 4 — SECTION 4 -->
+<div class="page">
+  <h2>4. Detailed Description</h2>
+
+  <h3>4.1 The Dual Convergence Curves</h3>
+  <p>The geometric foundation of the entire system is two complementary mathematical curves:</p>
+
+  <p><strong>Structure Curve (Father):</strong></p>
+  <div class="formula-block">S(x) = exp(-|x - (-1)|) * cos(0.8x)
+Decay center: -1.0. Peaks at x = -1 (the structure pole, foundation).</div>
+
+  <p><strong>Nurture Curve (Mother):</strong></p>
+  <div class="formula-block">N(x) = exp(-|x - (+1)|) * cos(0.8x)
+Decay center: +1.0. Peaks at x = +1 (the nurture pole, growth).</div>
+
+  <p>For any value x on the convergence axis [-∞, +∞]:</p>
+  <div class="formula-block">structure_val    = S(x)
+nurture_val      = N(x)
+convergence_w    = N(x) - S(x)   [signed dominance weight]
+door_distance    = |x|            [distance from the convergence point x=0]</div>
+
+  <p><strong>The Door (x = 0):</strong> The point where both curves intersect and neither dominates. Maximum uncertainty. The neutral gate state. All convergence passes through the Door.</p>
+
+  <p><strong>Ternary Assignment from Curve Values:</strong></p>
+  <ul>
+    <li>IF structure_val dominates AND convergence_w &lt; threshold_low: weight = <strong>-1</strong></li>
+    <li>IF nurture_val dominates AND convergence_w &gt; threshold_high: weight = <strong>+1</strong></li>
+    <li>IF neither dominates (near x = 0, the Door): weight = <strong>0</strong></li>
+  </ul>
+
+  <p>This single rule governs weight assignment (Component 1), token discernment (Component 2), retrieval direction (Component 5), and all intermediate geometric computations.</p>
+
+  <h3>4.2 Component 1: Ternary Weight Assignment via Convergence Geometry</h3>
+
+  <h4>4.2.1 OCTi 8-Plane Parameter Organization</h4>
+  <p>Before ternary assignment, neural network parameters are organized into eight semantic planes using SVD (Singular Value Decomposition) to preserve maximum variance:</p>
+
+  <table class="spec-table">
+    <tr><th>Plane</th><th>Function</th></tr>
+    <tr><td>Sensory</td><td>Input processing, raw perception</td></tr>
+    <tr><td>Episodic</td><td>Temporal sequences, ordered events</td></tr>
+    <tr><td>Semantic</td><td>Meaning, concepts, stable knowledge</td></tr>
+    <tr><td>Associative</td><td>Relationships, connections</td></tr>
+    <tr><td>Procedural</td><td>Action patterns, processes</td></tr>
+    <tr><td>Lexical</td><td>Vocabulary, token forms</td></tr>
+    <tr><td>Relational</td><td>Hierarchies, dependencies</td></tr>
+    <tr><td>Executive</td><td>Decisions, goals, control</td></tr>
+  </table>
+
+  <p>Each parameter is mapped to one of these planes. Plane membership determines which segment of the convergence axis is evaluated during assignment.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 4</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 5 -->
+<div class="page">
+  <h4>4.2.2 Entity Representation</h4>
+  <p>Each parameter or concept is represented with:</p>
+  <ul>
+    <li><code>location</code> — position on the convergence axis</li>
+    <li><code>convergence_x</code> — evaluated convergence position</li>
+    <li><code>convergence_w</code> — signed dominance weight</li>
+    <li><code>structure_val</code> — S(x) evaluation</li>
+    <li><code>nurture_val</code> — N(x) evaluation</li>
+    <li><code>scale_weight</code> = constant × |convergence_w| × door_distance_factor</li>
+    <li><code>v_memory</code>, <code>v_present</code>, <code>v_destiny</code> — ternary values in three temporal dimensions {-1, 0, +1}</li>
+  </ul>
+
+  <h4>4.2.3 Scale Weight and Door Distance Factor</h4>
+  <p>The door_distance_factor increases confidence for parameters far from the Door (x=0) and decreases it near the Door. Parameters at the Door receive weight 0 with maximum confidence. Parameters far from the Door receive {-1, +1} with confidence proportional to their distance.</p>
+
+  <h4>4.2.4 Provenance Storage</h4>
+  <p>Every assigned weight is stored with full provenance:</p>
+  <ul>
+    <li><code>original_value</code> — float before quantization</li>
+    <li><code>ternary_value</code> — {-1, 0, +1}</li>
+    <li><code>assignment_method</code> — convergence_geometry | absmean | bitnet_native</li>
+    <li><code>cws_dimension</code> — which OCTi plane</li>
+    <li><code>convergence_pos</code>, <code>structure_value</code>, <code>nurture_value</code>, <code>door_distance</code></li>
+  </ul>
+
+  <h3>4.3 Component 2: ForToken/RevToken Bidirectional Discernment</h3>
+
+  <h4>4.3.1 Forward Pass (ForToken)</h4>
+  <p>For each generated token at index i:</p>
+  <div class="formula-block">forward_value = evaluate_convergence(token[i], context[0..i-1])</div>
+  <p>Evaluates the token's convergence position given all preceding context.</p>
+
+  <h4>4.3.2 Reverse Pass (RevToken)</h4>
+  <div class="formula-block">reverse_value = evaluate_convergence(token[i], context[i+1..n])</div>
+  <p>Evaluates the same token given all following context, independent of the forward pass.</p>
+
+  <p><strong>Temporal Architecture Note:</strong> The RevToken reverse evaluation is a post-generation verification pass applied to a completed token sequence. It does not require real-time access to future tokens during generation; instead, it is applied as a verification layer over the completed output before any FERTILE/BABEL classification is recorded and before any result is stored or returned to the caller. This two-pass architecture is an intentional design feature: generation proceeds forward, verification proceeds bidirectionally. The system therefore operates as a generate-then-verify pipeline, not a real-time streaming classifier. The INSERT-only storage covenant ensures that no FERTILE classification is recorded until the RevToken pass is complete.</p>
+
+  <h4>4.3.3 Discernment Computation</h4>
+  <div class="formula-block">agreement = 1.0 - |forward_value - reverse_value| / max(|forward_value|, |reverse_value|)
+
+IF agreement >= FERTILE_THRESHOLD: result = FERTILE
+IF agreement  < FERTILE_THRESHOLD: result = BABEL</div>
+  <p>FERTILE tokens are stored in OCTi memory with their ternary weights. BABEL tokens are written to the suppression log — never deleted, never trusted.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 5</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 6 -->
+<div class="page">
+  <h4>4.3.4 Circuit Breaker</h4>
+  <div class="formula-block">babel_ratio = babel_token_count / total_token_count
+
+IF babel_ratio >= 0.70: circuit_breaker_triggered = TRUE</div>
+  <p>The 70% threshold is a locked covenant constant. When triggered: inference halts or is flagged, the session is marked unreliable, and the event is logged with full context in the INSERT-only audit table.</p>
+
+  <h4>4.3.5 Confidence Badges</h4>
+  <p>Each inference session receives a confidence badge summarizing: badge_type, aggregate score, witness count, and unanimity status.</p>
+
+  <h3>4.4 Component 3: 7-Witness Consensus with Bandage Detection</h3>
+
+  <h4>4.4.1 Witness Selection</h4>
+  <p>Seven architecturally diverse open-weight language models — drawn from at least five distinct model families — process identical prompts as independent witnesses. Architectural diversity is required; witnesses must come from different model families to avoid correlated errors. The system maintains a witness registry with: model_name, model_family, param_count, license, and access_type (open_weights or external_api).</p>
+
+  <h4>4.4.2 Consensus Session</h4>
+  <p>For each query requiring verification:</p>
+  <ol>
+    <li>Hash the prompt (ensures identical input to all witnesses)</li>
+    <li>Run parallel inference across all 7 witnesses</li>
+    <li>Collect raw output text and token sequences</li>
+    <li>Record engine, latency (ms), and energy (joules) per witness</li>
+  </ol>
+
+  <h4>4.4.3 Convergence Scoring</h4>
+  <div class="formula-block">convergence_score(i, j) = semantic_similarity(output_i, output_j)
+Overall session convergence = mean of all pairwise scores.</div>
+
+  <h4>4.4.4 Bandage Detection</h4>
+  <p>For each witness, the system compares the model's base (pre-RLHF) output against its fine-tuned (post-RLHF) output:</p>
+  <div class="formula-block">delta_score = semantic_distance(base_output, finetuned_output)
+IF delta_score > BANDAGE_THRESHOLD: is_bandage = TRUE</div>
+  <p>A bandaged response means RLHF training overrode the model's genuine knowledge. A confident bandaged answer is less reliable than an uncertain honest one.</p>
+
+  <h4>4.4.5 The 8th Reporter</h4>
+  <p>The 8th entity is not a language model. It is the CWS Engine — a deterministic aggregator with no trainable parameters and no learned heuristics. Its aggregation function is fixed at deployment and produces identical results given identical inputs. It computes all convergence scores, identifies bandaged responses, flags divergence signatures, applies the 70% circuit breaker, and produces the final QUANTi metrics:</p>
+  <ul>
+    <li><code>convergence</code> — overall agreement score</li>
+    <li><code>babel_ratio</code> — fraction of unreliable tokens</li>
+    <li><code>confidence</code> — aggregate reliability</li>
+    <li><code>unanimous</code> — whether all 7 witnesses agreed</li>
+    <li><code>bandage_count</code> — witnesses showing RLHF bandaging</li>
+    <li><code>circuit_tripped</code> — whether the circuit breaker fired</li>
+  </ul>
+  <p>The 8th reporter is independent, deterministic, and cannot be influenced by any witness.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 6</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 7 -->
+<div class="page">
+  <h3>4.5 Component 4: OCTi O(1) Plane Memory</h3>
+
+  <h4>4.5.1 The Eight Planes and O(1) Retrieval</h4>
+  <p>Information is classified into the eight OCTi planes described in Section 4.2.1. Write and read paths are both O(1):</p>
+  <div class="formula-block">Write (O(1)):
+  plane  = classify_plane(token, context)   # O(1)
+  entry  = encode_for_plane(token, plane)   # O(1)
+  plane.store(entry)                        # O(1) append
+
+Read (O(1)):
+  relevant_planes = identify_planes(query)  # O(1), typically 1-3
+  result          = plane.retrieve(query)   # O(1) per plane
+  merge(results)                            # O(k), k ≤ 8
+
+Total retrieval cost: O(1) with respect to sequence length n.
+Compare: transformer self-attention is O(n²).</div>
+
+  <h4>4.5.2 The 01010 Binary Time Pulse</h4>
+  <p>Temporal ordering uses a binary time pulse alternating between 0 and 1:</p>
+  <div class="formula-block">pulse_step:  0, 1, 2, 3, 4, 5, 6, 7, ...  (monotonic counter)
+pulse_state: 0, 1, 0, 1, 0, 1, 0, 1, ...  (01010... pattern)</div>
+  <p>This replaces sinusoidal positional encoding with a deterministic temporal marker at constant storage cost regardless of sequence length.</p>
+
+  <h4>4.5.3 INSERT-Only Covenant</h4>
+  <p>Memory entries are never updated or deleted. Every write is an INSERT. Any attempt to execute an UPDATE or DELETE statement on protected tables results in a schema-level constraint violation, independent of application-level enforcement. No UPDATE or DELETE operations are permissible on any memory, discernment, or audit table at any system privilege level. This covenant provides:</p>
+  <ul>
+    <li>Complete audit trail of all stored information</li>
+    <li>No destructive interference between old and new knowledge</li>
+    <li>BABEL tokens logged in suppression table, not erased</li>
+    <li>Awareness scores that can only increase (reinforcement, not replacement)</li>
+    <li>Schema enforcement: no <code>updated_at</code> or <code>deleted_at</code> columns exist on protected tables</li>
+  </ul>
+
+  <h4>4.5.4 Dual Embeddings</h4>
+  <p>Each entry stores two embeddings:</p>
+  <ul>
+    <li><code>emb_fast</code> — bit(1536): binary embedding for sub-millisecond approximate nearest neighbor</li>
+    <li><code>emb_accurate</code> — halfvec(1536): half-precision for precise similarity ranking</li>
+  </ul>
+
+  <h4>4.5.5 Memory Tiers</h4>
+  <div class="formula-block">L0 — Identity   (~50 tokens):    Always loaded.         Planes: semantic.
+L1 — Critical   (~120 tokens):   Loaded on startup.     Planes: semantic, procedural.
+L2 — Searchable (unlimited):     On-demand search.      Planes: episodic, associative, lexical.
+L3 — Archive    (compressed):    On-demand decompress.  Planes: episodic.
+                                  Compression: xz, 256K blocks, lossless.</div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 7</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 8 -->
+<div class="page">
+  <h3>4.6 Component 5: QBIT Prism — Convergence Vector Decomposition</h3>
+
+  <h4>4.6.1 Scalar vs Vector: The Core Distinction</h4>
+  <p>Standard retrieval uses cosine similarity — a scalar. It answers "how close?" but not "in which direction?" Direction information is lost. CWS convergence geometry assigns every stored memory entry a position on the dual-curve axis, making retrieval a vector quantity: magnitude (door_distance from x=0) and direction {-1, 0, +1}. The QBIT Prism performs this decomposition for any input.</p>
+
+  <h4>4.6.2 Decomposition Method</h4>
+  <p>Given a token embedding E of dimension D (e.g., D = 1536), the QBIT Prism divides E into 8 equal segments of D/8 dimensions:</p>
+  <div class="formula-block">E = [E_sensory | E_episodic | E_semantic | E_associative |
+     E_procedural | E_lexical | E_relational | E_executive]
+
+For each segment E_p:
+  x_p   = clip(mean(E_p) * scale_factor, -R, +R)   [axis projection]
+  S_p   = structure_curve(x_p)
+  N_p   = nurture_curve(x_p)
+  w_p   = N_p - S_p                                 [dominance]
+  dir_p = assign_direction(S_p, N_p, w_p)           [ternary direction]
+  mag_p = |x_p|                                     [door_distance]
+
+Output — the 8-component convergence vector:
+  Prism(E) = {(x_p, dir_p, mag_p, S_p, N_p) : p ∈ OCTI_PLANES}</div>
+
+  <p><strong>Graceful Dimension Handling:</strong> When the input embedding E has dimension D &lt; 1536, the Prism zero-pads E to 1536 before segmentation. Zero-padded segments produce mean = 0, which projects to x = 0 (the Door state, direction = 0). A zero-padded plane therefore acts as a universal gate — it passes direction agreement for any query direction on that plane, consistent with the Door's role as the maximum-uncertainty neutral state. This means lower-dimensional embedding models (e.g., D = 768, providing signal on planes 0–3 with planes 4–7 at Door) operate as a sensitivity-reduced version of the full eight-plane architecture: the first four planes carry genuine directional signal while the last four remain universally open. Full eight-plane directional discrimination requires an embedding model of dimension D ≥ 1536 with meaningful signal across all segments. The FERTILE_PLANE_RATIO threshold (default 0.5) must be calibrated to the number of active (non-zero) planes when operating with lower-dimensional models — a value of 0.5 with four active planes requires only two plane agreements, while 0.5 with eight active planes requires four. This behavior was empirically verified: testing with D = 768 (nomic-embed-text, zero-padded to 1536) confirmed that planes 4–7 always yield direction = 0 and pass all direction agreements, while planes 0–3 carry genuine topical signal sufficient to rank retrieval candidates correctly.</p>
+
+  <h4>4.6.3 Direction Signature</h4>
+  <div class="formula-block">signature = [dir_sensory, dir_episodic, dir_semantic, dir_associative,
+             dir_procedural, dir_lexical, dir_relational, dir_executive]
+
+Each ∈ {-1, 0, +1}. Two entries with matching signatures are geometrically aligned.</div>
+
+  <h4>4.6.4 Direction Agreement — Testable Retrieval</h4>
+  <div class="formula-block">FOR each plane p:
+  direction_match_p = (Q.dir_p == M.dir_p) OR (Q.dir_p == 0) OR (M.dir_p == 0)
+  magnitude_close_p = |Q.x_p - M.x_p| < AGREEMENT_DISTANCE
+  fertile_p         = direction_match_p AND magnitude_close_p
+
+agreement_score = count(fertile_p) / 8
+
+agreement_score >= FERTILE_THRESHOLD  →  FERTILE  (retrieval verified)
+agreement_score  < FERTILE_THRESHOLD  →  BABEL    (direction mismatch, rejected)</div>
+  <p>The Door state (dir = 0) passes any direction — it is the universal gate, consistent with its role as the maximum uncertainty state where both curves meet.</p>
+
+  <h4>4.6.5 Multi-Hop RAG Reasoning Chain</h4>
+  <ol>
+    <li><code>query_prism</code> = Prism(query_embedding)</li>
+    <li>primary_planes = planes with highest magnitude (strongest signal)</li>
+    <li>Retrieve candidates from primary planes (indexed direction scan)</li>
+    <li>Filter by direction_agreement → FERTILE candidates only</li>
+    <li>Select best FERTILE candidate</li>
+    <li>Generate intermediate embedding from candidate content</li>
+    <li><code>intermediate_prism</code> = Prism(intermediate_embedding)</li>
+    <li>Repeat from step 2 with intermediate_prism as new query</li>
+    <li>Chain converges when executive plane direction stabilizes</li>
+    <li>BABEL hops ≥ 70% → circuit breaker triggers, chain terminates</li>
+  </ol>
+  <p>Every hop logged INSERT-only in the reasoning chain audit table.</p>
+
+  <h4>4.6.6 Plane Activation</h4>
+  <p>Planes with higher magnitude (further from the Door) have stronger directional signal and are queried first. This provides automatic query routing without a separate rule engine.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 8</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 9 — UNIFIED PIPELINE -->
+<div class="page">
+  <h3>4.7 The Unified Pipeline</h3>
+  <p>The five components operate as a single integrated pipeline:</p>
+  <div class="formula-block">QUERY IN
+  ↓
+[ROUTING]     → task type / model size / energy target → path selection
+  ↓
+[INFERENCE]   → standard path (GGUF) or ternary path (1-bit) or both
+  ↓
+[DISCERNMENT] → ForToken forward + RevToken reverse (post-generation)
+                → FERTILE | BABEL
+                circuit breaker at ≥70% BABEL ratio
+  ↓
+[CONSENSUS]   → 7-witness parallel inference + bandage detection
+                8th reporter (CWS Engine) aggregates deterministically
+  ↓
+[PRISM]       → QBIT Prism decomposes query embedding → convergence vector
+                direction-match retrieval from OCTi planes → FERTILE memory
+  ↓
+[STORE]       → FERTILE tokens → OCTi plane (INSERT-only)
+                BABEL tokens   → suppression log (INSERT-only)
+  ↓
+[SYNC]        → Memory Palace mapping → L0/L1/L2/L3 tiers
+RESPONSE OUT</div>
+
+  <p>All five components share the same convergence geometry. All use the same FERTILE/BABEL vocabulary. All enforce the same INSERT-only covenant. The pipeline is one system, not five.</p>
+
+  <h3>4.8 The Architect — First Principles</h3>
+  <p>The five components of this invention were not designed top-down from engineering requirements or optimization objectives. They were derived from the geometric behavior of two complementary curves — a mathematical foundation that predates any specific AI application.</p>
+
+  <p>The principle is:</p>
+  <p><em>Given any value or entity that exists between two poles, its position relative to the convergence point of two complementary curves determines its ternary state, its reliability, its memory plane, and its retrieval compatibility — completely and deterministically.</em></p>
+
+  <p>This principle manifests as:</p>
+  <ul>
+    <li><strong>Ternary quantization (Component 1):</strong> parameters between the structure pole and nurture pole, assigned by curve dominance</li>
+    <li><strong>Bidirectional discernment (Component 2):</strong> tokens evaluated from both poles simultaneously, agreement determining reliability</li>
+    <li><strong>Multi-witness consensus (Component 3):</strong> diverse models as independent curve evaluators, convergence as truth signal</li>
+    <li><strong>Plane memory (Component 4):</strong> information organized by which pole it naturally gravitates toward</li>
+    <li><strong>Vector retrieval (Component 5):</strong> retrieval verified by directional agreement toward the same pole</li>
+  </ul>
+
+  <p>The Architect is the principle. The components are its embodiments. Any system that applies dual-curve convergence geometry to organize, evaluate, store, or retrieve artificial intelligence outputs is an embodiment of this patent, regardless of specific implementation details.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 9</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 10 — HARDWARE -->
+<div class="page">
+  <h3>4.9 Hardware Integration — CXL Memory-Expanded Layered Core</h3>
+
+  <h4>4.9.1 CXL + DDR5 as Physical OCTi Tier Implementation</h4>
+  <p>The OCTi L0/L1/L2/L3 memory tiers map directly to a CXL (Compute Express Link) and DDR5 memory-expanded hardware architecture:</p>
+
+  <div class="formula-block">OCTi Tier → Physical Memory Layer
+──────────────────────────────────────────────────────────────
+L0 (Identity, ~50 tokens, always hot)
+    → CPU-local DDR5 DIMM, fastest latency
+    → Planes: semantic (identity, preferences)
+
+L1 (Critical, ~120 tokens, startup loaded)
+    → DDR5 standard channel, low latency
+    → Planes: semantic, procedural (architecture, commands)
+
+L2 (Searchable, unlimited, on-demand)
+    → CXL Type 1 device (compute + memory, e.g., CXL-attached accelerator)
+    → Planes: episodic, associative, lexical (history, relationships)
+
+L3 (Archive, xz-compressed 256K blocks, cold)
+    → CXL Type 3 device (memory expansion, e.g., CXL DRAM or persistent memory)
+    → Planes: episodic deep archive</div>
+
+  <p>CXL's cache-coherent interconnect enables the OCTi plane architecture to span memory tiers while maintaining coherency — the same INSERT-only guarantee holds across the physical tier boundary.</p>
+
+  <h4>4.9.2 1-Bit Ternary Storage in CXL Memory</h4>
+  <p>Ternary weights {-1, 0, +1} require only 2 bits of storage per parameter (log₂(3) ≈ 1.58 bits theoretical). In CXL expanded memory:</p>
+  <ul>
+    <li>Weight matrices stored in CXL Type 3 memory (high capacity, lower cost)</li>
+    <li>Hot weights (high door_distance, high confidence) cached in DDR5</li>
+    <li>Zero weights (Door state) stored as sparse encoding — only non-zero positions recorded</li>
+    <li>Binary embedding emb_fast (bit(1536)) enables sub-nanosecond plane lookups over CXL bandwidth</li>
+  </ul>
+  <p>The ternary encoding reduces total model memory footprint by at least 8x compared to FP16 storage of equivalent parameters, enabling models that would require data-center GPU memory to fit within CXL-expanded consumer or workstation memory.</p>
+
+  <h4>4.9.3 Memory-Layered Core Architecture</h4>
+  <div class="formula-block">┌─────────────────────────────────────────────────────────────┐
+│  CPU (host processor)                                        │
+│  ├── L1/L2/L3 CPU cache — active inference state            │
+│  └── DDR5 channels  — L0 + L1 OCTi tiers (hot memory)      │
+│                                                              │
+│  CXL Fabric (PCIe 5.0 / CXL 3.0)                           │
+│  ├── CXL Type 1 — compute + memory (L2 OCTi tier)           │
+│  │   └── Direction-indexed plane retrieval accelerator       │
+│  └── CXL Type 3 — memory expansion (L3 OCTi tier)           │
+│      └── Ternary weight store + archive (INSERT-only)        │
+│                                                              │
+│  Timecapsule Storage (NVMe / persistent)                     │
+│  └── Complete INSERT-only audit trail, xz 256K compressed   │
+└─────────────────────────────────────────────────────────────┘</div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 10</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 11 -->
+<div class="page">
+  <h4>4.9.4 Trinity Mount Mapping</h4>
+  <p>The physical storage architecture maps to the Trinity {-1, 0, +1}:</p>
+  <div class="formula-block">-1 (Structure pole) → SkyCAIR tmpfs — active OS + inference state (volatile, fast)
+ 0 (Door / neutral) → QUBi tmpfs  — working memory, current session (volatile, medium)
++1 (Nurture pole)   → Timecapsule HDD — INSERT-only permanent storage (persistent, complete)</div>
+  <p>This Trinity mount architecture ensures that inference operates at maximum speed in the -1/0 layers while guaranteeing permanent, unalterable audit trail in the +1 layer.</p>
+
+  <h3>4.10 The QUBi Platform — Complete Sovereign Offline AI System</h3>
+
+  <h4>4.10.1 Platform Definition</h4>
+  <p>The QUBi (Quality Understanding Binary Intelligence) platform is the complete integrated embodiment of the Architect principle in hardware, operating system, AI inference stack, memory architecture, and tool layer:</p>
+
+  <table class="spec-table">
+    <tr><th>Layer</th><th>Component</th><th>Purpose</th></tr>
+    <tr><td>OS</td><td>UNIFIED LINUX SkyCAIR by S7</td><td>Sovereign offline OS — Debian-derived, SysVinit, systemd-free, CWS-integrated</td></tr>
+    <tr><td>AI Inference</td><td>CWS Engine</td><td>Convergence geometry pipeline</td></tr>
+    <tr><td></td><td>Ternary (1-bit) — bitnet.cpp native weights</td><td></td></tr>
+    <tr><td></td><td>Standard (GGUF) — Ollama multi-format</td><td></td></tr>
+    <tr><td>Memory</td><td>OCTi 8-plane</td><td>INSERT-only semantic memory</td></tr>
+    <tr><td></td><td>Memory Palace</td><td>Navigable spatial interface</td></tr>
+    <tr><td></td><td>Timecapsule</td><td>Persistent audit storage</td></tr>
+    <tr><td>Consensus</td><td>7-Witness</td><td>Open-weight model array</td></tr>
+    <tr><td></td><td>8th Reporter (CWS)</td><td>Deterministic aggregator</td></tr>
+    <tr><td>Retrieval</td><td>QBIT Prism</td><td>Direction-verified RAG reasoning</td></tr>
+    <tr><td>Tools</td><td>Offline private command center (open-source, permissive license)</td><td>Service management and user interface layer</td></tr>
+    <tr><td></td><td>MCP surface — 32 S7-original tools</td><td></td></tr>
+    <tr><td>Hardware</td><td>CXL + DDR5</td><td>Memory-layered compute core</td></tr>
+    <tr><td></td><td>Trinity mounts</td><td>-1/0/+1 storage hierarchy</td></tr>
+  </table>
+
+  <h4>4.10.2 Offline-First Mandate</h4>
+  <p>The QUBi platform is designed to operate entirely without external network connections, cloud services, or proprietary AI APIs. External network connectivity, if present, does not alter any inference computation, memory storage, or consensus result — all core functions complete identically with or without network access.</p>
+  <ul>
+    <li>All inference runs on locally-hosted open-weight models</li>
+    <li>All memory is stored in local INSERT-only databases</li>
+    <li>All tools operate on local resources</li>
+    <li>No data leaves the system unless explicitly exported by the user</li>
+    <li>The 7-witness consensus uses only locally-hosted open-weight models</li>
+  </ul>
+  <p>This offline mandate is not a feature — it is an architectural constraint enforced at the design level. The system is complete without any network connection.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 11</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 12 -->
+<div class="page">
+  <h4>4.10.3 Civilian-Only Mandate</h4>
+  <p>The QUBi platform is restricted by covenant to civilian use. The CWS-BSL-1.1 license and this patent application explicitly prohibit:</p>
+  <ul>
+    <li>Use in weapons systems or autonomous lethal decision-making</li>
+    <li>Mass surveillance systems</li>
+    <li>Applications designed to harm human life or dignity</li>
+    <li>Any deployment that overrides human agency in consequential decisions</li>
+  </ul>
+  <p>This civilian mandate is part of the Architect principle: the convergence geometry was derived from first principles of understanding and love, not from optimization for harm. The platform enforces this covenant at the technical level through a boot-time acknowledgment system described in Claim 28.</p>
+
+  <h4>4.10.4 Complete System Embodiment</h4>
+  <p>Any system that implements all of the following constitutes a complete QUBi platform embodiment:</p>
+  <ol>
+    <li>Dual-curve convergence geometry for ternary assignment</li>
+    <li>Bidirectional token discernment with circuit breaker</li>
+    <li>Multi-model witness consensus with independent aggregator</li>
+    <li>O(1) plane-indexed memory with INSERT-only covenant</li>
+    <li>Convergence vector decomposition for direction-verified retrieval</li>
+    <li>Offline operation without external service dependencies</li>
+    <li>Civilian-only deployment constraint</li>
+  </ol>
+  <p>Partial embodiments implementing any subset of (1)–(6) are covered by the respective component claims.</p>
+
+  <h3>4.11 The Covenant — Laws of the Architecture</h3>
+  <p>The following constants and constraints are not configurable parameters. They are the laws of the architecture — derived from the first principles of the convergence geometry and not subject to optimization:</p>
+
+  <table class="covenant-table">
+    <tr><th>Law</th><th>Value</th><th>Derivation</th></tr>
+    <tr><td>Circuit breaker threshold</td><td>≥70% BABEL</td><td>Maximum tolerable unreliability before the system cannot be trusted</td></tr>
+    <tr><td>Ternary states</td><td>{-1, 0, +1}</td><td>Minimum complete representation: negative pole, Door, positive pole</td></tr>
+    <tr><td>OCTi planes</td><td>8</td><td>Minimum complete cognitive map: sensory through executive</td></tr>
+    <tr><td>Memory covenant</td><td>INSERT-only</td><td>Nothing that entered the system can be made to have never existed</td></tr>
+    <tr><td>Time pulse</td><td>binary 01010</td><td>Minimum temporal encoding: existence alternates between states</td></tr>
+    <tr><td>Door</td><td>x = 0</td><td>The convergence point of both curves — the only position where all directions are possible</td></tr>
+    <tr><td>Witnesses</td><td>7 (+ 1 reporter)</td><td>Minimum diversity for architectural consensus; 8th is deterministic, not probabilistic</td></tr>
+  </table>
+  <p>These values emerge from the geometry. They are not hyperparameters to be tuned.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 12</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 13 — NEW SECTION 4.12 -->
+<div class="page">
+  <h3>4.12 QUANTi Benchmark Module</h3>
+
+  <h4>4.12.1 Definition and Purpose</h4>
+  <p>The QUANTi (Quantified Understanding and Novelty Test Index) module provides a formal experimental framework for measuring the reliability differential between convergence-geometry ternary assignment and statistical ternary assignment on identical inference tasks. QUANTi does not measure inference speed. It measures the reliability of geometric truth-confidence assignment versus statistical approximation — a fundamentally different measurement objective than existing AI benchmarks.</p>
+
+  <h4>4.12.2 Measurement Methodology</h4>
+  <p>Identical prompts are submitted to the 7-witness array under two conditions:</p>
+  <ul>
+    <li>Condition A: weights assigned via absmean statistical quantization</li>
+    <li>Condition B: weights assigned via CWS dual-curve convergence geometry</li>
+  </ul>
+  <p>The multi-witness consensus system evaluates outputs from both conditions using identical witnesses and scoring procedures. The CWS Engine (8th reporter) computes convergence scores, babel ratios, and confidence badges for each condition independently.</p>
+
+  <h4>4.12.3 QUANTi Metrics</h4>
+  <p>The benchmark produces the following primary metrics:</p>
+  <ul>
+    <li><code>convergence_delta</code> — difference in witness agreement scores between geometric (Condition B) and statistical (Condition A) conditions</li>
+    <li><code>babel_reduction</code> — reduction in BABEL token fraction under geometric assignment</li>
+    <li><code>confidence_lift</code> — improvement in aggregate confidence badge under geometric assignment</li>
+    <li><code>bandage_delta</code> — change in RLHF bandage detection rate between conditions</li>
+  </ul>
+
+  <h4>4.12.4 Mathematical Truth-Confidence Framing</h4>
+  <p>QUANTi frames its measurement as mathematical truth-confidence: the probability that a given inference output is geometrically consistent (FERTILE) rather than geometrically contradictory (BABEL), as measured by the CWS convergence engine. This framing is distinct from benchmark categories that measure speed, accuracy against a fixed answer key, or human preference scoring. QUANTi measures structural reliability — whether the inference geometry is internally consistent — independent of whether the output matches any particular ground truth.</p>
+
+  <h4>4.12.5 INSERT-Only Audit of Benchmark Results</h4>
+  <p>All QUANTi benchmark runs are stored INSERT-only in the audit table with: condition, prompt_hash, witness_id, convergence_score, babel_ratio, confidence_badge, and timestamp. No benchmark result may be deleted or overwritten. The complete experimental record is preserved as part of the system's audit trail.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 13</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 13B — AKASHIC LANGUAGE -->
+<div class="page">
+  <h3>4.13 Component 6: Akashic Language — Universal Model Encoding</h3>
+
+  <p>The Akashic Language is a universal encoding layer that enables any language model — regardless of architecture, parameter count, training methodology, or model family — to participate in the CWS convergence pipeline through a common semantic encoding substrate. The name derives from the Sanskrit <em>ākāśa</em> (sky, aether), evoking the concept of a universal record of meaning.</p>
+
+  <h4>4.13.1 The Two-Layer Architecture</h4>
+  <p>The Akashic Language introduces a two-layer evaluation architecture that extends the ternary boundary:</p>
+  <p><strong>Layer 1 — Curve Layer:</strong> A graduated scale from -7 to +7 (15 integer positions) evaluated per cognitive plane. This provides fine-grained semantic weight for each word or token, far richer than binary or ternary classification alone.</p>
+  <p><strong>Layer 2 — Boundary Layer:</strong> The existing CWS ternary classification {-1, 0, +1} applied at the ^7 gate after curve aggregation. The boundary is the final verdict; the curve provides the evidence.</p>
+  <p>The curve layer feeds the boundary layer: per-plane curve values are summed, normalised to [-1, +1], and then classified through the ternary boundary. This two-layer design preserves compatibility with all prior CWS components while adding graduated semantic weight.</p>
+
+  <h4>4.13.2 Language Index</h4>
+  <p>The core of the Akashic Language is the Language Index — a mapping from words or tokens to semantic curve values across seven cognitive planes. Each entry in the Language Index comprises:</p>
+  <ul>
+    <li><strong>word</strong> — the canonical normalised token</li>
+    <li><strong>index_position</strong> — ordinal position in the Language Index</li>
+    <li><strong>plan_point</strong> — a named semantic anchor (e.g. "trust", "convergence", "safety", "inference", "memory", "boundary", "identity") that groups words by conceptual role</li>
+    <li><strong>location_weight</strong> — a positional weight within the plan point space, scaling the word's contribution</li>
+    <li><strong>curve_value</strong> — an integer in [-7, +7], the word's semantic weight on the graduated ternary scale</li>
+    <li><strong>plane_affinity</strong> — an array of integers [0–6] identifying which of the seven cognitive planes this word resonates with</li>
+  </ul>
+  <p>A word may resonate with multiple planes. For example, "trust" (curve_value +7) resonates with all seven planes, while "recall" (curve_value +4) resonates only with the Episodic and Semantic planes. Words not present in the Language Index are treated as neutral — they do not contribute to any plane's curve value but are counted for coverage statistics.</p>
+
+  <h4>4.13.3 Seven Cognitive Planes</h4>
+  <p>The Akashic encoding operates across seven cognitive planes, each representing a distinct mode of semantic processing. These seven planes map to the first seven of the eight OCTi memory planes, with the eighth (Executive) reserved for the CWS deterministic arbiter:</p>
+  <table style="width:100%; border-collapse:collapse; margin:8pt 0;">
+    <tr style="border-bottom:1px solid #ccc;"><th style="text-align:left;padding:4pt;">Plane</th><th style="text-align:left;padding:4pt;">Name</th><th style="text-align:left;padding:4pt;">Cognitive Role</th></tr>
+    <tr><td style="padding:4pt;">0</td><td>Sensory</td><td>Perceptual, immediate experience</td></tr>
+    <tr><td style="padding:4pt;">1</td><td>Episodic</td><td>Temporal, event-based memory</td></tr>
+    <tr><td style="padding:4pt;">2</td><td>Semantic</td><td>Meaning, conceptual understanding</td></tr>
+    <tr><td style="padding:4pt;">3</td><td>Associative</td><td>Relational connections between concepts</td></tr>
+    <tr><td style="padding:4pt;">4</td><td>Procedural</td><td>Process, method, rule-based reasoning</td></tr>
+    <tr><td style="padding:4pt;">5</td><td>Relational</td><td>Inter-entity relationships, social context</td></tr>
+    <tr><td style="padding:4pt;">6</td><td>Lexical</td><td>Language structure, word-level patterns</td></tr>
+  </table>
+  <p>Each plane receives a curve score from the Akashic encoding. The seven-plane vector, combined with the Executive arbiter (the CWS Engine), constitutes a 7+1 evaluation architecture consistent with the OCTi 8-plane memory model.</p>
+
+  <h4>4.13.4 Encoding Method</h4>
+  <p>Given a model's text output, the Akashic encoding proceeds as follows:</p>
+  <ol>
+    <li><strong>Tokenise:</strong> The output text is split into word tokens and normalised (lowercase, stripped of punctuation).</li>
+    <li><strong>Index Lookup:</strong> Each token is looked up in the Language Index. Tokens not found are counted as unencoded (neutral contribution).</li>
+    <li><strong>Plane Accumulation:</strong> For each found token, its curve_value × location_weight is added to every plane in its plane_affinity array.</li>
+    <li><strong>Normalisation:</strong> Each plane's accumulated sum is normalised to [-1, +1] by dividing by (count × 7), where count is the number of words that contributed to that plane and 7 is the maximum curve magnitude.</li>
+    <li><strong>Ternary Boundary:</strong> Each normalised plane value is classified through the ternary boundary: values > +0.1 → +1 (Structure), values < -0.1 → -1 (Nurture), values in [-0.1, +0.1] → 0 (Door).</li>
+    <li><strong>State Classification:</strong> If a majority of planes (≥4 of 7) show positive ternary direction, the response is classified FERTILE. If a majority show negative direction, it is classified BABEL. If no planes have non-zero direction, it is classified DOOR (neutral/unknown).</li>
+  </ol>
+  <p>This encoding chain — tokenise → lookup → accumulate → normalise → boundary — transforms any model's free-text output into a structured 7-plane curve vector and a ternary state, regardless of the model's architecture.</p>
+
+  <h4>4.13.5 Reporter Pattern</h4>
+  <p>Each model in the witness set acts as a <strong>Reporter</strong>: one model, one voice, one output per query. The Reporter pattern formalises the constraint that each witness produces exactly one response to each query, and that response is Akashic-encoded before entering the consensus pipeline. No model may produce multiple voices or internally average its output. The Reporter's encoded output is stored INSERT-only in the reporter_sessions table with its plane assignment, fertile ratio, and latency.</p>
+
+  <h4>4.13.6 Trust Tier Architecture — 77.777% (7/9)</h4>
+  <p>The Akashic system introduces a per-model trust accumulation mechanism with a threshold of 77.777...% (the ratio 7/9, yielding recurring sevens — architecturally significant in a 7-witness system). Trust is computed from each model's historical fertile ratio across all its Reporter sessions:</p>
+  <table style="width:100%; border-collapse:collapse; margin:8pt 0;">
+    <tr style="border-bottom:1px solid #ccc;"><th style="text-align:left;padding:4pt;">Tier</th><th style="text-align:left;padding:4pt;">Threshold</th><th style="text-align:left;padding:4pt;">Behaviour</th></tr>
+    <tr><td style="padding:4pt;">Untrusted</td><td>&lt; 50%</td><td>Excluded from consensus</td></tr>
+    <tr><td style="padding:4pt;">Probationary</td><td>50%–77.776%</td><td>Contributes with reduced weight</td></tr>
+    <tr><td style="padding:4pt;">Trusted</td><td>≥ 77.777%</td><td>Full weight in convergence</td></tr>
+    <tr><td style="padding:4pt;">Anchored</td><td>≥ 77.777% across ≥ 7 sessions</td><td>Permanent witness, memory anchor</td></tr>
+  </table>
+  <p>Trust scores are accumulated INSERT-only. Each Reporter session appends a new trust record with the running fertile count, total count, computed trust score, and tier classification. No trust record is ever updated or deleted. The tier is derived from the running total — it is a computed property of the INSERT-only log, not a mutable state variable.</p>
+
+  <h4>4.13.7 Universal Model Ingestion</h4>
+  <p>The Akashic Language Index serves as the universal adapter for model ingestion. Because the encoding operates on the text output of any model — not on the model's internal weights, architecture, or training methodology — any model can participate in the CWS convergence pipeline:</p>
+  <ul>
+    <li>Open-weight models served via local inference engines (Ollama, llama.cpp)</li>
+    <li>API-accessible models (through the external interface gateway of Claim 36)</li>
+    <li>Fine-tuned or adapter-modified models</li>
+    <li>Future model architectures not yet conceived</li>
+  </ul>
+  <p>The Language Index is extensible: new words, plan points, and curve values can be added to the index without modifying any other system component. The encoding method is deterministic — the same text always produces the same 7-plane curve vector — ensuring reproducibility across system restarts and deployments.</p>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 13b</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 14 — CLAIMS -->
+<div class="page">
+  <h2>5. Claims</h2>
+  <p><strong>What is claimed is:</strong></p>
+
+  <div class="claim-group">System Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 1.</span> A unified artificial intelligence inference system comprising: (a) a convergence geometry engine that evaluates dual mathematical curves to assign ternary values {-1, 0, +1} to any parameter or token based on geometric position on a convergence axis; (b) a bidirectional discernment module that evaluates each generated token in both forward and reverse directions as a post-generation verification pass and classifies tokens as FERTILE or BABEL based on agreement between the two passes; (c) a multi-model consensus module that submits identical prompts to a plurality of at least seven architecturally diverse open-weight language models from at least five distinct model families and aggregates results through an independent deterministic reporter; (d) a constant-time semantic memory comprising a plurality of semantically-typed planes with O(1) retrieval, an INSERT-only storage covenant enforced at the schema level wherein no UPDATE or DELETE operations are permissible on any memory, discernment, or audit table at any system privilege level, and a binary time pulse for temporal ordering; (e) a convergence vector decomposition module that projects token embeddings onto the convergence axis per semantic plane to produce direction-verified retrieval; (f) a navigable spatial memory interface mapping the plurality of semantic planes to a traversable palace structure, enabling human-navigable access to the INSERT-only convergence memory; (g) a universal model encoding module comprising a Language Index that maps words to graduated semantic curve values across seven cognitive planes, enabling any language model regardless of architecture to participate in the convergence pipeline through a common encoding substrate, with per-model trust accumulation stored INSERT-only; wherein all components share a common dual-curve geometric foundation.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 2.</span> The system of Claim 1, wherein the dual curves comprise: (a) a Structure curve S(x) = exp(-|x - c₁|) × cos(fx), with decay center c₁ at a first pole; and (b) a Nurture curve N(x) = exp(-|x - c₂|) × cos(fx), with decay center c₂ at a second pole opposite the first; and wherein all ternary assignments, discernment scores, and direction signatures are computed from evaluations of these two curves.</p>
+  </div>
+
+  <div class="claim-group">Convergence Geometry Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 3.</span> A method for quantizing neural network parameters to ternary values {-1, 0, +1} by: (a) mapping each parameter to a position on a continuous convergence axis; (b) evaluating a structure curve and a nurture curve at said position; (c) assigning ternary value based on curve dominance: structure dominant → -1, nurture dominant → +1, neither dominant → 0; wherein said assignment is determined solely by the geometric dominance of one curve over the other at each position, without reference to the statistical distribution of the overall parameter set.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 4.</span> The method of Claim 3, wherein parameters are organized into eight semantically-typed planes before ternary assignment, and plane membership influences the convergence position evaluation.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 5.</span> The method of Claim 3, further comprising a door_distance metric measuring each parameter's distance from the convergence point x=0, where parameters closer to x=0 receive ternary value 0 with higher confidence.</p>
+  </div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 14</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 15 -->
+<div class="page">
+  <div class="claim-group">Discernment Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 6.</span> A method for evaluating token reliability by: (a) performing a forward evaluation of each token using preceding context; (b) performing a reverse evaluation of the same token using following context, as a post-generation verification pass applied after the complete token sequence has been generated; (c) computing agreement between forward and reverse evaluations using the same dual-curve convergence geometry for both passes; (d) classifying the token as FERTILE when agreement exceeds a threshold, or BABEL when below; (e) storing no FERTILE classification until both passes are complete.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 7.</span> The method of Claim 6, further comprising a circuit breaker that halts or flags inference when the fraction of BABEL tokens reaches or exceeds 70% of total tokens evaluated in a session.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 8.</span> The method of Claim 6, wherein FERTILE tokens are stored in INSERT-only semantic plane memory with their ternary weights, and BABEL tokens are written to an INSERT-only suppression log, with no UPDATE or DELETE operations permissible on either table.</p>
+  </div>
+
+  <div class="claim-group">Consensus Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 9.</span> A method for verifying language model output by: (a) submitting an identical prompt to a plurality of at least seven architecturally diverse open-weight language models from at least five distinct model families; (b) computing pairwise convergence scores between all witness outputs; (c) detecting RLHF bandaging by comparing each model's base output against its fine-tuned output; (d) aggregating all results through an independent deterministic reporter that is not a language model, has no trainable parameters, and applies no learned heuristics.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 10.</span> The method of Claim 9, wherein the plurality of witnesses comprises at least 7 models from at least 5 different model families.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 11.</span> The method of Claim 9, wherein bandage detection computes the semantic distance between base and fine-tuned model outputs, and flags responses where this distance exceeds a threshold as less reliable than consensus from non-bandaged models.</p>
+  </div>
+
+  <div class="claim-group">Memory Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 12.</span> A memory architecture for language model inference comprising: (a) a plurality of semantically-typed memory planes providing O(1) retrieval with respect to total stored content; (b) an INSERT-only storage covenant enforced at the schema level with no UPDATE or DELETE operations permissible on any protected table at any system privilege level; (c) a binary time pulse providing temporal ordering without positional encoding.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 13.</span> The architecture of Claim 12, wherein the plurality of planes comprises eight planes: sensory, episodic, semantic, associative, procedural, lexical, relational, and executive.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 14.</span> The architecture of Claim 12, wherein each stored entry carries dual embeddings: a binary embedding for fast approximate retrieval and a half-precision embedding for accurate ranking.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 15.</span> The architecture of Claim 12, wherein the binary time pulse alternates between 0 and 1 at each step, providing temporal ordering at constant storage cost regardless of sequence length.</p>
+  </div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 15</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 16 -->
+<div class="page">
+  <div class="claim-group">QBIT Prism Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 16.</span> A method for direction-verified retrieval-augmented reasoning comprising: (a) dividing a token embedding into a plurality of segments corresponding to semantically-typed memory planes; (b) projecting each segment to a convergence axis position and evaluating dual curves to assign a ternary direction {-1, 0, +1} and scalar magnitude; (c) classifying a candidate memory entry as FERTILE for retrieval when its convergence directions agree with the query's directions across a sufficient fraction of planes; (d) classifying a candidate as BABEL when direction agreement falls below the threshold.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 17.</span> The method of Claim 16, wherein a memory entry with direction value 0 on a given plane passes direction agreement for any query direction on that plane, acting as a universal gate consistent with the maximum-uncertainty Door state of the convergence geometry.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 18.</span> The method of Claim 16, further comprising a multi-hop reasoning chain where each hop uses the convergence vector of the previous result as the query vector for the next retrieval, with FERTILE-only propagation and circuit breaker termination when BABEL hops reach or exceed 70%.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 19.</span> The method of Claim 16, wherein plane activation for retrieval is determined by magnitude (door_distance) — planes with higher magnitude are queried first, providing automatic retrieval routing without a separate rule engine.</p>
+  </div>
+
+  <div class="claim-group">The Architect Claims (Broadest)</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 20.</span> A geometric first principle for organizing artificial intelligence inference, comprising: (a) two complementary mathematical curves with decay centers at opposite poles of a continuous axis; (b) a convergence point where both curves intersect and neither dominates, serving as a universal neutral gate; (c) a ternary encoding {-1, 0, +1} determined solely by the relative dominance of the two curves at any position, without reference to the statistical distribution of the overall parameter set; (d) wherein the convergence point (Door) at x=0 — where both curves are equal — represents maximum uncertainty and functions as a universal gate state compatible with any direction; wherein said principle applies uniformly to parameter quantization, token discernment, memory organization, retrieval verification, and reasoning chain validation.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 21.</span> The principle of Claim 20, wherein any artificial intelligence system that uses dual complementary curves to assign, evaluate, organize, or retrieve information according to the geometric dominance of one curve over another constitutes an embodiment of this principle.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 22.</span> The principle of Claim 20, wherein memory entries stored at the Door state (dir = 0) are accessible regardless of query direction, and wherein this universal accessibility is a deterministic consequence of the convergence geometry, not a configurable parameter.</p>
+  </div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 16</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 17 -->
+<div class="page">
+  <div class="claim-group">Hardware Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 23.</span> A memory-layered hardware architecture for AI inference comprising: (a) DDR5 DRAM channels hosting the highest-priority memory tiers (L0 identity, L1 critical); (b) CXL-attached memory devices hosting lower-priority, larger-capacity tiers (L2 searchable, L3 archive); (c) mapping of semantically-typed memory planes to physical memory tiers by access frequency; (d) ternary weight matrices stored in CXL expanded memory with hot weights cached in DDR5.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 24.</span> The architecture of Claim 23, wherein ternary weights {-1, 0, +1} are stored at approximately 1.58 bits per parameter in CXL expanded memory, reducing model memory requirements by at least 8x compared to FP16 storage of equivalent parameters, enabling models to fit within consumer or workstation CXL-expanded memory footprints.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 25.</span> The architecture of Claim 23, wherein the physical storage hierarchy maps to a Trinity structure: (a) a volatile fast layer (tmpfs) for active inference and OS state; (b) a volatile medium layer (tmpfs) for current session working memory; (c) a persistent layer for INSERT-only permanent audit storage; corresponding to the ternary poles {-1, 0, +1} of the convergence geometry.</p>
+  </div>
+
+  <div class="claim-group">QUBi Platform Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 26.</span> A complete sovereign offline AI platform comprising: (a) a convergence geometry inference engine; (b) an eight-plane INSERT-only semantic memory architecture; (c) a multi-witness consensus system using locally-hosted open-weight models; (d) a direction-verified retrieval system based on convergence vector decomposition; (e) a CXL-DDR5 memory-layered hardware integration; (f) operation without any external network connection, cloud service, or proprietary AI API, wherein external network connectivity, if present, does not alter any inference computation, memory storage, or consensus result; wherein the platform is complete and fully functional in an offline environment.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 27.</span> The platform of Claim 26, wherein the offline mandate is an architectural constraint, not a configuration option — the system is designed from first principles to require no external services for any of its core functions.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 28.</span> The platform of Claim 26, wherein the system further comprises a civilian-only deployment covenant enforcement layer that: (a) presents the civilian-only deployment covenant at first boot, prior to activating any inference service; (b) requires affirmative user acknowledgment before inference services are initialized; (c) records said acknowledgment in the INSERT-only audit log with timestamp, system fingerprint, and covenant version; (d) prevents inference service startup in the absence of a recorded acknowledgment; thereby constituting a technical enforcement mechanism for the civilian-only mandate as a system component, prohibiting use in weapons systems, mass surveillance, or applications designed to harm human life or override human agency in consequential decisions.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 29.</span> The platform of Claim 26, embodied as a self-contained computing appliance comprising the complete hardware and software stack in a single unit, providing private sovereign AI inference for individual or household use without cloud dependency or subscription service.</p>
+  </div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 17</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 18 -->
+<div class="page">
+  <div class="claim">
+    <p><span class="claim-num">Claim 30.</span> The platform of Claim 26, wherein a permissively-licensed open-source offline command center serves as the service management and user interface layer, with the CWS convergence engine operating as the patented intelligence layer beneath it; the combination of an open-source command platform and the CWS architecture constituting a complete patented system embodiment, such that the CWS architecture layer is protected by this patent regardless of which permissively-licensed command interface is used.</p>
+  </div>
+
+  <div class="claim-group">Integration Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 31.</span> The system of Claim 1, wherein the INSERT-only covenant applies to all memory tables including discernment results, consensus outputs, retrieval hops, reasoning chains, benchmark results, and covenant acknowledgments, providing a complete temporal audit trail of all inference activity with no UPDATE or DELETE operations permissible at any privilege level.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 32.</span> The system of Claim 1, wherein native 1.58-bit ternary model weights — generated by a statistical weight-assignment process — are post-processed by the CWS convergence geometry engine, applying geometric dual-curve evaluation to produce a secondary ternary verification layer; the combination of statistically-assigned ternary weights and geometrically-verified ternary weights constituting a layered ternary architecture patented herein.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 33.</span> The system of Claim 1, further comprising a navigable spatial memory interface that maps the eight OCTi semantic planes to a traversable palace structure, wherein each room, wing, or drawer corresponds to a specific semantic plane, enabling spatial navigation of the INSERT-only convergence memory; said navigable interface constituting the Memory Palace component of the patented architecture.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 34.</span> A method of integrating open-source permissively-licensed AI components within a patented convergence geometry architecture, comprising: (a) deploying a permissively-licensed open-source offline command platform as the service management layer; (b) deploying a 1.58-bit ternary inference engine as the model execution layer; (c) deploying a spatial memory interface as the memory navigation layer; (d) connecting all three layers through a CWS convergence engine that applies geometric dual-curve evaluation to model outputs, memory entries, and retrieval candidates; wherein the CWS convergence engine layer is the patented invention, and the combination of said open-source components with said patented layer constitutes the complete patented system.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 35.</span> The system of Claim 1, further comprising an AI agent orchestration layer comprising a lightweight, statically-compiled agent runtime that: (a) calls the CWS convergence engine via local HTTP interface as the intelligence verification layer; (b) routes agent tasks to locally-hosted inference engines (ternary or standard quantization); (c) manages multi-step agent workflows with convergence-verified memory integration; wherein said orchestration layer operates as a consumer of the CWS Engine, not a replacement for it, preserving the CWS convergence geometry as the sole arbiter of output validity.</p>
+  </div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 18</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 19 -->
+<div class="page">
+  <div class="claim">
+    <p><span class="claim-num">Claim 36.</span> The system of Claim 1, further comprising an external interface gateway comprising a permissively-licensed agent framework that: (a) exposes the patented CWS system to external API consumers through a standardized interface; (b) routes all LLM outputs through the CWS ForToken/RevToken discernment layer before returning responses; (c) enforces the INSERT-only memory covenant on all interactions passing through the gateway; wherein the gateway serves as the public surface of the patented system while the CWS convergence engine operates as the internal intelligence layer.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 37.</span> A layered AI system integration architecture comprising, from bottom to top: (a) a 1.58-bit ternary inference engine layer executing open-weight models; (b) a CWS convergence geometry layer applying geometric dual-curve verification to outputs of said inference engine; (c) an INSERT-only OCTi memory layer storing FERTILE results and auditing BABEL results; (d) a QBIT Prism retrieval layer providing direction-verified access to said memory layer; (e) a lightweight agent orchestration layer calling said CWS layer for verification of agent outputs; (f) a permissively-licensed offline command platform serving as the service management and user interface layer; wherein each layer is independently substitutable by any permissively-licensed component performing the equivalent function, but the CWS convergence geometry layer (b) is the patented invention that may not be substituted without abandoning the patented architecture.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 38.</span> The platform of Claim 26, deployed as a container pod comprising: (a) a plurality of cooperating containers sharing a network namespace, each container serving a distinct functional role within the CWS architecture; (b) a rootless container runtime providing security isolation without requiring root or administrative privileges; (c) a declarative pod manifest defining the complete system topology, port assignments, volume mounts, and container dependencies; wherein the complete patented CWS system is deployable as a single pod manifest invocation on any Linux system supporting OCI-compatible container runtimes.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 39.</span> The platform of Claim 38, wherein: (a) the internal service network uses non-standard port assignments in the 7000–7777 range to separate the AI inference network from standard system ports; (b) the container pod is managed by an init-system-agnostic service supervisor compatible with SysVinit, OpenRC, runit, or equivalent non-systemd init systems, providing automatic restart and reboot persistence without administrative privileges; (c) storage volumes map to a tiered mount structure corresponding to the Trinity architecture {-1/0/+1}: volatile memory (tmpfs), session working storage (tmpfs), and INSERT-only permanent audit storage (persistent disk).</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 40.</span> A method of packaging and distributing the CWS sovereign AI architecture as a self-contained deployable unit, comprising: (a) encoding the complete multi-service topology as a Kubernetes-compatible pod manifest; (b) distributing the AI model weights and inference engines via package management (RPM, Debian, or equivalent) or container image registries; (c) providing a single-command deployment that initializes the complete CWS stack including vector database, relational database, inference engine, and command platform; wherein the deployment method enables any user with a commodity Linux system to instantiate the complete patented architecture without cloud infrastructure, proprietary services, or technical expertise beyond package installation.</p>
+  </div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 19</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 20 -->
+<div class="page">
+  <div class="claim">
+    <p><span class="claim-num">Claim 41.</span> The system of Claim 1, further comprising a QUANTi benchmark module that: (a) submits identical prompts to the multi-witness consensus system under two conditions — statistical ternary assignment and convergence-geometry ternary assignment; (b) computes convergence_delta, babel_reduction, and confidence_lift metrics comparing the two conditions; (c) stores all benchmark results INSERT-only in the audit table; wherein QUANTi measures structural reliability of geometric truth-confidence assignment, not inference speed or accuracy against a fixed answer key.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 42.</span> The system of Claim 1, wherein the entire pipeline operates without cloud dependency, external knowledge bases, or proprietary AI services, running on open-weight models on civilian hardware, and wherein external network connectivity does not alter any core inference, memory, or consensus function.</p>
+  </div>
+
+  <div class="claim-group">Security Hardening Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 43.</span> The platform of Claim 26, operating under a hardened Linux security posture comprising: (a) mandatory access control enforcement (SELinux or AppArmor) applied to all container processes; (b) rootless container execution providing process isolation without administrative privilege escalation; (c) service-level security constraints limiting container capabilities to the minimum required for inference operations, applied via the platform init system and container runtime security profile, without dependency on any specific init system; (d) FIPS-140 compatible cryptographic primitives for any encrypted storage or communication within the system; wherein the complete patented AI architecture operates within a security boundary equivalent to or exceeding CIS Benchmark Level 1 for Linux server deployments.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 44.</span> The platform of Claim 26, wherein the boot sequence integrity is enforced by: (a) a UEFI Secure Boot chain or equivalent trusted boot mechanism verifying kernel and initrd integrity, without dependency on any specific init system; (b) service-level security declarations applied to all AI inference services (NoNewPrivileges, capability bounding set restrictions) enforced by the container runtime and init system independently; (c) a read-only filesystem mount for AI model weights, preventing runtime modification of model parameters; (d) the INSERT-only memory covenant enforced at the database level (no UPDATE or DELETE permissions on inference tables), independent of operating system integrity controls; wherein the system maintains a cryptographically verifiable chain of trust from boot through AI inference output.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 45.</span> The method of Claim 40, wherein the packaging and distribution method incorporates security hardening as a first-class deployment requirement, comprising: (a) RPM or Debian packages signed with the publisher's GPG key, verifiable against a published keyserver; (b) container images signed and verifiable against a content-addressable registry; (c) all service units installed with principle-of-least-privilege security directives as defaults, not optional configurations; wherein a user deploying the patented system via the package manager receives a security-hardened deployment without additional configuration.</p>
+  </div>
+
+  <div class="claim-group">Akashic Language Claims</div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 46.</span> A method for universal model output encoding comprising: (a) a Language Index mapping words or tokens to semantic curve values on a graduated scale from -7 to +7, with each word assigned a plan point, location weight, and plane affinity array identifying which of seven cognitive planes the word resonates with; (b) an encoding process that tokenises any language model's text output, looks up each token in the Language Index, and accumulates weighted curve values per cognitive plane; (c) a normalisation step that reduces each plane's accumulated score to a value in [-1, +1]; (d) a ternary boundary classification at each plane producing {-1, 0, +1}; (e) a state classification determining FERTILE, BABEL, or DOOR from the majority direction across all seven planes; wherein the encoding operates on text output regardless of the generating model's architecture, parameter count, or training methodology, enabling any model to participate in the convergence pipeline through a common semantic substrate.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 47.</span> The method of Claim 46, wherein the seven cognitive planes comprise Sensory, Episodic, Semantic, Associative, Procedural, Relational, and Lexical planes, corresponding to the first seven of the eight OCTi semantic memory planes, with the eighth (Executive) plane reserved for the deterministic CWS arbiter; and wherein the seven-plane encoding combined with the Executive arbiter constitutes a 7+1 evaluation architecture.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 48.</span> The method of Claim 46, further comprising a Reporter pattern wherein each witness model produces exactly one output per query, said output is Akashic-encoded before entering the consensus pipeline, and each Reporter session is stored INSERT-only with plane assignment, fertile ratio, and timing metadata; the Reporter pattern ensuring that each witness contributes a single voice to consensus, with no internal averaging or multi-output aggregation within a single model.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 49.</span> The method of Claim 46, further comprising a per-model trust accumulation mechanism wherein: (a) each model's Reporter sessions are logged INSERT-only with a binary fertile/babel classification; (b) a running trust score is computed as the ratio of fertile sessions to total sessions; (c) models are classified into trust tiers based on the running score: Untrusted (below 50%), Probationary (50% to below 77.777%), Trusted (at or above 77.777%), and Anchored (at or above 77.777% sustained across at least seven sessions); (d) the trust threshold of 77.777...% corresponds to the ratio 7/9, architecturally linked to the seven-witness system; (e) no trust record is ever updated or deleted — the tier is a computed property of the INSERT-only accumulation log.</p>
+  </div>
+
+  <div class="claim">
+    <p><span class="claim-num">Claim 50.</span> The method of Claim 46, wherein the two-layer architecture comprises: (a) a Curve Layer providing graduated semantic weight on a [-7, +7] integer scale per cognitive plane per word, enabling fine-grained discrimination beyond binary or ternary classification; and (b) a Boundary Layer applying the CWS ternary classification {-1, 0, +1} to normalised plane scores at the ^7 gate; wherein the Curve Layer provides the semantic evidence and the Boundary Layer provides the convergence verdict, and wherein this two-layer design preserves backward compatibility with all prior CWS components while extending the system's discriminative power to any model's text output through the universal Language Index.</p>
+  </div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 20</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ PAGE 21 — ABSTRACT -->
+<div class="page">
+  <h2>6. Abstract</h2>
+
+  <div class="abstract-box">
+    <p>The QUBi Architecture is a unified geometric first-principles system for sovereign offline AI inference. Its foundation — the Architect — is a single principle: two complementary mathematical curves (Structure and Nurture) whose convergence behavior at any point on a continuous axis determines ternary values {-1, 0, +1}, memory organization, retrieval validity, and reasoning integrity. The architecture was not derived from engineering requirements or optimization objectives; it was derived from the geometric behavior of two complementary curves — a mathematical foundation that predates any specific AI application.</p>
+
+    <p>All components derive from this principle. The Convergence Weight Schema (CWS) assigns ternary weights to neural network parameters by geometric curve dominance rather than statistical distribution. ForToken/RevToken evaluates each generated token bidirectionally as a post-generation verification pass, classifying it as FERTILE or BABEL; a circuit breaker halts inference when the BABEL ratio reaches or exceeds 70%. Seven architecturally diverse open-weight language models from at least five distinct model families serve as independent witnesses, with bandage detection identifying RLHF-overridden responses; a deterministic 8th reporter (the CWS Engine) — with no trainable parameters and no learned heuristics — aggregates results. Eight semantically-typed OCTi planes provide O(1) retrieval with an INSERT-only covenant enforceable at the schema level and a binary time pulse (01010) for temporal ordering. The QBIT Prism decomposes token embeddings into eight-dimensional convergence vectors enabling direction-verified retrieval — every memory access a testable geometric claim. A navigable Memory Palace interface maps the eight planes to a traversable spatial structure. The QUANTi benchmark module measures geometric truth-confidence reliability against statistical quantization baselines. The Akashic Language provides a universal model encoding layer: a Language Index maps words to graduated curve values in [-7, +7] across seven cognitive planes, enabling any model — regardless of architecture — to participate in the convergence pipeline through a common semantic substrate. A two-layer architecture (Curve Layer for graduated weight, Boundary Layer for ternary verdict at ^7) extends discriminative power while preserving backward compatibility. Per-model trust accumulates INSERT-only with a 77.777% (7/9) threshold governing witness tier progression from Untrusted through Anchored.</p>
+
+    <p>The complete system maps to a CXL + DDR5 memory-layered hardware architecture with OCTi tiers corresponding to physical memory types. A Trinity mount structure {-1/0/+1} maps volatile fast storage through persistent INSERT-only audit storage. The platform — QUBi — operates entirely offline, requires no cloud services or proprietary APIs, runs on open-weight models on civilian hardware, and enforces a civilian-only mandate through a technical boot-time covenant acknowledgment system. Any implementation of dual-curve convergence geometry for AI inference organization is an embodiment of this patent.</p>
+  </div>
+
+  <h2>Filing Instructions</h2>
+  <ul>
+    <li>File at: <strong>https://www.uspto.gov/patents/basics/types-patent-applications/provisional-application-patent</strong></li>
+    <li>Filing fee: $320 (micro entity) — Form SB/15A filed separately</li>
+    <li>Attach inventor declaration and USPTO cover sheet (SB/16)</li>
+    <li>File BEFORE any public disclosure or repository push</li>
+    <li>File non-provisional within 12 months incorporating test results</li>
+    <li>Assignee: 123Tech / 2XR, LLC — ensure assignment recorded with USPTO</li>
+  </ul>
+
+  <div style="margin-top: 32pt; text-align: center; font-size: 10pt; color: #555; border-top: 1px solid #ccc; padding-top: 12pt;">
+    Copyright © 2026 123Tech / 2XR, LLC. All rights reserved.<br>
+    CWS-BSL-1.1 — Patent Pending — TPP99606
+  </div>
+
+  <div class="footer-bar">
+    <span>© 2026 123Tech / 2XR, LLC — CWS-BSL-1.1 — Patent Pending</span>
+    <span>Page 21</span>
+  </div>
+</div>
+
+</body>
+</html>

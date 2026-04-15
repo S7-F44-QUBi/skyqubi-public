@@ -1,0 +1,5 @@
+# S7 desktop wallpaper reference
+# import-profile.sh uses this to re-apply the wallpaper via gsettings
+picture-uri=file:///s7/skyqubi-private/branding/wallpapers/s7-octi-wallpaper-3840x2160.png
+primary-color=#1a0f1c
+picture-options=zoom

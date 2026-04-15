@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  S7 SkyQUBi — Jellyfin branding overlay.
+  Drop-in replacement for /config/config/branding.xml inside the
+  s7-jellyfin container. Re-skins the stock Jellyfin web UI to the
+  S7 palette (twilight purple + sandy sunset + gold) and adds the
+  civilian-only covenant line to the login screen. No plugin required;
+  Jellyfin reads this file natively.
+-->
+<BrandingOptions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LoginDisclaimer>S7 SkyQUBi — Sovereign Family Media · Civilian-Only · CWS-BSL-1.1 · ✝</LoginDisclaimer>
+  <CustomCss><![CDATA[
+/* S7 SkyQUBi — Jellyfin theme overlay */
+:root {
+  --s7-purple: #2b1b4e;
+  --s7-purple-deep: #1a0f33;
+  --s7-sunset: #d97a3e;
+  --s7-gold: #d4af37;
+  --s7-cream: #f4e8d8;
+}
+
+.skinHeader,
+.skinHeader-withBackground {
+  background: linear-gradient(180deg, var(--s7-purple) 0%, var(--s7-purple-deep) 100%) !important;
+  border-bottom: 1px solid var(--s7-gold) !important;
+}
+
+.mainDrawer,
+.navMenuOption {
+  background-color: var(--s7-purple-deep) !important;
+}
+
+.navMenuOption-selected {
+  background-color: var(--s7-purple) !important;
+  border-left: 3px solid var(--s7-gold) !important;
+}
+
+.button-submit,
+.raised.button-submit {
+  background-color: var(--s7-sunset) !important;
+  color: #fff !important;
+}
+
+a,
+.emby-button-foreground-accent,
+.headerTabs .emby-tab-button-active {
+  color: var(--s7-gold) !important;
+}
+
+.headerTabs .emby-tab-button-active {
+  border-bottom-color: var(--s7-gold) !important;
+}
+
+.cardOverlayButton-br {
+  background-color: rgba(43, 27, 78, 0.85) !important;
+}
+
+.disclaimerContainer {
+  color: var(--s7-cream) !important;
+  font-style: italic;
+  text-align: center;
+  padding: 0.6em 0;
+  border-top: 1px solid var(--s7-gold);
+}
+  ]]></CustomCss>
+  <SplashscreenEnabled>false</SplashscreenEnabled>
+</BrandingOptions>

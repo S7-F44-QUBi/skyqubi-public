@@ -1,0 +1,18 @@
+[Unit]
+Description=S7 SkyQUBi Data Pod (Postgres + Redis + Qdrant)
+After=default.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+Environment=TMPDIR=/s7/.podman-tmp
+# Clean up any existing pod from previous session before recreating
+ExecStartPre=-/usr/bin/podman pod stop s7-skyqubi
+ExecStartPre=-/usr/bin/podman pod rm s7-skyqubi
+ExecStart=/bin/bash -c 'set -a && source /s7/.env.secrets && set +a && envsubst < /s7/s7-project-nomad/skyqubi-pod.yaml | /usr/bin/podman play kube -'
+ExecStop=/usr/bin/podman play kube --down /s7/s7-project-nomad/skyqubi-pod.yaml
+TimeoutStartSec=180
+TimeoutStopSec=60
+
+[Install]
+WantedBy=default.target
