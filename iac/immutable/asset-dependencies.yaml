@@ -1,0 +1,156 @@
+# S7 GOLD Asset Dependency Skeleton
+#
+# Source of truth for the 7 immutable asset categories, the branches that
+# hold each, and the deploy-time dependency order between them.
+#
+# Read by:
+#   iac/immutable/fetch-gold-assets.sh     — fetches one category's tarball
+#   iac/immutable/deploy-assets.sh         — walks all 7 in topological order
+#   iac/build-bootc.sh                     — calls deploy-assets.sh as a build step
+#   .github/workflows/yearly-ceremony.yml  — the yearly CORE advance workflow
+#
+# Design principles:
+#   1. ONE source of truth for the category → branch → tarball mapping.
+#      Nothing else in the codebase hardcodes a branch name. Everything reads this.
+#
+#   2. Dependency isolation — updating one GOLD category does not break the others.
+#      When bumping immutable-bootc-assets from v6 to v6.1 for testing, only the
+#      categories that depend on bootc (f44, gold) get re-deployed. The covenant
+#      foundation (qubi) is untouched.
+#
+#   3. Templated paths (${S7_DEPLOY_ROOT}) so the physical destination is
+#      deploy-context specific. bootc build sets S7_DEPLOY_ROOT to the container
+#      filesystem. A test run sets it to /tmp/s7-test. Production sets it to /opt/s7.
+#      The skeleton does not know about the physical filesystem.
+#
+#   4. Versioned categories (currently only "gold") hold MULTIPLE tarballs in
+#      the same branch — v6, v7, v8 — and the deploy script picks the newest
+#      non-retired version at deploy time.
+
+meta:
+  version: v6
+  generated_at: "2026-04-15"
+  repo: skycair-code/skyqubi-private
+  gold_archive_dir: /s7/v6-gold-2026-04-15
+  signing_key: E11792E0AD945BE9
+  deploy_root_default: /opt/s7
+
+# ═══════════════════════════════════════════════════════════════════
+# THE 7 CATEGORIES
+# ═══════════════════════════════════════════════════════════════════
+#
+# Dependency graph (topological order for deploy):
+#
+#   [qubi]     [bootc]     [auditbuilds]
+#     │          │
+#     ├─→ cws    └─→ f44
+#     │               │
+#     └─→ ssl         │
+#                     │
+#         [gold] ←────┘  (gold also depends on qubi, bootc)
+#
+#   Valid deploy order: qubi, bootc, auditbuilds, cws, ssl, f44, gold
+#   (Any topological sort of the DAG above is valid; the above is canonical.)
+
+categories:
+
+  - id: qubi
+    branch: immutable-qubi-assets
+    tarball: skyqubi-private-immutable-qubi-assets-v6.tar.gz
+    signature: skyqubi-private-immutable-qubi-assets-v6.tar.gz.asc
+    extracts_to: ${S7_DEPLOY_ROOT}/covenant
+    depends_on: []
+    versioned: false
+    role: "QUBi kernel-of-kernel manifest (COVENANT.md, CORE_UPDATES.md, FORMATS.md)"
+    covenant_weight: 5
+    tonya_witnessed: true
+
+  - id: cws
+    branch: immutable-cws-assets
+    tarball: skyqubi-private-immutable-cws-assets-v6.tar.gz
+    signature: skyqubi-private-immutable-cws-assets-v6.tar.gz.asc
+    extracts_to: ${S7_DEPLOY_ROOT}/engine
+    depends_on: [qubi]
+    versioned: false
+    role: "Covenant Witness System — patented S7 engine (TPP99606) + CWS-LICENSE"
+    covenant_weight: 5
+    tonya_witnessed: false
+
+  - id: ssl
+    branch: immutable-ssl-assets
+    tarball: skyqubi-private-immutable-ssl-assets-v6.tar.gz
+    signature: skyqubi-private-immutable-ssl-assets-v6.tar.gz.asc
+    extracts_to: ${S7_DEPLOY_ROOT}/wire
+    depends_on: [qubi]
+    versioned: false
+    role: "Safe Secure LynX — wire protocol + ceremony tooling seed"
+    covenant_weight: 4
+    tonya_witnessed: false
+
+  - id: bootc
+    branch: immutable-bootc-assets
+    tarball: skyqubi-private-immutable-bootc-assets-v6.tar.gz
+    signature: skyqubi-private-immutable-bootc-assets-v6.tar.gz.asc
+    extracts_to: ${S7_DEPLOY_ROOT}/branding
+    depends_on: []
+    versioned: false
+    role: "Visual identity — grub theme, Plymouth, splash, wallpapers, icons"
+    covenant_weight: 4
+    tonya_witnessed: true
+
+  - id: f44
+    branch: immutable-f44-assets
+    tarball: skyqubi-private-immutable-f44-assets-v6.tar.gz
+    signature: skyqubi-private-immutable-f44-assets-v6.tar.gz.asc
+    extracts_to: ${S7_DEPLOY_ROOT}/build
+    depends_on: [bootc]
+    versioned: false
+    role: "Fedora 44 bootc recipe — Containerfile, build scripts, first-boot"
+    covenant_weight: 3
+    tonya_witnessed: false
+
+  - id: auditbuilds
+    branch: immutable-auditbuilds-assets
+    tarball: skyqubi-private-immutable-auditbuilds-assets-v6.tar.gz
+    signature: skyqubi-private-immutable-auditbuilds-assets-v6.tar.gz.asc
+    extracts_to: ${S7_DEPLOY_ROOT}/audit
+    depends_on: []
+    versioned: false
+    role: "Audit gate infrastructure — nine-zero pre-sync-gate + living document"
+    covenant_weight: 4
+    tonya_witnessed: false
+
+  - id: gold
+    branch: immutable-gold-assets
+    tarball: skyqubi-private-immutable-gold-assets-v6.tar.gz
+    signature: skyqubi-private-immutable-gold-assets-v6.tar.gz.asc
+    extracts_to: ${S7_DEPLOY_ROOT}/gold
+    depends_on: [qubi, bootc, f44]
+    versioned: true
+    current_version: v6
+    future_versions: [v7, v8, v9]
+    role: "GOLD-blessed public-face snapshot — yearly cadence, versioned ledger"
+    covenant_weight: 5
+    tonya_witnessed: true
+
+# ═══════════════════════════════════════════════════════════════════
+# DEPLOY PROFILES (which categories get pulled for which build)
+# ═══════════════════════════════════════════════════════════════════
+#
+# Future Actions workflows use these profiles to decide which subset of
+# the 7 categories to fetch for a given build type. Not used in Phase 1 —
+# reserved for when yearly-ceremony.yml lands.
+
+profiles:
+
+  qubi_alone:
+    description: "Mode 1 — QUBi self-contained OCI container for existing F44 hosts"
+    categories: [qubi, cws, ssl, auditbuilds]
+
+  f44_bootc_os:
+    description: "Mode 2 — SkyCAIR v7 OS layers (F44 + BootC) for in-place OS updates"
+    categories: [bootc, f44, auditbuilds, ssl]
+
+  full_install:
+    description: "Mode 3 — Fresh-install ISO with everything baked in"
+    categories: [qubi, cws, ssl, bootc, f44, auditbuilds, gold]

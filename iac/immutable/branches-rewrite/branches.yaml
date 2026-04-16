@@ -1,0 +1,325 @@
+# S7 Immutable Branches Topology — v6 GOLD (branches-rewrite)
+#
+# Single source of truth for every rewritten script in this directory.
+# Replaces the repo-based genesis-content.yaml with a branch-based map.
+#
+# Architecture preserved: "Sync to private. Rebuild public from the private
+# immutable fork." Packaging changed: each immutable is now an ORPHAN BRANCH
+# inside skyqubi-private that holds exactly one signed tarball + sig +
+# per-branch MANIFEST.md. Three files per branch. Blast radius = 1 file.
+#
+# All tarball names follow: <repo-scope>-<branch>-v<version>.tar.gz
+# All signatures: <tarball>.asc (detached ASCII armor, GPG E11792E0AD945BE9)
+# All branches protected by: iac/immutable/branches-rewrite/apply-branch-protection.sh
+#
+# Ceremony preservation: registry.yaml remains the append-only advance ledger.
+# rebuild-public.sh remains ceremony-gated. advance-immutable.sh remains a stub
+# until the first human-led ceremony. This rewrite does not cross ceremony gates.
+
+meta:
+  version: v6
+  generated_at: "2026-04-15"
+  core_update: "v6"
+  authority: "Chair-draft under Jamie's 16hr SOLO block, Samuel-guarded"
+  gold_archive_dir: "/s7/v6-gold-2026-04-15"
+  signing_key: "E11792E0AD945BE9"
+  signed_by: "skycair-code"
+  pending_witness:
+    - "Tonya on immutable-gold-assets (skyqubi-immutable lineage — she signed the design)"
+    - "Tonya on immutable-bootc-assets (branding was her 2026-04-12 signoff)"
+    - "Tonya + council on first immutable-gold-assets-v7 advance (yearly ceremony)"
+
+repos:
+  skyqubi-private:
+    owner: skycair-code
+    visibility: private
+    enterprise_linked: true           # linked into SkyQUBi enterprise via Path A
+    default_branch: main
+    holds_immutable_branches: true
+
+  skyqubi-public:
+    owner: skycair-code
+    visibility: public
+    enterprise_linked: true
+    default_branch: main
+    holds_immutable_branches: false
+    pages:
+      cname: "123tech.skyqubi.com"
+      source_branch: main
+      source_path: "/docs"             # TBD — confirm with Jamie before enabling
+      public_from_private: false       # Path A = not applicable
+
+# ═══════════════════════════════════════════════════════════════════
+# MAIN BRANCH CONTENT — pushed from GOLD tarballs
+# ═══════════════════════════════════════════════════════════════════
+mains:
+  - branch: main
+    repo: skyqubi-private
+    tarball: skyqubi-private-main-v6.tar.gz
+    signature: skyqubi-private-main-v6.tar.gz.asc
+    source_commit: "2185017"
+    # Content ambiguity — local HEAD is at b22c009 (one commit ahead of GOLD).
+    # Jamie must pick: (a) GOLD tarball, (b) local HEAD, (c) re-cut new tarball
+    # from local HEAD, (d) GOLD root + cherry-pick b22c009. Default = NO default.
+    ambiguity_pending_resolution: true
+
+  - branch: main
+    repo: skyqubi-public
+    tarball: skyqubi-public-main-v6.tar.gz
+    signature: skyqubi-public-main-v6.tar.gz.asc
+    source_commit: "2d955e9"
+    ambiguity_pending_resolution: false  # local clean, matches tarball sha
+
+# ═══════════════════════════════════════════════════════════════════
+# IMMUTABLE BRANCHES — all inside skyqubi-private, all orphans
+# ═══════════════════════════════════════════════════════════════════
+# Each entry:
+#   branch:           the git branch name (all lowercase, hyphenated)
+#   tarball:          aligned-name tarball this branch holds
+#   source:
+#     type:           gold_archive | carved_from_main | placeholder
+#     tarball_path:   (gold_archive only) path relative to gold_archive_dir
+#     source_paths:   (carved_from_main) list of paths relative to /s7/skyqubi-private
+#                     — these get tarred into a new signed tarball at tarball_path
+#     placeholder_note: (placeholder) one-line reason the branch is reserved
+#   versioned:        true | false — true means the branch holds MULTIPLE tarballs
+#                     as a version ledger (only immutable-gold-assets for v6 round 1)
+#   role:             one-line description for humans
+#   visibility:       private (all immutable branches are inside skyqubi-private)
+#   tonya_witnessed:  true | false (from prior session artifacts)
+
+immutable_branches:
+
+  # ── Already-tarballed (5 from existing GOLD archive) ─────────────
+
+  - branch: immutable-bootc-assets
+    tarball: skyqubi-private-immutable-bootc-assets-v6.tar.gz
+    source:
+      type: gold_archive
+      tarball_path: skyqubi-private-immutable-bootc-assets-v6.tar.gz
+    versioned: false
+    role: "Bootc image visual identity — grub theme, Plymouth, splash, wallpapers, icons"
+    visibility: private
+    tonya_witnessed: true
+    notes: "Tonya-approved 2026-04-12. Branding layer consumed by the bootc build."
+
+  - branch: immutable-f44-assets
+    tarball: skyqubi-private-immutable-f44-assets-v6.tar.gz
+    source:
+      type: gold_archive
+      tarball_path: skyqubi-private-immutable-f44-assets-v6.tar.gz
+    versioned: false
+    role: "Fedora 44 bootc build recipe — Containerfile, build scripts, first-boot"
+    visibility: private
+    tonya_witnessed: false
+    notes: "OS build recipe. Consumes immutable-bootc-assets at bootc build time."
+
+  - branch: immutable-qubi-assets
+    tarball: skyqubi-private-immutable-qubi-assets-v6.tar.gz
+    source:
+      type: gold_archive
+      tarball_path: skyqubi-private-immutable-qubi-assets-v6.tar.gz
+    versioned: false
+    role: "QUBi kernel-of-kernel manifest — COVENANT.md, CORE_UPDATES.md, FORMATS.md"
+    visibility: private
+    tonya_witnessed: true
+    notes: "Highest covenant weight. Four-witness advance at future ceremony per feedback_qubi_is_core_prism_grid_wall.md."
+
+  - branch: immutable-ssl-assets
+    tarball: skyqubi-private-immutable-ssl-assets-v6.tar.gz
+    source:
+      type: gold_archive
+      tarball_path: skyqubi-private-immutable-ssl-assets-v6.tar.gz
+    versioned: false
+    role: "Safe Secure LynX — wire protocol + ceremony tooling seed"
+    visibility: private
+    tonya_witnessed: false
+    notes: "Minimal extensible seed per Jamie 'A then revisit topic'. SSL = Safe Secure LynX."
+
+  - branch: immutable-gold-assets
+    tarball: skyqubi-private-immutable-gold-assets-v6.tar.gz
+    source:
+      type: gold_archive
+      tarball_path: skyqubi-private-immutable-gold-assets-v6.tar.gz
+    versioned: true                    # VERSIONED — holds multiple tarballs
+    current_version: v6
+    future_versions: [v7, v8, v9]      # added at each yearly CORE advance ceremony
+    role: "GOLD-blessed public-face snapshot. Versioned ledger: v6 today, v7 at GoLive."
+    visibility: private
+    tonya_witnessed: true
+    notes: "rebuild-public.sh reads the newest non-retired version here and regenerates skyqubi-public/main. Yearly cadence."
+
+  # ── Carved from skyqubi-private working tree (2 confident) ───────
+
+  - branch: immutable-cws-assets
+    tarball: skyqubi-private-immutable-cws-assets-v6.tar.gz
+    source:
+      type: carved_from_main
+      source_paths:
+        - engine/                      # CWS engine: agents, akashic, discernment, breaker, etc.
+        - CWS-LICENSE                  # CWS-BSL-1.0
+    versioned: false                   # candidate for v-versioning at patent version bumps
+    role: "Covenant Witness System — patented S7 engine + license"
+    visibility: private
+    tonya_witnessed: false
+    notes: "Carved from /s7/skyqubi-private/engine/ at main HEAD. Patent TPP99606."
+
+  - branch: immutable-auditbuilds-assets
+    tarball: skyqubi-private-immutable-auditbuilds-assets-v6.tar.gz
+    source:
+      type: carved_from_main
+      source_paths:
+        - iac/audit/                   # pre-sync-gate, health-report, tonya-digest, pinned.yaml, frozen-trees.txt, core-update-days.txt, nightly-snapshot
+        - docs/internal/chef/audit-living.md
+    versioned: false
+    role: "Audit gate infrastructure + living document"
+    visibility: private
+    tonya_witnessed: false
+    notes: "The nine-zero pre-sync gate + committed living doc + pinned state."
+
+  # ── Carved from main (1 confident with Jamie's implicit approval) ─
+
+  - branch: immutable-iac-assets
+    tarball: skyqubi-private-immutable-iac-assets-v6.tar.gz
+    source:
+      type: carved_from_main
+      source_paths:
+        - iac/                         # ALL of iac/ EXCEPT audit/, dist/, branches-rewrite/
+      exclude_paths:
+        - iac/audit/                   # audit lives only on its own branch
+        - iac/immutable/branches-rewrite/  # this rewrite subdir — exclude during carve
+        - iac/dist/                    # 426MB of built fedora-base tar chunks — build artifacts, not source
+    versioned: false
+    role: "Infrastructure-as-code tree (build, compliance, host-state, intake, network, sync)"
+    visibility: private
+    tonya_witnessed: false
+    notes: "Option (a) per 2026-04-15 Jamie discussion — clean domain boundaries with immutable-auditbuilds-assets."
+
+  # ── PLACEHOLDER branches — reserved name, content deferred ───────
+  # Each gets a minimal stub tarball (README.md only) with the standard
+  # signature. Branch name is reserved under covenant protection; content
+  # populates at a future session per Jamie's directive.
+
+  - branch: immutable-kernal-assets
+    tarball: skyqubi-private-immutable-kernal-assets-v6.tar.gz
+    source:
+      type: placeholder
+      placeholder_note: "Reserved for custom kernal (Commodore-era homage, intentional spelling) + systemd + dependencies. Populate at future session when Jamie builds the custom kernal."
+    versioned: false
+    role: "Linux kernel layer: systemd, dependencies, future custom kernal"
+    visibility: private
+    tonya_witnessed: false
+
+  - branch: immutable-scripts-assets
+    tarball: skyqubi-private-immutable-scripts-assets-v6.tar.gz
+    source:
+      type: placeholder
+      placeholder_note: "Boundary unclear — Jamie to confirm which scripts live here vs. in iac-assets. Populate after Jamie defines the boundary."
+    versioned: false
+    role: "Loose utility scripts outside iac/, engine/, docs/, branding/"
+    visibility: private
+    tonya_witnessed: false
+
+  - branch: immutable-personas-assets
+    tarball: skyqubi-private-immutable-personas-assets-v6.tar.gz
+    source:
+      type: placeholder
+      placeholder_note: "Source paths unknown — Jamie to identify location of Carli/Elias/Samuel persona configs + OCTi 7+1 witness set. Populate when paths confirmed."
+    versioned: false
+    role: "Persona definitions (Carli/Elias/Samuel) + OCTi witness set config"
+    visibility: private
+    tonya_witnessed: false
+
+  - branch: immutable-unitydesign-assets
+    tarball: skyqubi-private-immutable-unitydesign-assets-v6.tar.gz
+    source:
+      type: placeholder
+      placeholder_note: "Source paths unknown — Jamie to identify location of branding/design tokens/dashboard/wallpapers (design-side, not bootc-side). Populate when paths confirmed."
+    versioned: false
+    role: "Tonya+Trinity unified design language — colors, typography, tokens, Wix+GHPages hybrid rules"
+    visibility: private
+    tonya_witnessed: true
+    notes: "Must never drift without Tonya signoff."
+
+  - branch: immutable-schema-assets
+    tarball: skyqubi-private-immutable-schema-assets-v6.tar.gz
+    source:
+      type: placeholder
+      placeholder_note: "Source paths unknown — DB schemas (PG + SQLite + MemPalace + CWS + Qdrant + Redis). Jamie to confirm extraction paths."
+    versioned: false
+    role: "Database schemas — PG, SQLite, MemPalace, CWS, Qdrant"
+    visibility: private
+    tonya_witnessed: false
+
+  - branch: immutable-user-docs
+    tarball: skyqubi-private-immutable-user-docs-v6.tar.gz
+    source:
+      type: placeholder
+      placeholder_note: "Source paths unknown — user-facing docs (appliance how-tos, persona chat guide, Trinity onboarding, troubleshooting). Jamie to confirm docs/public/ vs docs/household/ vs another path."
+    versioned: false
+    role: "User-facing documentation — household-member readable"
+    visibility: private
+    tonya_witnessed: false
+    notes: "Note: no -assets suffix (Jamie's naming choice — docs is a different content class)."
+
+  - branch: immutable-legaldocs-assets
+    tarball: skyqubi-private-immutable-legaldocs-assets-v6.tar.gz
+    source:
+      type: placeholder
+      placeholder_note: "Source paths unknown — patent TPP99606 PDF, USPTO correspondence, contracts, LICENSE, CWS-LICENSE. Jamie to confirm patent PDF location."
+    versioned: false
+    role: "Patent filings, licenses, USPTO correspondence, legal/contract docs"
+    visibility: private
+    tonya_witnessed: false
+
+  - branch: immutable-influences-assets
+    tarball: skyqubi-private-immutable-influences-assets-v6.tar.gz
+    source:
+      type: placeholder
+      placeholder_note: "Content entirely unclear — external architecture influences (PorteuX/Slackware/bootc lineage) OR credits/mentor/family material OR both. Jamie to define."
+    versioned: false
+    role: "External influences on S7 design"
+    visibility: private
+    tonya_witnessed: false
+
+# ═══════════════════════════════════════════════════════════════════
+# PER-BRANCH FILE LAYOUT (identical for every immutable branch)
+# ═══════════════════════════════════════════════════════════════════
+# Each orphan branch contains exactly these three files at the root:
+#
+#   <tarball>.tar.gz         the payload
+#   <tarball>.tar.gz.asc     detached GPG signature
+#   MANIFEST.md              per-branch manifest with sha256, provenance,
+#                            source_commit, created_at, role, notes
+#
+# No other files. No .gitignore. No README.md separate from MANIFEST.md.
+# The branch tree is 3 files and nothing else. Any additional file
+# changes blast radius — keep the branch tree minimal.
+#
+# For versioned branches (immutable-gold-assets only in v6 round 1):
+#   <tarball>-v6.tar.gz      payload for v6
+#   <tarball>-v6.tar.gz.asc
+#   <tarball>-v7.tar.gz      payload for v7 (added at future advance)
+#   <tarball>-v7.tar.gz.asc
+#   MANIFEST.md              enumerates every version with retired/active status
+
+# ═══════════════════════════════════════════════════════════════════
+# PROTECTION STACK (applied to every immutable branch)
+# ═══════════════════════════════════════════════════════════════════
+# When a branch is pushed for the first time, apply-branch-protection.sh
+# applies the following. Payload is EXPLICIT — no silent additions.
+#
+# protection_payload:
+#   enforce_admins: true
+#   required_linear_history: true
+#   allow_force_pushes: false
+#   allow_deletions: false
+#   required_conversation_resolution: true
+#   required_pull_request_reviews: null   # no PR required (solo maintainer)
+#   required_status_checks: null          # no CI checks required yet
+#   restrictions: null                    # no user/team allowlist
+# plus separately:
+#   required_signatures: true             # POSTed to the signatures endpoint
+#
+# bypass_actors: [] (empty — no backdoors)
+# rulesets:       [] (none — branch protection only, no overlapping rulesets)
