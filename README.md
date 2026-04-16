@@ -4,11 +4,9 @@
 
 <br/>
 
-<img src="branding/icons/s7-qubi-icon-128.png" alt="QUBi" width="64"/>
-
 # S7 SkyQUB*i*
 
-### Sovereign Offline AI Platform
+### ANY AI - CWS Merges for TRUTH - Offline AI Platform
 
 **AI + Humanity — Built on Trust**
 
@@ -42,7 +40,7 @@
 >
 > All targets pending Go Live · 2026-07-07 · 07:00 CT
 
-**Live:** [123tech.skyqubi.com](https://123tech.skyqubi.com/) — sandy sunset landing page with the OCTi witness visual.
+**Live:** [skyqubi.com](https://www.skyqubi.com/) — S7 SkyQUBi official site.
 **Public Launch:** July 7, 2026 · 7:00 AM CT
 **What's New:** [2026-04-13 — TimeCapsule Foundation Night](docs/internal/release-notes/2026-04-13.md)
 
@@ -68,7 +66,6 @@ SkyQUB*i* is a complete sovereign AI stack that runs **entirely offline** on com
 | Layer | Component | Purpose |
 |:-----:|-----------|---------|
 | <img src="branding/icons/s7-shield-icon-256.png" width="20"/> | **SkyCAIR** | Operating System — Fedora 44 + Budgie + S7 branding |
-| <img src="branding/icons/s7-qubi-icon-128.png" width="20"/> | **SkyQUB*i*** | AI Stack — CWS Engine, Ollama, Qdrant, MemPalace |
 | | **SkyBRICK-QUB*i*** | Command Center — Web UI, app management |
 | | **SkyAV*i*** | Security + Orchestration — Samuel AI sysadmin, parallel witness consensus |
 
@@ -79,8 +76,8 @@ SkyQUB*i* is a complete sovereign AI stack that runs **entirely offline** on com
 ## Install
 
 ```bash
-git clone https://github.com/skycair-code/SkyQUBi-public.git
-cd SkyQUBi-public
+git clone https://github.com/S7-F44-QUBi/skyqubi-public.git
+cd skyqubi-public
 sudo ./install/install.sh
 ```
 
@@ -209,8 +206,6 @@ These are not configurable. They are the laws of the architecture.
 
 **Patent Pending:** TPP99606 — 123Tech / 2XR, LLC
 
-Based on [Project N.O.M.A.D.](https://github.com/CrosstalkSolutions/project-nomad) by Crosstalk Solutions (Apache 2.0).
-
 ---
 
 <a id="civilian-use-only"></a>
@@ -222,8 +217,6 @@ This software is developed exclusively for civilian purposes. Military, surveill
 ---
 
 <div align="center">
-
-<img src="branding/icons/s7-qubi-icon-128.png" width="48"/>
 
 **S7 SkyQUB*i*** — The 1st QUB*i*. All aware.
 
